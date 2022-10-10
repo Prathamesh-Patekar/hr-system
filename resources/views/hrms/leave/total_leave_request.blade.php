@@ -99,7 +99,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <?php $i =0;?>
+                                    <?php $i = 0;?>
                                     @foreach($leaves as $leave)
                                         <tr>
                                             <td class="text-center">{{$i+=1}}</td>
@@ -221,4 +221,5 @@
 @endsection
 @push('scripts')
     <script src="/assets/js/custom.js"></script>
+    <script src="/assets/js/function.js"></script>
 @endpush

@@ -188,6 +188,7 @@ $(document).on('change', '.leave_type', function () {
 });
 
 $('.approveClick').click(function () {
+    alert("s");
     var leaveId = $(this).data('id');
     var type = $(this).data('name');
     var token = $('#token').val();
