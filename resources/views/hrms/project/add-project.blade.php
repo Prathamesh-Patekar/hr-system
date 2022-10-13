@@ -32,7 +32,7 @@
                             <div class="panel">
                                 <div class="panel-heading">
                                     <span class="panel-title hidden-xs"> Add Project </span>
-                                </div>
+                                </div>addproject
 
                                 <div class="panel-body pn">
                                     <div class="table-responsive">

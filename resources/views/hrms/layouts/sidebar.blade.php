@@ -47,6 +47,25 @@
             </ul>
         </li>
 
+        <li>
+            <a class="accordion-toggle" href="/dashboard">
+                <span class="fa fa-user"></span>
+                <span class="sidebar-title">Separation</span>
+                <span class="caret"></span>
+            </a>
+            <ul class="nav sub-nav">
+                <li>
+                    <a href="/resignation">
+                        <span class="glyphicon glyphicon-tags"></span> Resignation </a> 
+                </li>
+                <li>
+                    <a href="exit-formalities">
+                        <span class="glyphicon glyphicon-tags"></span> Exit formalities </a>
+                </li>
+            </ul>
+        </li>
+
+
         @if(\Auth::user()->isAdmin || \Auth::user()->isHR() || \Auth::user()->isManager())
             <li>
                 <a class="accordion-toggle" href="/dashboard">

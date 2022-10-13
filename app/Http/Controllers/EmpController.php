@@ -88,6 +88,7 @@ class EmpController extends Controller {
 
 	public function showEmployee() {
 		$emps = User::with('employee', 'role.role')->paginate(15);
+		
 		$column = '';
 		$string = '';
 

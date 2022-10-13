@@ -560,3 +560,120 @@ $('#code').blur(function(){
     });
 });
 
+
+
+$(document).ready(function () 
+{
+    $('#get_emp').on('keyup',function(){
+        var value  = $(this).val();
+        $.ajax({
+            url:"/search",
+            type:"GET",
+            data:{'name':value},
+            success: function(data){
+                $("#emp_list").html(data)
+            }
+        });
+        
+    });
+
+    $('#get_emp1').on('keyup',function(){
+        var value  = $(this).val();
+        $.ajax({
+            url:"/search-employee",
+            type:"GET",
+            data:{'name':value},
+            success: function(data){
+
+                console.log(data);
+                $("#emp_list1").html(data)
+            }
+        });
+        
+    });
+
+    
+
+    $("#datepicker9").on("change",function()
+    {
+        var selected = $(this).val();
+      
+        $("#notice_date").change(function()
+        {
+            let days = $(this).val();
+            var myInt = parseInt(days);                   
+            var newdate = new Date(selected);
+            newdate.setDate(newdate.getDate() + myInt);
+
+            var dd = newdate.getDate();
+            var mm = newdate.getMonth() + 1 ;
+            var y = newdate.getFullYear();
+            var someFormattedDate = mm + '/' + dd + '/' + y;
+            // console.log(someFormattedDate);
+
+            $("#datepicker10").val(someFormattedDate);
+
+
+        });
+    });    
+    
+    $("#datepicker9").on("change",function()
+    {
+        var selected = $(this).val();
+
+            let days = $('#notice_date').val();
+            var myInt = parseInt(days);                   
+            var newdate = new Date(selected);
+            newdate.setDate(newdate.getDate() + myInt);
+
+            var dd = newdate.getDate();
+            var mm = newdate.getMonth() + 1 ;
+            var y = newdate.getFullYear();
+            var someFormattedDate = mm + '/' + dd + '/' + y;
+            // console.log(someFormattedDate);
+
+            $("#datepicker10").val(someFormattedDate);
+    });   
+
+});
+
+$(document).on('click','li',function(){
+    var value = $(this).text();
+    $('#get_emp').val(value);
+    $("#emp_list").html("")
+});
+
+$(document).on('click','li',function(){
+    var value = $(this).text();
+    $('#get_emp1').val(value);
+    $("#emp_list1").html("")
+});
+
+
+$(document).change(function ()
+{
+    $(document).on('click','li',function()
+    {
+        var value = $(this).text();
+        // console.log(value);
+   
+    if(value == "")
+    {
+        var value  = $("#get_emp").val();           
+    }
+    $.ajax(
+        {
+            url:"/search1",
+            type:"GET",
+            data:{'name':value},
+            success: function(data)
+            {
+                var obj = jQuery.parseJSON(data);
+                $("#emp_design").val(obj.role);
+                $("#emp_email").val(obj.email);
+                
+            }  
+        });
+
+    });
+});

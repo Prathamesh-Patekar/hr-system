@@ -216,6 +216,34 @@
                     }
                 }
             });
+            $("#datepicker9").datepicker({
+                prevText: '<i class="fa fa-chevron-left"></i>',
+                nextText: '<i class="fa fa-chevron-right"></i>',
+                showButtonPanel: false,
+                beforeShow: function (input, inst) {
+                    var newclass = 'allcp-form';
+                    var themeClass = $(this).parents('.allcp-form').attr('class');
+                    var smartpikr = inst.dpDiv.parent();
+                    if (!smartpikr.hasClass(themeClass)) {
+                        inst.dpDiv.wrap('<div class="' + themeClass + '"></div>');
+                    }
+                }
+            });
+
+            $("#datepicker10").datepicker({
+                prevText: '<i class="fa fa-chevron-left"></i>',
+                nextText: '<i class="fa fa-chevron-right"></i>',
+                showButtonPanel: false,
+                beforeShow: function (input, inst) {
+                    var newclass = 'allcp-form';
+                    var themeClass = $(this).parents('.allcp-form').attr('class');
+                    var smartpikr = inst.dpDiv.parent();
+                    if (!smartpikr.hasClass(themeClass)) {
+                        inst.dpDiv.wrap('<div class="' + themeClass + '"></div>');
+                    }
+                }
+            });
+
 
             $('.inline-dp').datepicker({
                 numberOfMonths: 1,

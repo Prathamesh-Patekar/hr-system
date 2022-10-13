@@ -338,4 +338,20 @@ Route::group(['middleware' => ['auth']], function ()
 
     //Route::get('assign-project', 'ProjectController@assignProject')->name('assign-project');
 
+
+     //Routes for Separation.
+
+     Route::get('resignation', ['uses' => 'ResignController@addresign']);
+
+     Route::post('resignation', ['uses' => 'ResignController@processresign']);
+
+     Route::get('exit-formalities',  ['uses' => 'ResignController@formalities']);
+
+     Route::get('search',  ['uses' => 'ResignController@searching'])->name('search');
+
+
+     Route::get('search-employee',  ['uses' => 'ResignController@search_employee'])->name('search-employee');
+
+     Route::get('/search1',  ['uses' => 'ResignController@design_table'])->name('search1');
+
 });
