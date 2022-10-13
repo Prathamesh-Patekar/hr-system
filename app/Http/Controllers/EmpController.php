@@ -34,7 +34,6 @@ class EmpController extends Controller {
 			$file->move($destinationPath, $filename);
 
 		}
-		$pnam="aakash@gmail.com";
 		$user = new User;
 		$user->name = $request->emp_name;
 		$user->email = str_replace(' ', '_', $request->emp_email);
@@ -70,10 +69,7 @@ class EmpController extends Controller {
 		$emp->pf_account_number = $request->pf_account_number;
 		$emp->un_number = $request->un_number;
 		$emp->pf_status = $request->pf_status;
-		$emp->date_of_resignation = date_format(date_create($request->date_of_resignation), 'Y-m-d');
-		$emp->notice_period = $request->notice_period;
-		$emp->last_working_day = date_format(date_create($request->last_working_day), 'Y-m-d');
-		$emp->full_final = $request->full_final;
+
 		$emp->user_id = $user->id;
 		$emp->save();
 
@@ -155,10 +151,7 @@ class EmpController extends Controller {
 		$pf_account_number = $request->pf_account_number;
 		$un_number = $request->un_number;
 		$pf_status = $request->pf_status;
-		$dor = date_format(date_create($request->date_of_resignation), 'Y-m-d');
-		$notice_period = $request->notice_period;
-		$last_working_day = date_format(date_create($request->last_working_day), 'Y-m-d');
-		$full_final = $request->full_final;
+		
 
 		//$edit = Employee::findOrFail($id);
 		$edit = Employee::where('user_id', $id)->first();
@@ -250,18 +243,7 @@ class EmpController extends Controller {
 		if (isset($pf_status)) {
 			$edit->pf_status = $pf_status;
 		}
-		if (!empty($dor)) {
-			$edit->date_of_resignation = $dor;
-		}
-		if (!empty($notice_period)) {
-			$edit->notice_period = $notice_period;
-		}
-		if (!empty($last_working_day)) {
-			$edit->last_working_day = $last_working_day;
-		}
-		if (isset($full_final)) {
-			$edit->full_final = $full_final;
-		}
+	
 
 		$edit->save();
 		return json_encode(['title' => 'Success', 'message' => 'Employee details successfully updated', 'class' => 'modal-header-success']);
@@ -287,7 +269,7 @@ class EmpController extends Controller {
 		/* try {*/
 		foreach ($files as $file) {
 			Excel::load($file, function ($reader) {
-				$rows = $reader->get(['emp_name', 'emp_code', 'emp_status', 'role', 'gender', 'dob', 'doj', 'mob_number', 'qualification', 'emer_number', 'pan_number', 'father_name', 'address', 'permanent_address', 'formalities', 'offer_acceptance', 'prob_period', 'doc', 'department', 'salary', 'account_number', 'bank_name', 'ifsc_code', 'pf_account_number', 'un_number', 'pf_status', 'dor', 'notice_period', 'last_working_day', 'full_final']);
+				$rows = $reader->get(['emp_name', 'emp_code', 'emp_status', 'role', 'gender', 'dob', 'doj', 'mob_number', 'qualification', 'emer_number', 'pan_number', 'father_name', 'address', 'permanent_address', 'formalities', 'offer_acceptance', 'prob_period', 'doc', 'department', 'salary', 'account_number', 'bank_name', 'ifsc_code', 'pf_account_number', 'un_number', 'pf_status']);
 
 				foreach ($rows as $row) {
 					\Log::info($row->role);
@@ -412,26 +394,7 @@ class EmpController extends Controller {
 					} else {
 						$attachment->pf_status = $row->pf_status;
 					}
-					if (empty($row->dor)) {
-						$attachment->date_of_resignation = '0000-00-00';
-					} else {
-						$attachment->date_of_resignation = date('Y-m-d', strtotime($row->dor));
-					}
-					if (empty($row->notice_period)) {
-						$attachment->notice_period = 'Not exist';
-					} else {
-						$attachment->notice_period = $row->notice_period;
-					}
-					if (empty($row->last_working_day)) {
-						$attachment->last_working_day = '0000-00-00';
-					} else {
-						$attachment->last_working_day = date('Y-m-d', strtotime($row->last_working_day));
-					}
-					if (empty($row->full_final)) {
-						$attachment->full_final = 'Not exist';
-					} else {
-						$attachment->full_final = $row->full_final;
-					}
+					
 					$attachment->user_id = $user->id;
 					$attachment->save();
 
@@ -492,7 +455,7 @@ class EmpController extends Controller {
 			$filePath = storage_path('export/') . $fileName;
 			$file = new \SplFileObject($filePath, "a");
 			// Add header to csv file.
-			$headers = ['id', 'photo', 'code', 'name', 'status', 'gender', 'date_of_birth', 'date_of_joining', 'number', 'qualification', 'emergency_number', 'pan_number', 'father_name', 'current_address', 'permanent_address', 'formalities', 'offer_acceptance', 'probation_period', 'date_of_confirmation', 'department', 'salary', 'account_number', 'bank_name', 'ifsc_code', 'pf_account_number', 'un_number', 'pf_status', 'date_of_resignation', 'notice_period', 'last_working_day', 'full_final', 'user_id', 'created_at', 'updated_at'];
+			$headers = ['id', 'photo', 'code', 'name', 'status', 'gender', 'date_of_birth', 'date_of_joining', 'number', 'qualification', 'emergency_number', 'pan_number', 'father_name', 'current_address', 'permanent_address', 'formalities', 'offer_acceptance', 'probation_period', 'date_of_confirmation', 'department', 'salary', 'account_number', 'bank_name', 'ifsc_code', 'pf_account_number', 'un_number', 'pf_status', 'user_id', 'created_at', 'updated_at'];
 			$file->fputcsv($headers);
 			foreach ($emps as $emp) {
 				$file->fputcsv([
@@ -524,10 +487,7 @@ class EmpController extends Controller {
 					$emp->employee->pf_account_number,
 					$emp->employee->un_number,
 					$emp->employee->pf_status,
-					$emp->employee->date_of_resignation,
-					$emp->employee->notice_period,
-					$emp->employee->last_working_day,
-					$emp->employee->full_final,
+					
 				]
 				);
 			}

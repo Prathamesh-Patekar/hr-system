@@ -12,41 +12,50 @@
 (function ($) {
 
     $(document).ready(function () {
+        
 
         "use strict";
        
 
+        
         // Form Wizard
         var form = $("#custom-form-wizard");
         form.validate({
             errorPlacement: function errorPlacement(error, element) {
                 element.after(error);
             },
-            rules: {
-                photo: {
-                    required: true,extension: "jpeg|jpg"
-                }
-            },
-            
+           
             
         });
         form.children(".wizard").steps({
             headerTag: ".wizard-section-title",
             bodyTag: ".wizard-section",
             onStepChanging: function (event, currentIndex, newIndex) {
-                
-               
-                    var ext = $('#photo_upload').val().split('.').pop().toLowerCase();
-                    console.log(ext);
-                    if($.inArray(ext, ['gif','png','jpg','jpeg']) == -1) {
-                       var text="Invalid Format";
-                    }else{
-                        text = "";
-                    }
-                    $('#output').text(text);
 
-                    form.validate().settings.ignore = ":disabled,:hidden";
-                            return form.valid();
+                // var selected = $('#datepicker4').val();
+                
+                // var days = $('#probation_period').val();
+    
+                // var myInt = parseInt(days);                   
+                // var newdate = new Date(selected);
+                // newdate.setDate(newdate.getDate() + myInt);
+    
+                // var dd = newdate.getDate();
+                // var mm = newdate.getMonth() + 1 ;
+                // var y = newdate.getFullYear();
+                // var someFormattedDate = mm + '/' + dd + '/' + y;
+                // console.log(someFormattedDate);
+    
+                // $("#datepicker5").val(someFormattedDate);
+                
+
+
+                form.validate().settings.ignore = ":disabled,:hidden";
+               
+
+                return form.valid();
+               
+
             },
             // onFinishing: function (event, currentIndex) {
             //     form.validate().settings.ignore = ":disabled";
@@ -98,11 +107,14 @@
                 var ifsc_code = $('#ifsc_code').val();
                 var pf_account_number = $('#pf_account_number').val();
                 var un_number = $('#un_number').val();
+                var full_final = $('#full_final').val();
+                if($("#full_final").prop('checked') == false){
+                    form.validate().settings.ignore = ":disabled,:hidden";
+               
+
+                    return form.valid();
+                }
                 var pf_status = $("input[name='pf_status']:checked").val();
-                var datepicker6 = $('#datepicker6').val();
-                var notice_period = $('#notice_period').val();
-                var datepicker7 = $('#datepicker7').val();
-                var full_final = $("input[name='full_final']:checked").val();
                 var token = $('#token').val();
 
                 var photo = document.getElementById('photo_upload');
@@ -141,10 +153,6 @@
                 formData.append('pf_account_number', pf_account_number);
                 formData.append('un_number', un_number);
                 formData.append('pf_status', pf_status);
-                formData.append('date_of_resignation', datepicker6);
-                formData.append('notice_period', notice_period);
-                formData.append('last_working_day', datepicker7);
-                formData.append('full_final', full_final);
                 formData.append('_token', token);
 
 
@@ -205,6 +213,99 @@
 
             $(this).toggleClass('holder-active');
         });
+        $('#mobile_phone,#emergency_number,#salary').keypress(function(event) {
+            var keycode = event.which;
+            console.log(keycode);
+            if (!(keycode >= 48 && keycode <= 57)) {
+                event.preventDefault();
+            
+            }
+        });
+        $('#emp_name').keypress(function(event) {
+            var keycode = event.which;
+            if ((keycode >= 48 && keycode <= 57)) {
+                event.preventDefault();
+               
+            }
+        });
+        $('#photo_upload').on("change", function(){
+            var ext = $('#photo_upload').val().split('.').pop().toLowerCase();
+            if($.inArray(ext, ['png','jpg','jpeg']) == -1) {
+                var text="Invalid Format";
+            }else{
+                var text = "";
+            }
+            $('#output').text(text);
+        });
+    
+        $('#emp_email').change(function() {
+            var val = $(this).val();
+            if(val.indexOf('@techsevin.com') == -1)
+                $(this).val(val+'@techsevin.com');
+        }); 
+    
+        $('#full_final').change(function() {
+            if($("#full_final").prop('checked') == false){
+               
+            }
+        }); 
+    
+        $("#emp_email").keypress(function (e) {
+            var keyCode = e.keyCode || e.which;
+    
+            $("#lblError").html("");
+    
+            //Regex for Valid Characters i.e. Alphabets and Numbers.
+            var regex = /^[A-Za-z0-9]+$/;
+    
+            //Validate TextBox value against the Regex.
+            var isValid = regex.test(String.fromCharCode(keyCode));
+            
+            return isValid;
+        });
+    
+    
+        $("#datepicker4").on("change",function(){
+            var selected = $(this).val();
+            
+            $("#probation_period").change(function()
+            {
+                let days = $(this).val();
+                var myInt = parseInt(days);                   
+                var newdate = new Date(selected);
+                newdate.setDate(newdate.getDate() + myInt);
+    
+                var dd = newdate.getDate();
+                var mm = newdate.getMonth() + 1 ;
+                var y = newdate.getFullYear();
+                var someFormattedDate = mm + '/' + dd + '/' + y;
+                // console.log(someFormattedDate);
+    
+                $("#datepicker5").val(someFormattedDate);
+    
+    
+            });
+        });    
+    
+        $("#datepicker4").on("change",function(){
+        var selected = $(this).val();
+        
+            // console.log(selected);
+            let days = $('#probation_period').val();
+            // console.log(days);
+    
+            var myInt = parseInt(days);                   
+            var newdate = new Date(selected);
+            newdate.setDate(newdate.getDate() + myInt);
+    
+            var dd = newdate.getDate();
+            var mm = newdate.getMonth() + 1 ;
+            var y = newdate.getFullYear();
+            var someFormattedDate = mm + '/' + dd + '/' + y;
+            // console.log(someFormattedDate);
+    
+            $("#datepicker5").val(someFormattedDate);
+        }); 
     });
 
 })(jQuery);

@@ -325,18 +325,19 @@
 
                                                 <input type="file" class="gui-file" name="photo" id="photo_upload"
                                                        value="@if($emps && $emps->photo){{$emps->photo}}@endif"
-                                                       onChange="document.getElementById('uploader1').value = this.value;" accept=".jpeg,.svg,.png,Jpg">
+                                                       onChange="document.getElementById('uploader1').value = this.value;" >
                                                 <input type="text" class="gui-input" id="uploader1"
                                                        placeholder="Select File">
                                                 <label class="field-icon">
                                                     <i class="fa fa-cloud-upload"></i>
                                                 </label>
                                                 <p id="output"></p>
+
                                             @else
                                                 <input type="hidden" value="add-employee" id="url">
                                                 <input type="file" class="gui-file" name="photo" id="photo_upload" 
                                                
-                                                       onChange="document.getElementById('uploader1').value = this.value;" >
+                                                       onChange="document.getElementById('uploader1').value = this.value;"  >
                                                 <input type="text" class="gui-input" id="uploader1"
                                                        placeholder="Select File">
                                                 <label class="field-icon">
@@ -349,21 +350,25 @@
 
                                     <!-- -------------- /section -------------- -->
 
-                                    <div class="section">
+                                    <div class="section" id="input9">
                                         <label for="input0021"><h6 class="mb20 mt40">Employee Work Email</h6></label>
                                         <label for="input0021" class="field prepend-icon">
                                             @if(\Route::getFacadeRoot()->current()->uri() == 'edit-emp/{id}')
                                                 <input type="email" required='true' autocomplete="off" name="emp_email" id="emp_email" class="gui-input"
                                                        value="@if($emps && $emps->email){{$emps->email}}@endif" required>
                                                 <label for="input0021" class="field-icon">
-                                                    <i class="fa fa-barcode"></i>
+
                                                 </label>
+                                                <span id="lblError"></span>
+                                                <span class="unit">@techsevin.com</span>
                                             @else
                                                 <input type="email" required='true' autocomplete="off" name="emp_email" id="emp_email" class="gui-input"
-                                                       placeholder="@techsevin.com..." required>
+                                                        required>
                                                 <label for="input0021" class="field-icon">
-                                                    <i class="fa fa-barcode"></i>
+                                                    
                                                 </label>
+                                                <span id="lblError"></span>
+                                                <span class="unit">@techsevin.com</span>
                                             @endif
                                         </label>
                                     </div>
@@ -707,7 +712,7 @@
                                         <div class="option-group field">
                                             <label class="field option mb5">
                                                 <input type="radio" value="1" name="formalities"
-                                                       id="formalities"
+                                                       id="formalities" checked
                                                        @if(isset($emps))@if($emps->employee->formalities == '1')checked @endif @endif>
                                                 <span class="radio"></span>Completed</label>
                                             <label class="field option mb5">
@@ -723,7 +728,7 @@
                                         <div class="option-group field">
                                             <label class="field option mb5">
                                                 <input type="radio" value="1" name="offer_acceptance"
-                                                       id="offer_acceptance"
+                                                       id="offer_acceptance" checked
                                                        @if(isset($emps))@if($emps->employee->offer_acceptance == '1')checked @endif @endif>
                                                 <span class="radio"></span>Completed</label>
                                             <label class="field option mb5">
@@ -743,24 +748,28 @@
                                                 <option value="">Select probation period</option>
                                                     @if($emps->employee->probation_period == '0')
                                                         <option value="0" selected>0 days</option>
+                                                        <option value="30">30 days</option>
                                                         <option value="90">90 days</option>
                                                         <option value="180">180 days</option>
-                                                        <option value="Other">Other</option>
+                                                        
                                                     @elseif($emps->employee->probation_period == '90')
                                                         <option value="0">0 days</option>
+                                                        <option value="30">30 days</option>
                                                         <option value="90" selected>90 days</option>
                                                         <option value="180">180 days</option>
-                                                        <option value="Other">Other</option>
+                                                        
                                                     @elseif($emps->employee->probation_period == '180')
                                                         <option value="0">0 days</option>
+                                                        <option value="30">30 days</option>
                                                         <option value="90">90 days</option>
                                                         <option value="180" selected>180 days</option>
-                                                        <option value="Other">Other</option>
+                                                        
                                                      @else
                                                         <option value="0">0 days</option>
+                                                        <option value="30">30 days</option>
                                                         <option value="90">90 days</option>
                                                         <option value="180">180 days</option>
-                                                        <option value="Other" selected>Other</option>
+                                                        <option value="@if($emps && $emps->employee->probation_period){{$emps->employee->probation_period}}@endif" selected>@if($emps && $emps->employee->probation_period){{$emps->employee->probation_period}}@endif</option>
 
                                                     @endif
                                             </select>
@@ -771,7 +780,6 @@
                                                     <option value="0">0 days</option>
                                                     <option value="90">90 days</option>
                                                     <option value="180">180 days</option>
-                                                    <option value="Other">Other</option>
                                                     </select>
                                             <input type="text" class="form-control probation_text hidden" id="probation_text">
                                                 @endif
@@ -835,7 +843,7 @@
                                         <label for="input002" class="field prepend-icon">
                                             @if(\Route::getFacadeRoot()->current()->uri() == 'edit-emp/{id}')
                                                 <input type="text" name="salary" id="salary" class="gui-input"
-                                                       value="@if($emps && $emps->employee->salary){{$emps->employee->salary}}@endif" readonly>
+                                                       value="@if($emps && $emps->employee->salary){{$emps->employee->salary}}@endif" >
                                                 <label for="input002" class="field-icon">
                                                     <i class="fa fa-inr"></i>
                                                 </label>
@@ -1001,11 +1009,11 @@
                                
 
                                 <h4 class="wizard-section-title">
-                                    <i class="fa fa-file-text pr5"></i> Ex Employment Details </h4>
+                                    <i class="fa fa-file-text pr5"></i> Confirmation</h4>
                                 <section class="wizard-section">
 
 
-                                    <div class="section">
+                                    <!-- <div class="section">
                                         <label for="datepicker6" class="field prepend-icon mb5"><h6 class="mb20 mt40">
                                                 Date of Resignation </h6></label>
 
@@ -1023,9 +1031,9 @@
                                                 </label>
                                             @endif
                                         </div>
-                                    </div>
+                                    </div> -->
 
-
+<!-- 
                                     <div class="section">
                                         <label for="input002"><h6 class="mb20 mt40"> Notice Period </h6></label>
                                             <select class="select2-single form-control" name="notice_period" id="notice_period">
@@ -1043,10 +1051,10 @@
                                                     <option value="2">2 Months</option>
                                                 @endif
                                             </select>
-                                    </div>
+                                    </div> -->
 
 
-                                    <div class="section">
+                                    <!-- <div class="section">
                                         <label for="datepicker7" class="field prepend-icon mb5"><h6 class="mb20 mt40">
                                                 Last Working Day </h6></label>
 
@@ -1066,22 +1074,17 @@
                                                 </label>
                                             @endif
                                         </div>
-                                    </div>
+                                    </div> -->
 
 
                                     <div class="section">
-                                        <label for="input002"><h6 class="mb20 mt40"> Full & Final </h6></label>
+                                        <label for="input002"><h6 class="mb20 mt40"></h6></label>
 
                                         <div class="option-group field">
                                             <label class="field option mb5">
                                                 <input type="hidden" value="{!! csrf_token() !!}" id="token">
-                                                <input type="radio" value="1" name="full_final" id="full_final"
-                                                       @if(isset($emps))@if($emps->employee->full_final == '1')checked @endif @endif>
-                                                <span class="radio"></span>Yes</label>
-                                            <label class="field option mb5">
-                                                <input type="radio" value="0" name="full_final" id="full_final"
-                                                       @if(isset($emps))@if($emps->employee->full_final == '0')checked @endif @endif>
-                                                <span class="radio"></span>No</label>
+                                                <input type="checkbox"  name="full_final" id="full_final" value="">
+                                                <span class="checkbox"></span>By checking this you confirm all the information filled by you is correct.</label>
                                         </div>
                                     </div>
                                 </section>
@@ -1213,6 +1216,25 @@
     .wizard .steps .glyphicon {
         display: none;
     }
+    #input9 { 
+    position: relative; 
+    }
+
+    #emp_email { 
+    display: block; 
+    border: 1px solid #d7d6d6; 
+    background: #fff; 
+    padding: 10px 10px 10px 20px; 
+    
+    }
+
+    .unit { 
+    position: absolute; 
+    display: block; 
+    right :15px; 
+    top: 10px; 
+    z-index: 9; 
+    }
 </style>
 
 <!-- -------------- Scripts -------------- -->
@@ -1251,37 +1273,6 @@
         <!-- -------------- Select2 JS -------------- -->
 <script src="/assets/js/plugins/select2/select2.min.js"></script>
 <script src="/assets/js/function.js"></script>
-<script>  
-$(document).ready(function() {
-    // $('#mobile_phone').keydown(function (e) {
-    //       if (e.shiftKey || e.ctrlKey || e.altKey) {
-    //           e.preventDefault();
-    //       } else {
-    //           var key = e.keyCode;
-    //           console.log(key);
-    //           if (!((key == 8) || (key == 32) || (key == 46) || (key >= 35 && key <= 40) || (key >= 65 && key <= 90))) {
-    //               e.preventDefault();
-    //           }
-    //       }
-    //   });
-      $('#mobile_phone,#emergency_number').keypress(function(event) {
-        var keycode = event.which;
-        console.log(keycode);
-        if (!(keycode >= 48 && keycode <= 57)) {
-            event.preventDefault();
-           
-        }
-    });
-    $('#emp_name').keypress(function(event) {
-        var keycode = event.which;
-        if ((keycode >= 48 && keycode <= 57)) {
-            event.preventDefault();
-           
-        }
-    });
-   
-});
-</script>
 
 
 <!-- -------------- /Scripts -------------- -->
