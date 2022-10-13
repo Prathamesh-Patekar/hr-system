@@ -325,21 +325,24 @@
 
                                                 <input type="file" class="gui-file" name="photo" id="photo_upload"
                                                        value="@if($emps && $emps->photo){{$emps->photo}}@endif"
-                                                       onChange="document.getElementById('uploader1').value = this.value;">
+                                                       onChange="document.getElementById('uploader1').value = this.value;" accept=".jpeg,.svg,.png,Jpg">
                                                 <input type="text" class="gui-input" id="uploader1"
                                                        placeholder="Select File">
                                                 <label class="field-icon">
                                                     <i class="fa fa-cloud-upload"></i>
                                                 </label>
+                                                <p id="output"></p>
                                             @else
                                                 <input type="hidden" value="add-employee" id="url">
-                                                <input type="file" class="gui-file" name="photo" id="photo_upload"
-                                                       onChange="document.getElementById('uploader1').value = this.value;">
+                                                <input type="file" class="gui-file" name="photo" id="photo_upload" 
+                                               
+                                                       onChange="document.getElementById('uploader1').value = this.value;" >
                                                 <input type="text" class="gui-input" id="uploader1"
                                                        placeholder="Select File">
                                                 <label class="field-icon">
                                                     <i class="fa fa-cloud-upload"></i>
                                                 </label>
+                                                <p id="output"></p>
                                             @endif
                                         </label>
                                     </div>
@@ -347,7 +350,7 @@
                                     <!-- -------------- /section -------------- -->
 
                                     <div class="section">
-                                        <label for="input0021"><h6 class="mb20 mt40">Employee Email</h6></label>
+                                        <label for="input0021"><h6 class="mb20 mt40">Employee Work Email</h6></label>
                                         <label for="input0021" class="field prepend-icon">
                                             @if(\Route::getFacadeRoot()->current()->uri() == 'edit-emp/{id}')
                                                 <input type="email" required='true' autocomplete="off" name="emp_email" id="emp_email" class="gui-input"
@@ -357,13 +360,33 @@
                                                 </label>
                                             @else
                                                 <input type="email" required='true' autocomplete="off" name="emp_email" id="emp_email" class="gui-input"
-                                                       placeholder="employee email..." required>
+                                                       placeholder="@techsevin.com..." required>
                                                 <label for="input0021" class="field-icon">
                                                     <i class="fa fa-barcode"></i>
                                                 </label>
                                             @endif
                                         </label>
                                     </div>
+
+                                    <div class="section">
+                                        <label for="input0021"><h6 class="mb20 mt40">Employee Personal Email</h6></label>
+                                        <label for="input0021" class="field prepend-icon">
+                                            @if(\Route::getFacadeRoot()->current()->uri() == 'edit-emp/{id}')
+                                                <input type="email" required='true' autocomplete="on" name="personal_email" id="personal_email" class="gui-input"
+                                                value="@if($emps && $emps->employee->personal_email){{$emps->employee->personal_email}}@endif" required>
+                                                <label for="input0021" class="field-icon">
+                                                    <i class="fa fa-barcode"></i>
+                                                </label>
+                                            @else
+                                                <input type="email" required='true' autocomplete="on" name="personal_email" id="personal_email" class="gui-input"
+                                                       placeholder="employee personal email..." required>
+                                                <label for="input0021" class="field-icon">
+                                                    <i class="fa fa-barcode"></i>
+                                                </label>
+                                            @endif
+                                        </label>
+                                    </div>
+
 
 
                                     <div class="section">
@@ -387,7 +410,7 @@
 
 
                                     <div class="section">
-                                        <label for="input002"><h6 class="mb20 mt40">Employee Name </h6></label>
+                                        <label for="input002"><h6 class="mb20 mt40">Employee Full Name </h6></label>
                                         <label for="input002" class="field prepend-icon">
                                             @if(\Route::getFacadeRoot()->current()->uri() == 'edit-emp/{id}')
                                                 <input type="text" name="emp_name" id="emp_name" class="gui-input"
@@ -397,7 +420,7 @@
                                                 </label>
                                             @else
                                                 <input type="text" name="emp_name" id="emp_name" class="gui-input"
-                                                       placeholder="employee name..." required>
+                                                       placeholder="as per aadhar card..." required>
                                                 <label for="input002" class="field-icon">
                                                     <i class="fa fa-user"></i>
                                                 </label>
@@ -406,7 +429,31 @@
                                     </div>
 
 
-                                    <div class="section">
+                                  
+
+                                        <div class="section">
+                                            <label for="input002"><h6 class="mb20 mt40"> Role </h6></label>
+                                            @if(\Route::getFacadeRoot()->current()->uri() == 'edit-emp/{id}')
+                                                <select class="select2-single form-control" name="role" id="role" readonly required>
+                                                    <option value="">Select role</option>
+                                                    @foreach($roles as $role)
+                                                        @if($emps->role->role->id == $role->id)
+                                                            <option value="{{$role->id}}" selected>{{$role->name}}</option>
+                                                        @endif
+                                                        <option value="{{$role->id}}">{{$role->name}}</option>
+                                                    @endforeach
+                                                </select>
+                                                @else
+                                                <select class="select2-single form-control" name="role" id="role" required>
+                                                    <option value="">Select role</option>
+                                                    @foreach($roles as $role)
+                                                        <option value="{{$role->id}}">{{$role->name}}</option>
+                                                    @endforeach
+                                                </select>
+                                            @endif
+                                        </div>
+                                        
+                                        <div class="section">
                                         <label for="input002"><h6 class="mb20 mt40">Employment Status </h6></label>
                                         <div class="option-group field">
                                             <label class="field option mb5">
@@ -428,39 +475,27 @@
                                         </div>
                                     </div>
 
-                                        <div class="section">
-                                            <label for="input002"><h6 class="mb20 mt40"> Role </h6></label>
-                                            @if(\Route::getFacadeRoot()->current()->uri() == 'edit-emp/{id}')
-                                                <select class="select2-single form-control" name="role" id="role" readonly required>
-                                                    <option value="">Select role</option>
-                                                    @foreach($roles as $role)
-                                                        @if($emps->role->role->id == $role->id)
-                                                            <option value="{{$role->id}}" selected>{{$role->name}}</option>
-                                                        @endif
-                                                        <option value="{{$role->id}}">{{$role->name}}</option>
-                                                    @endforeach
-                                                </select>
-                                                @else
-                                                <select class="select2-single form-control" name="role" id="role">
-                                                    <option value="">Select role</option>
-                                                    @foreach($roles as $role)
-                                                        <option value="{{$role->id}}">{{$role->name}}</option>
-                                                    @endforeach
-                                                </select>
-                                            @endif
-                                        </div>
-
                                     <div class="section">
                                         <label for="input002"><h6 class="mb20 mt40"> Gender </h6></label>
                                         <div class="option-group field">
                                             <label class="field option mb5">
-                                                <input type="radio" value="0" name="gender" id="gender"
+                                            @if(\Route::getFacadeRoot()->current()->uri() == 'edit-emp/{id}')
+                                            <input type="radio" value="0" name="gender" id="gender" checked
                                                        @if(isset($emps))@if($emps->employee->gender == '0')checked @endif @endif>
                                                 <span class="radio"></span>Male</label>
                                             <label class="field option mb5">
                                                 <input type="radio" value="1" name="gender" id="gender"
                                                        @if(isset($emps))@if($emps->employee->gender == '1')checked @endif @endif>
                                                 <span class="radio"></span>Female</label>
+                                            @else
+                                                <input type="radio" value="0" name="gender" id="gender" 
+                                                       @if(isset($emps))@if($emps->employee->gender == '0')checked @endif @endif>
+                                                <span class="radio"></span>Male</label>
+                                            <label class="field option mb5">
+                                                <input type="radio" value="1" name="gender" id="gender" checked
+                                                       @if(isset($emps))@if($emps->employee->gender == '1')checked @endif @endif>
+                                                <span class="radio"></span>Female</label>
+                                            @endif
                                         </div>
                                     </div>
 
@@ -511,16 +546,16 @@
                                         <label for="input002"><h6 class="mb20 mt40"> Mobile Number </h6></label>
                                         <label for="input002" class="field prepend-icon">
                                             @if(\Route::getFacadeRoot()->current()->uri() == 'edit-emp/{id}')
-                                                <input type="number" name="mob_number" id="mobile_phone"
+                                                <input type="text" name="mob_number" id="mobile_phone"
                                                        class="gui-input phone-group" maxlength="10" minlength="10" required
                                                        value="@if($emps && $emps->employee->number){{$emps->employee->number}}@endif">
                                                 <label for="input002" class="field-icon">
                                                     <i class="fa fa-mobile-phone"></i>
                                                 </label>
                                             @else
-                                                <input type="number" name="mob_number" id="mobile_phone"
+                                                <input type="text" name="mob_number" id="mobile_phone"
                                                        class="gui-input phone-group" maxlength="10" minlength="10" required
-                                                       placeholder="mobile number...">
+                                                       placeholder="mobile number(preferably whatsApp)...">
                                                 <label for="input002" class="field-icon">
                                                     <i class="fa fa-mobile-phone"></i>
                                                 </label>
@@ -544,26 +579,7 @@
                                     </div>
 
 
-                                    <div class="section">
-                                        <label for="input002"><h6 class="mb20 mt40"> Emergency Number </h6></label>
-                                        <label for="input002" class="field prepend-icon">
-                                            @if(\Route::getFacadeRoot()->current()->uri() == 'edit-emp/{id}')
-                                                <input type="number" name="emer_number" id="emergency_number"
-                                                       class="gui-input phone-group" maxlength="10" minlength="10"
-                                                       value="@if($emps && $emps->employee->emergency_number){{$emps->employee->emergency_number}}@endif">
-                                                <label for="input002" class="field-icon">
-                                                    <i class="fa fa-mobile-phone"></i>
-                                                </label>
-                                            @else
-                                                <input type="number" name="emer_number" id="emergency_number"
-                                                       class="gui-input phone-group" maxlength="10" minlength="10"
-                                                       placeholder="Emergency number">
-                                                <label for="input002" class="field-icon">
-                                                    <i class="fa fa-mobile-phone"></i>
-                                                </label>
-                                            @endif
-                                        </label>
-                                    </div>
+                                   
 
 
                                     <div class="section">
@@ -575,6 +591,21 @@
                                             @else
                                                 <input type="text" placeholder="PAN" name="pan_number"
                                                        id="pan_number" class="gui-input">
+                                              
+
+                                            @endif
+                                        </label>
+                                    </div>
+
+                                    <div class="section">
+                                        <label for="input002"><h6 class="mb20 mt40"> AADHAR Number </h6></label>
+                                        <label for="input002" class="field prepend-icon">
+                                            @if(\Route::getFacadeRoot()->current()->uri() == 'edit-emp/{id}')
+                                                <input type="text" name="aadhar_number" id="aadhar_number" class="gui-input"
+                                                       value="@if($emps && $emps->employee->aadhar_number){{$emps->employee->aadhar_number}}@endif" required>
+                                            @else
+                                                <input type="text" placeholder="aadhar number" name="aadhar_number"
+                                                       id="aadhar_number" class="gui-input" required>
 
                                             @endif
                                         </label>
@@ -592,6 +623,31 @@
                                                 <input type="text" placeholder="Employees' father name"
                                                        name="father_name" id="father_name" class="gui-input">
 
+                                                <label for="input002" class="field-icon">
+                                                    <i class="fa fa-user"></i>
+                                                </label>
+
+                                            @endif
+                                        </label>
+                                    </div>
+
+                                    <div class="section">
+                                        <label for="input002"><h6 class="mb20 mt40"> Emergency Number </h6></label>
+                                        <label for="input002" class="field prepend-icon">
+                                            @if(\Route::getFacadeRoot()->current()->uri() == 'edit-emp/{id}')
+                                                <input type="text" name="emer_number" id="emergency_number"
+                                                       class="gui-input phone-group" maxlength="10" minlength="10"
+                                                       value="@if($emps && $emps->employee->emergency_number){{$emps->employee->emergency_number}}@endif">
+                                                <label for="input002" class="field-icon">
+                                                    <i class="fa fa-mobile-phone"></i>
+                                                </label>
+                                            @else
+                                                <input type="text" name="emer_number" id="emergency_number"
+                                                       class="gui-input phone-group" maxlength="10" minlength="10"
+                                                       placeholder="Emergency number" required>
+                                                <label for="input002" class="field-icon">
+                                                    <i class="fa fa-mobile-phone"></i>
+                                                </label>
                                             @endif
                                         </label>
                                     </div>
@@ -785,12 +841,83 @@
                                                 </label>
                                             @else
                                                 <input type="text" placeholder="e.g 12000" name="salary"
-                                                       id="salary" class="gui-input">
+                                                       id="salary" class="gui-input" required>
                                                 <label for="input002" class="field-icon">
                                                     <i class="fa fa-inr"></i>
                                                 </label>
                                             @endif
                                         </label>
+                                    </div>
+                                    <div class="section">
+                                        <label for="input002"><h6 class="mb20 mt40"> PF Account Number </h6></label>
+                                        <label for="input002" class="field prepend-icon">
+                                            @if(\Route::getFacadeRoot()->current()->uri() == 'edit-emp/{id}')
+                                                <input type="text" name="pf_account_number" id="pf_account_number"
+                                                       class="gui-input"
+                                                       value="@if($emps && $emps->employee->pf_account_number){{$emps->employee->pf_account_number}}@endif">
+                                                <label for="input002" class="field-icon">
+                                                    <i class="fa fa-list"></i>
+                                                </label>
+                                            @else
+                                                <input type="text" placeholder="PF account number..."
+                                                       name="pf_account_number" id="pf_account_number"
+                                                       class="gui-input">
+                                                <label for="input002" class="field-icon">
+                                                    <i class="fa fa-list"></i>
+                                                </label>
+                                            @endif
+                                        </label>
+                                    </div>
+
+                                   <div class="section">
+                                       <label for="input002"><h6 class="mb20 mt40"> UAN Number</h6></label>
+                                       <label for="input002" class="field prepend-icon">
+                                           @if(\Route::getFacadeRoot()->current()->uri() == 'edit-emp/{id}')
+                                              <input type="text" name="un_number" id="un_number" class="gui-input"
+                                              value="@if($emps && $emps->employee->un_number){{$emps->employee->un_number}}@endif">
+                                               <label for="input002" class="field-icon">
+                                                   <i class="fa fa-list"></i>
+                                               </label>
+                                           @else
+                                             <input type="text" placeholder="UN Number" name="un_number" id="un_number" class="gui-input">
+                                              <label for="input002" class="field-icon">
+                                                  <i class="fa fa-list"></i>
+                                              </label>
+                                           @endif
+                                       </label>
+                                   </div>
+                                   <div class="section">
+                                       <label for="input002"><h6 class="mb20 mt40"> ESIC Number</h6></label>
+                                       <label for="input002" class="field prepend-icon">
+                                           @if(\Route::getFacadeRoot()->current()->uri() == 'edit-emp/{id}')
+                                              <input type="text" name="esic_number" id="esic_number" class="gui-input"
+                                              value="@if($emps && $emps->employee->esic_number){{$emps->employee->esic_number}}@endif">
+                                               <label for="input002" class="field-icon">
+                                                   <i class="fa fa-list"></i>
+                                               </label>
+                                           @else
+                                             <input type="text" placeholder="ESIC Number" name="esic_number" id="esic_number" class="gui-input">
+                                              <label for="input002" class="field-icon">
+                                                  <i class="fa fa-list"></i>
+                                              </label>
+                                           @endif
+                                       </label>
+                                   </div>
+
+
+                                    <div class="section">
+                                        <label for="input002"><h6 class="mb20 mt40"> PF Status </h6></label>
+
+                                        <div class="option-group field">
+                                            <label class="field option mb5">
+                                                <input type="radio" value="1" name="pf_status" id="pf_status"
+                                                       @if(isset($emps))@if($emps->employee->pf_status == '1')checked @endif @endif>
+                                                <span class="radio"></span>Active</label>
+                                            <label class="field option mb5">
+                                                <input type="radio" value="0" name="pf_status" id="pf_status"
+                                                       @if(isset($emps))@if($emps->employee->pf_status == '0')checked @endif @endif>
+                                                <span class="radio"></span>Inactive</label>
+                                        </div>
                                     </div>
                                     <!-- -------------- /section -------------- -->
 
@@ -867,64 +994,11 @@
                                     </div>
 
 
-                                    <div class="section">
-                                        <label for="input002"><h6 class="mb20 mt40"> PF Account Number </h6></label>
-                                        <label for="input002" class="field prepend-icon">
-                                            @if(\Route::getFacadeRoot()->current()->uri() == 'edit-emp/{id}')
-                                                <input type="text" name="pf_account_number" id="pf_account_number"
-                                                       class="gui-input"
-                                                       value="@if($emps && $emps->employee->pf_account_number){{$emps->employee->pf_account_number}}@endif">
-                                                <label for="input002" class="field-icon">
-                                                    <i class="fa fa-list"></i>
-                                                </label>
-                                            @else
-                                                <input type="text" placeholder="PF account number..."
-                                                       name="pf_account_number" id="pf_account_number"
-                                                       class="gui-input">
-                                                <label for="input002" class="field-icon">
-                                                    <i class="fa fa-list"></i>
-                                                </label>
-                                            @endif
-                                        </label>
-                                    </div>
-
-                                   <div class="section">
-                                       <label for="input002"><h6 class="mb20 mt40"> UN Number</h6></label>
-                                       <label for="input002" class="field prepend-icon">
-                                           @if(\Route::getFacadeRoot()->current()->uri() == 'edit-emp/{id}')
-                                              <input type="text" name="un_number" id="un_number" class="gui-input"
-                                              value="@if($emps && $emps->employee->un_number){{$emps->employee->un_number}}@endif">
-                                               <label for="input002" class="field-icon">
-                                                   <i class="fa fa-list"></i>
-                                               </label>
-                                           @else
-                                             <input type="text" placeholder="UN Number" name="un_number" id="un_number" class="gui-input">
-                                              <label for="input002" class="field-icon">
-                                                  <i class="fa fa-list"></i>
-                                              </label>
-                                           @endif
-                                       </label>
-                                   </div>
-
-
-                                    <div class="section">
-                                        <label for="input002"><h6 class="mb20 mt40"> PF Status </h6></label>
-
-                                        <div class="option-group field">
-                                            <label class="field option mb5">
-                                                <input type="radio" value="1" name="pf_status" id="pf_status"
-                                                       @if(isset($emps))@if($emps->employee->pf_status == '1')checked @endif @endif>
-                                                <span class="radio"></span>Active</label>
-                                            <label class="field option mb5">
-                                                <input type="radio" value="0" name="pf_status" id="pf_status"
-                                                       @if(isset($emps))@if($emps->employee->pf_status == '0')checked @endif @endif>
-                                                <span class="radio"></span>Inactive</label>
-                                        </div>
-                                    </div>
+                                   
                                     <!-- -------------- /section -------------- -->
 
                                 </section>
-
+                               
 
                                 <h4 class="wizard-section-title">
                                     <i class="fa fa-file-text pr5"></i> Ex Employment Details </h4>
@@ -1177,7 +1251,37 @@
         <!-- -------------- Select2 JS -------------- -->
 <script src="/assets/js/plugins/select2/select2.min.js"></script>
 <script src="/assets/js/function.js"></script>
-
+<script>  
+$(document).ready(function() {
+    // $('#mobile_phone').keydown(function (e) {
+    //       if (e.shiftKey || e.ctrlKey || e.altKey) {
+    //           e.preventDefault();
+    //       } else {
+    //           var key = e.keyCode;
+    //           console.log(key);
+    //           if (!((key == 8) || (key == 32) || (key == 46) || (key >= 35 && key <= 40) || (key >= 65 && key <= 90))) {
+    //               e.preventDefault();
+    //           }
+    //       }
+    //   });
+      $('#mobile_phone,#emergency_number').keypress(function(event) {
+        var keycode = event.which;
+        console.log(keycode);
+        if (!(keycode >= 48 && keycode <= 57)) {
+            event.preventDefault();
+           
+        }
+    });
+    $('#emp_name').keypress(function(event) {
+        var keycode = event.which;
+        if ((keycode >= 48 && keycode <= 57)) {
+            event.preventDefault();
+           
+        }
+    });
+   
+});
+</script>
 
 
 <!-- -------------- /Scripts -------------- -->

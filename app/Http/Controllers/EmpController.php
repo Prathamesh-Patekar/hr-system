@@ -34,16 +34,16 @@ class EmpController extends Controller {
 			$file->move($destinationPath, $filename);
 
 		}
-
+		$pnam="aakash@gmail.com";
 		$user = new User;
 		$user->name = $request->emp_name;
 		$user->email = str_replace(' ', '_', $request->emp_email);
 		$user->password = bcrypt('123456');
 		$user->save();
-
 		$emp = new Employee;
 		$emp->photo = $filename;
 		$emp->name = $request->emp_name;
+		$emp->personal_email = $request->personal_email;
 		$emp->code = $request->emp_code;
 		$emp->status = $request->emp_status;
 		$emp->gender = $request->gender;
@@ -53,6 +53,8 @@ class EmpController extends Controller {
 		$emp->qualification = $request->qualification;
 		$emp->emergency_number = $request->emergency_number;
 		$emp->pan_number = $request->pan_number;
+		$emp->aadhar_number = $request->aadhar_number;
+		$emp->esic_number = $request->esic_number;
 		$emp->father_name = $request->father_name;
 		$emp->current_address = $request->current_address;
 		$emp->permanent_address = $request->permanent_address;
@@ -122,6 +124,8 @@ class EmpController extends Controller {
 		$emp_name = $request->emp_name;
 		$emp_code = $request->emp_code;
 		$emp_email = $request->emp_email;
+		$personal_email = $request->personal_email;
+
 		if ($emp_email != "") {
 			$user = User::where('id', $id)->first();
 			$user->email = $emp_email;
@@ -164,6 +168,9 @@ class EmpController extends Controller {
 		}
 		if (!empty($emp_name)) {
 			$edit->name = $emp_name;
+		}
+		if (!empty($personal_email)) {
+			$edit->personal_email = $personal_email;
 		}
 		if (!empty($emp_code)) {
 			$edit->code = $emp_code;

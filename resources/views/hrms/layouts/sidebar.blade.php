@@ -28,7 +28,7 @@
         <li>
             <a class="accordion-toggle" href="/dashboard">
                 <span class="fa fa-user"></span>
-                <span class="sidebar-title">Employees</span>
+                <span class="sidebar-title">Onboarding</span>
                 <span class="caret"></span>
             </a>
             <ul class="nav sub-nav">

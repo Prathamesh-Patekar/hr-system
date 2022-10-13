@@ -7,42 +7,65 @@
 //  forms-wizard.html scripts
 //
 
+
+
 (function ($) {
 
     $(document).ready(function () {
 
         "use strict";
-
+       
 
         // Form Wizard
         var form = $("#custom-form-wizard");
         form.validate({
             errorPlacement: function errorPlacement(error, element) {
-                element.before(error);
+                element.after(error);
             },
             rules: {
-                confirm: {
-                    equalTo: "#password"
+                photo: {
+                    required: true,extension: "jpeg|jpg"
                 }
-            }
+            },
+            
+            
         });
         form.children(".wizard").steps({
             headerTag: ".wizard-section-title",
             bodyTag: ".wizard-section",
             onStepChanging: function (event, currentIndex, newIndex) {
-                form.validate().settings.ignore = ":disabled,:hidden";
-                return form.valid();
+                
+               
+                    var ext = $('#photo_upload').val().split('.').pop().toLowerCase();
+                    console.log(ext);
+                    if($.inArray(ext, ['gif','png','jpg','jpeg']) == -1) {
+                       var text="Invalid Format";
+                    }else{
+                        text = "";
+                    }
+                    $('#output').text(text);
+
+                    form.validate().settings.ignore = ":disabled,:hidden";
+                            return form.valid();
             },
-            onFinishing: function (event, currentIndex) {
-                form.validate().settings.ignore = ":disabled";
-                return form.valid();
-            },
+            // onFinishing: function (event, currentIndex) {
+            //     form.validate().settings.ignore = ":disabled";
+            //     return form.valid();
+            // },
             onFinished: function (event, currentIndex) {
                 event.preventDefault();
                 var emp_name = $('#emp_name').val();
                 //alert(emp_name)
                 var emp_code = $('#emp_code').val();
                 var emp_email = $('#emp_email').val();
+                console.log(emp_email);
+
+                var personal_email = $('#personal_email').val();
+                var aadhar_number = $('#aadhar_number').val();
+                var esic_number = $('#esic_number').val();
+
+                // console.log(personal_email);
+
                 var emp_status = $("input[name='emp_status']:checked").val();
                 var role = $('#role').val();
                 var gender = $("input[name='gender']:checked").val();
@@ -89,6 +112,9 @@
                     formData.append('photo', photo.files[0], photo.value);
                 }
                 formData.append('emp_name', emp_name);
+                formData.append('personal_email', personal_email);
+                formData.append('aadhar_number', aadhar_number);
+                formData.append('esic_number', esic_number);
                 formData.append('emp_email', emp_email);
                 formData.append('emp_code', emp_code);
                 formData.append('emp_status', emp_status);
