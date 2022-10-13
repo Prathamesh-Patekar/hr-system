@@ -105,6 +105,14 @@ class ResignController extends Controller
       $id = $item->id;
     }
 
+    $request->validate([
+      'get_emp' =>'required',
+      'dor' =>'required',
+      'doj' => 'required',
+      'notice_date' => 'required',
+      'full_final' => 'required',
+  ]);
+
     $resign = new Resignation();
 		$resign->user_id = $id;
 		$resign->date_of_resignation = date_format(date_create($request->dor), 'Y-m-d');
@@ -140,4 +148,17 @@ class ResignController extends Controller
     }
     return view('hrms.separation.exit-formalities');
   }
+
+  function show_exit_forms(){
+
+    
+
+    $emps = Resignation::with('employee')->paginate(15);
+
+    $column = '';
+		$string = '';
+
+		return view('hrms.separation.exit_forms', compact('emps', 'column', 'string'));
+  }
+  
 }

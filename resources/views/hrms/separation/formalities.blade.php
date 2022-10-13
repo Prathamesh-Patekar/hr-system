@@ -285,7 +285,9 @@
                     <!-- -------------- Spec Form -------------- -->
                     <div class="allcp-form">
 
-                        <form method="post" action="/" id="custom-form-wizard">
+                        <form method="post" action="" id="custom-form-wizard">
+
+                        {{ csrf_field() }}
                             <!-- <div class="wizard steps-bg steps-left"> -->
 
                                 <!-- -------------- step 1 -------------- -->
@@ -293,7 +295,15 @@
                                     <i class="fa fa-user pr5"></i>Exit Formalities</h4>
                                 <section class="wizard-section">
                                     
-
+                                @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
                                     <!-- -------------- /section -------------- -->
 
                                     <div class="section">
@@ -301,7 +311,7 @@
                                         <label for="input002" class="field prepend-icon">
                                             
                                                 <input type="text" name="get_emp1" id="get_emp1" class="gui-input"
-                                                       placeholder="employee name..." required>
+                                                       placeholder="employee name..." >
                                                 <label for="input002" class="field-icon">
                                                     <i class="fa fa-user"></i>
                                                 </label>
@@ -315,7 +325,7 @@
                                         <label for="input002" class="field prepend-icon">
                                            
                                                 <input type="text" name="emp_design" id="emp_design" class="gui-input"
-                                                       placeholder="employee Designation..." required>
+                                                       placeholder="employee Designation..." >
                                                 <label for="input002" class="field-icon">
                                                     <i class="fa fa-user"></i>
                                                 </label>
@@ -327,7 +337,7 @@
                                         <label for="input002" class="field prepend-icon">
                                            
                                                 <input type="text" name="emp_email" id="emp_email" class="gui-input"
-                                                       placeholder="employee Email..." required>
+                                                       placeholder="employee Email..." >
                                                 <label for="input002" class="field-icon">
                                                     <i class="fa fa-user"></i>
                                                 </label>

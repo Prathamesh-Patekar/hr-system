@@ -302,23 +302,33 @@
 
                                     <!-- -------------- /section -------------- -->
 
+                                    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
                                     <div class="section">
                                         <label for="input002"><h6 class="mb20 mt40">Employee Name </h6></label>
                                         <label for="input002" class="field prepend-icon">
                                                 <input type="text" name="get_emp" id="get_emp" class="gui-input form-control"
-                                                       placeholder="employee name..." required>
+                                                       placeholder="employee name..." >
                                                 <label for="input002" class="field-icon">
                                                     <i class="fa fa-user"></i>
                                                 </label>
                                         </label>
                                         <div id ="emp_list"></div>
+                            
                                     </div>
 
                                     <div class="section">
                                         <label for="datepicker9" class="field prepend-icon mb5"><h6 class="mb20 mt40">
                                         Date of Resignation</h6></label>
                                         <div class="field prepend-icon">
-                                                <input type="text" id="datepicker9" class="gui-input fs13" name="dor" required>
+                                                <input type="text" id="datepicker9" class="gui-input fs13" name="dor" >
                                                 <label class="field-icon">
                                                     <i class="fa fa-calendar"></i>
                                                 </label>
@@ -340,7 +350,7 @@
                                         <label for="datepicker10" class="field prepend-icon mb5"><h6 class="mb20 mt40">
                                         Last working day </h6></label>
                                         <div class="field prepend-icon">  
-                                                <input type="text" id="datepicker10" class="gui-input fs13" name="doj" required>
+                                                <input type="text" id="datepicker10" class="gui-input fs13" name="doj">
                                                 <label class="field-icon">
                                                     <i class="fa fa-calendar"></i>
                                                 </label>

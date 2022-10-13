@@ -637,13 +637,13 @@ $(document).ready(function ()
 
 });
 
-$(document).on('click','li',function(){
+$(document).on('click','#emp_list li',function(){
     var value = $(this).text();
     $('#get_emp').val(value);
     $("#emp_list").html("")
 });
 
-$(document).on('click','li',function(){
+$(document).on('click','#emp_list1 li',function(){
     var value = $(this).text();
     $('#get_emp1').val(value);
     $("#emp_list1").html("")

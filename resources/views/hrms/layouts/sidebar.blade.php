@@ -59,8 +59,12 @@
                         <span class="glyphicon glyphicon-tags"></span> Resignation </a> 
                 </li>
                 <li>
-                    <a href="exit-formalities">
+                    <a href="/exit-formalities">
                         <span class="glyphicon glyphicon-tags"></span> Exit formalities </a>
+                </li>
+                <li>
+                    <a href="/exit-forms">
+                        <span class="glyphicon glyphicon-tags"></span> Exit forms </a>
                 </li>
             </ul>
         </li>
