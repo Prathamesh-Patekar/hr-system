@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Models\Employee;
 
+use Session;
 use App\Models\Resignation;
 use App\Models\Role;
 
@@ -128,7 +129,7 @@ class ResignController extends Controller
   function design_table(Request $request)
   {
     $data1 =  DB::table('roles')
-    ->select('users.name as user', 'roles.name as role', 'users.email as email')
+    ->select('users.name as user','users.id as id' ,'roles.name as role', 'users.email as email')
     ->join('user_roles', 'roles.id', '=', 'user_roles.role_id')
     ->join('users', 'users.id', '=', 'user_roles.user_id')
     ->get(); 
@@ -143,7 +144,7 @@ class ResignController extends Controller
       $name = $item->user;
       if($name ==  $data)
       {
-        return json_encode(array("role" => $item->role, "email" => $item->email));
+        return json_encode(array("id" => $item->id ,"role" => $item->role, "email" => $item->email,));
       }
     }
     return view('hrms.separation.exit-formalities');
@@ -151,14 +152,49 @@ class ResignController extends Controller
 
   function show_exit_forms(){
 
-    
-
     $emps = Resignation::with('employee')->paginate(15);
 
     $column = '';
 		$string = '';
 
 		return view('hrms.separation.exit_forms', compact('emps', 'column', 'string'));
+  }
+
+  function form_table($id, Request $request){
+
+    $var = Session::get('user');
+
+    $value = md5(Session::get('user'));
+
+    if($value == $id){
+
+      $data =  DB::table('resignations')
+      ->select('users.name as user','resignations.*')
+      ->join('users', 'users.id', '=', 'resignations.user_id')
+      ->where('user_id',"=", $var)
+      ->get();
+
+      // return $data1;
+
+      // $data = DB::table('resignations')
+      // ->where('user_id',"=", $var)->get();
+      
+      $json  = json_encode($data);
+      $array = json_decode($json, true);
+      
+      foreach($array as $item1){
+        $msg = $item1;
+      }
+      return view('hrms.separation.form', ['data'=>$msg]);
+    }
+    return "<h1>You can't access this page</h1>";
+  }
+
+  function save_form(Request $request){
+
+    return $request->get_emp;
+
+
   }
   
 }

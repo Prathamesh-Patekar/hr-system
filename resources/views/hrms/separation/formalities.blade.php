@@ -296,14 +296,14 @@
                                 <section class="wizard-section">
                                     
                                 @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                                @endif
                                     <!-- -------------- /section -------------- -->
 
                                     <div class="section">
@@ -338,6 +338,19 @@
                                            
                                                 <input type="text" name="emp_email" id="emp_email" class="gui-input"
                                                        placeholder="employee Email..." >
+                                                <label for="input002" class="field-icon">
+                                                    <i class="fa fa-user"></i>
+                                                </label>
+                                         
+                                        </label>
+                                    </div>  
+
+                                    <div class="section" style = "display: none">
+                                        <label for="input002"><h6 class="mb20 mt40">Email</h6></label>
+                                        <label for="input002" class="field prepend-icon">
+                                           
+                                                <input type="text" name="emp_id" id="emp_id" class="gui-input"
+                                                       placeholder="employee id..." >
                                                 <label for="input002" class="field-icon">
                                                     <i class="fa fa-user"></i>
                                                 </label>

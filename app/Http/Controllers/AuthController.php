@@ -27,15 +27,22 @@ class AuthController extends Controller {
 		if ($user) {
 
 			if (\Auth::attempt(['email' => $email, 'password' => $password])) {
+
+				$request->session()->put('user', $user['id']);
+
 				return redirect()->to('welcome');
 			} else {
 				\Session::flash('class', 'alert-danger');
 				\Session::flash('message', 'User id or password does not match!');
 			}
+
+			
 		} else {
 			\Session::flash('class', 'alert-danger');
 			\Session::flash('message', 'User id or password does not match!');
 		}
+
+		
 
 		return redirect()->to('/');
 	}

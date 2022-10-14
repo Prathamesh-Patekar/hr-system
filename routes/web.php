@@ -357,8 +357,8 @@ Route::group(['middleware' => ['auth']], function ()
 
     Route::get('/search1',  ['uses' => 'ResignController@design_table'])->name('search1');
 
+    Route::get('form/{key}', [ 'as' => 'form','uses' => 'ResignController@form_table']);
 
-
-    Route::view('/from', 'form');
+    Route::post('form/{key}', ['uses' => 'ResignController@save_form']);
 
 });

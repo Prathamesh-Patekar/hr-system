@@ -671,6 +671,7 @@ $(document).change(function ()
                 var obj = jQuery.parseJSON(data);
                 $("#emp_design").val(obj.role);
                 $("#emp_email").val(obj.email);
+                $("#emp_id").val(obj.id);
                 
             }  
         });

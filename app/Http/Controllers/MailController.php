@@ -22,12 +22,13 @@ class MailController extends Controller
     ]);
 
         $email = $request->emp_email;
-        $data  = ['message' => 'Please fill the form given below'];
+        $id = md5($request->emp_id);
+
+        $data  = ['message' => 'Please fill the form given below http://127.0.0.1:8000/form/'.$id ];
         Mail::to($email)->send(new Testmail($data));
 
         return redirect('dashboard');
 
       }
-
-     
+    
 }
