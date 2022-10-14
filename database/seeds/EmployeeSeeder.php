@@ -37,10 +37,6 @@ class EmployeeSeeder extends Seeder
             'ifsc_code' => '',
             'pf_account_number' => '',
             'pf_status' => '',
-            'date_of_resignation' => '',
-            'notice_period' => '',
-            'last_working_day' => '',
-            'full_final' => '',
             'user_id' => '1'
         ]);
     }

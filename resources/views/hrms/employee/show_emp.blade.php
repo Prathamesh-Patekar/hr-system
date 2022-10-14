@@ -119,6 +119,9 @@
                                                     <li>
                                                         <a href="/delete-emp/{{$emp->id}}">Delete</a>
                                                     </li>
+                                                    <li>
+                                                        <a href="/showdata/{{$emp->employee['id']}}">View</a>
+                                                    </li>
                                                 </ul>
                                             </div>
                                         </td>

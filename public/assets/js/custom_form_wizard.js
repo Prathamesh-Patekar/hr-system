@@ -110,8 +110,6 @@
                 var full_final = $('#full_final').val();
                 if($("#full_final").prop('checked') == false){
                     form.validate().settings.ignore = ":disabled,:hidden";
-               
-
                     return form.valid();
                 }
                 var pf_status = $("input[name='pf_status']:checked").val();
@@ -213,7 +211,7 @@
 
             $(this).toggleClass('holder-active');
         });
-        $('#mobile_phone,#emergency_number,#salary').keypress(function(event) {
+        $('#mobile_phone,#emergency_number,#salary,#aadhar_number').keypress(function(event) {
             var keycode = event.which;
             console.log(keycode);
             if (!(keycode >= 48 && keycode <= 57)) {
@@ -231,7 +229,7 @@
         $('#photo_upload').on("change", function(){
             var ext = $('#photo_upload').val().split('.').pop().toLowerCase();
             if($.inArray(ext, ['png','jpg','jpeg']) == -1) {
-                var text="Invalid Format";
+                var text="Invalid Format(supported format:png,jpg,jpeg)";
             }else{
                 var text = "";
             }
@@ -250,19 +248,19 @@
             }
         }); 
     
-        $("#emp_email").keypress(function (e) {
-            var keyCode = e.keyCode || e.which;
+        // $("#emp_email").keypress(function (e) {
+        //     var keyCode = e.keyCode || e.which;
     
-            $("#lblError").html("");
+        //     $("#lblError").html("");
     
-            //Regex for Valid Characters i.e. Alphabets and Numbers.
-            var regex = /^[A-Za-z0-9]+$/;
+        //     //Regex for Valid Characters i.e. Alphabets and Numbers.
+        //     var regex = /^[A-Za-z0-9]+$/;
     
-            //Validate TextBox value against the Regex.
-            var isValid = regex.test(String.fromCharCode(keyCode));
+        //     //Validate TextBox value against the Regex.
+        //     var isValid = regex.test(String.fromCharCode(keyCode));
             
-            return isValid;
-        });
+        //     return isValid;
+        // });
     
     
         $("#datepicker4").on("change",function(){

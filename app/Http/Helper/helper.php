@@ -207,6 +207,44 @@ function qualification()
 
         return $data[$gender];
     }
+    function getSatus($status)
+    {
+        $data = [
+            '0' => 'Ex',
+            '1' => 'Present',
+        ];
+
+        return $data[$status];
+    }
+    function getFormality($status)
+    {
+        $data = [
+            '0' => 'Pending',
+            '1' => 'Completed',
+        ];
+
+        return $data[$status];
+    }
+    function getOffer($status)
+    {
+        $data = [
+            '0' => 'Pending',
+            '1' => 'Completed',
+        ];
+
+        return $data[$status];
+    }
+    function getPfStatus($status)
+    {
+        $data = [
+            '0' => 'Inactive',
+            '1' => 'Active',
+        ];
+
+        return $data[$status];
+    }
+   
+
 
     function formatDate($date)
     {
