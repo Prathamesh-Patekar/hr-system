@@ -88,7 +88,7 @@ class EmpController extends Controller {
 		$emps = User::with('employee', 'role.role')->paginate(15);
 		$column = '';
 		$string = '';
-
+		
 		return view('hrms.employee.show_emp', compact('emps', 'column', 'string'));
 	}
 
@@ -269,140 +269,55 @@ class EmpController extends Controller {
 		/* try {*/
 		foreach ($files as $file) {
 			Excel::load($file, function ($reader) {
-				$rows = $reader->get(['emp_name', 'emp_code', 'emp_status', 'role', 'gender', 'dob', 'doj', 'mob_number', 'qualification', 'emer_number', 'pan_number', 'father_name', 'address', 'permanent_address', 'formalities', 'offer_acceptance', 'prob_period', 'doc', 'department', 'salary', 'account_number', 'bank_name', 'ifsc_code', 'pf_account_number', 'un_number', 'pf_status']);
-
+				$rows =$reader->get( ['role','email','personal_email','code','name','status','gender','date_of_birth','date_of_joining','number','qualification',
+				'pan_number','aadhar_number','father_name','emergency_number','current_address','permanent_address','formalities','offer_acceptance',
+				'probation_period','date_of_confirmation','department',
+				'salary','account_number', 'bank_name','ifsc_code','pf_account_number','un_number','esic_number',
+				'pf_status']);
 				foreach ($rows as $row) {
 					\Log::info($row->role);
+				
 					$user = new User;
-					$user->name = $row->emp_name;
-					$user->email = str_replace(' ', '_', $row->emp_name) . '@sipi-ip.sg';
+					$user->name = $row->name;
+					$user->email = str_replace(' ', '_', $row->email);
 					$user->password = bcrypt('123456');
 					$user->save();
-					$attachment = new Employee();
-					$attachment->photo = '/img/Emp.jpg';
-					$attachment->name = $row->emp_name;
-					$attachment->code = $row->emp_code;
-					$attachment->status = convertStatus($row->emp_status);
-
-					if (empty($row->gender)) {
-						$attachment->gender = 'Not Exist';
-					} else {
-						$attachment->gender = $row->gender;
-					}
-					if (empty($row->dob)) {
-						$attachment->date_of_birth = '0000-00-00';
-					} else {
-						$attachment->date_of_birth = date('Y-m-d', strtotime($row->dob));
-					}
-					if (empty($row->doj)) {
-						$attachment->date_of_joining = '0000-00-00';
-					} else {
-						$attachment->date_of_joining = date('Y-m-d', strtotime($row->doj));
-					}
-					if (empty($row->mob_number)) {
-						$attachment->number = '1234567890';
-					} else {
-						$attachment->number = $row->mob_number;
-					}
-					if (empty($row->qualification)) {
-						$attachment->qualification = 'Not Exist';
-					} else {
-						$attachment->qualification = $row->qualification;
-					}
-					if (empty($row->emer_number)) {
-						$attachment->emergency_number = '1234567890';
-					} else {
-						$attachment->emergency_number = $row->emer_number;
-					}
-					if (empty($row->pan_number)) {
-						$attachment->pan_number = 'Not Exist';
-					} else {
-						$attachment->pan_number = $row->pan_number;
-					}
-					if (empty($row->father_name)) {
-						$attachment->father_name = 'Not Exist';
-					} else {
-						$attachment->father_name = $row->father_name;
-					}
-					if (empty($row->address)) {
-						$attachment->current_address = 'Not Exist';
-					} else {
-						$attachment->current_address = $row->address;
-					}
-					if (empty($row->permanent_address)) {
-						$attachment->permanent_address = 'Not Exist';
-					} else {
-						$attachment->permanent_address = $row->permanent_address;
-					}
-					if (empty($row->emp_formalities)) {
-						$attachment->formalities = '1';
-					} else {
-						$attachment->formalities = $row->emp_formalities;
-					}
-					if (empty($row->offer_acceptance)) {
-						$attachment->offer_acceptance = '1';
-					} else {
-						$attachment->offer_acceptance = $row->offer_acceptance;
-					}
-					if (empty($row->prob_period)) {
-						$attachment->probation_period = 'Not Exist';
-					} else {
-						$attachment->probation_period = $row->prob_period;
-					}
-					if (empty($row->doc)) {
-						$attachment->date_of_confirmation = '0000-00-00';
-					} else {
-						$attachment->date_of_confirmation = date('Y-m-d', strtotime($row->doc));
-					}
-					if (empty($row->department)) {
-						$attachment->department = 'Not Exist';
-					} else {
-						$attachment->department = $row->department;
-					}
-					if (empty($row->salary)) {
-						$attachment->salary = '00000';
-					} else {
-						$attachment->salary = $row->salary;
-					}
-					if (empty($row->account_number)) {
-						$attachment->account_number = 'Not Exist';
-					} else {
-						$attachment->account_number = $row->account_number;
-					}
-					if (empty($row->bank_name)) {
-						$attachment->bank_name = 'Not Exist';
-					} else {
-						$attachment->bank_name = $row->bank_name;
-					}
-					if (empty($row->ifsc_code)) {
-						$attachment->ifsc_code = 'Not Exist';
-					} else {
-						$attachment->ifsc_code = $row->ifsc_code;
-					}
-					if (empty($row->pf_account_number)) {
-						$attachment->pf_account_number = 'Not Exist';
-					} else {
-						$attachment->pf_account_number = $row->pf_account_number;
-					}
-					if (empty($row->un_number)) {
-						$attachment->un_number = 'Not Exist';
-					} else {
-						$attachment->un_number = $row->un_number;
-					}
-					if (empty($row->pf_status)) {
-						$attachment->pf_status = '1';
-					} else {
-						$attachment->pf_status = $row->pf_status;
-					}
-					
-					$attachment->user_id = $user->id;
-					$attachment->save();
-
+					$emp = new Employee;
+					// $emp->photo = $filename;
+					$emp->name = $row->name;
+					$emp->personal_email = $row->personal_email;
+					$emp->code = $row->code;
+					$emp->status = $row->status;
+					$emp->gender = $row->gender;
+					$emp->date_of_birth = date_format(date_create($row->dob), 'Y-m-d');
+					$emp->date_of_joining = date_format(date_create($row->doj), 'Y-m-d');
+					$emp->number = $row->number;
+					$emp->qualification = $row->qualification;
+					$emp->emergency_number = $row->emergency_number;
+					$emp->pan_number = $row->pan_number;
+					$emp->aadhar_number = $row->aadhar_number;
+					$emp->esic_number = $row->esic_number;
+					$emp->father_name = $row->father_name;
+					$emp->current_address = $row->current_address;
+					$emp->permanent_address = $row->permanent_address;
+					$emp->formalities = $row->formalities;
+					$emp->offer_acceptance = $row->offer_acceptance;
+					$emp->probation_period = $row->probation_period;
+					$emp->date_of_confirmation = date_format(date_create($row->date_of_confirmation), 'Y-m-d');
+					$emp->department = $row->department;
+					$emp->salary = $row->salary;
+					$emp->account_number = $row->account_number;
+					$emp->bank_name = $row->bank_name;
+					$emp->ifsc_code = $row->ifsc_code;
+					$emp->pf_account_number = $row->pf_account_number;
+					$emp->un_number = $row->un_number;
+					$emp->pf_status = $row->pf_status;
+					$emp->user_id = $user->id;
+					$emp->save();
 					$userRole = new UserRole();
-					$userRole->role_id = convertRole($row->role);
+					$userRole->role_id = $row->role;
 					$userRole->user_id = $user->id;
 					$userRole->save();
-
 				}
 
 				return 1;
@@ -422,6 +337,7 @@ class EmpController extends Controller {
 	public function searchEmployee(Request $request) {
 		$string = $request->string;
 		$column = $request->column;
+
 		if ($request->button == 'Search') {
 			if ($string == '' && $column == '') {
 				\Session::flash('success', ' Employee details uploaded successfully.');
@@ -441,42 +357,56 @@ class EmpController extends Controller {
 			return view('hrms.employee.show_emp', compact('emps', 'column', 'string'));
 		} else {
 			if ($column == '') {
-				$emps = User::with('employee')->get();
+				$emps = User::with('employee' , 'role.role')->get();
 			} elseif ($column == 'email') {
-				$emps = User::with('employee')->where($request->column, $request->string)->paginate(20);
+				$emps = User::with('employee' , 'role.role')->where($request->column, $request->string)->paginate(20);
 			} else {
 				$emps = User::whereHas('employee', function ($q) use ($column, $string) {
 					$q->whereRaw($column . " like '%" . $string . "%'");
 				}
-				)->with('employee')->get();
+				)->with('employee','role.role')->get();
 			}
 
 			$fileName = 'Employee_Listing_' . rand(1, 1000) . '.csv';
 			$filePath = storage_path('export/') . $fileName;
 			$file = new \SplFileObject($filePath, "a");
 			// Add header to csv file.
-			$headers = ['id', 'photo', 'code', 'name', 'status', 'gender', 'date_of_birth', 'date_of_joining', 'number', 'qualification', 'emergency_number', 'pan_number', 'father_name', 'current_address', 'permanent_address', 'formalities', 'offer_acceptance', 'probation_period', 'date_of_confirmation', 'department', 'salary', 'account_number', 'bank_name', 'ifsc_code', 'pf_account_number', 'un_number', 'pf_status', 'user_id', 'created_at', 'updated_at'];
+			// $headers = ['id','email','photo', 'code', 'name', 'status', 'gender', 'date_of_birth', 'date_of_joining', 'number', 'qualification', 'emergency_number', 'pan_number', 'father_name', 'current_address', 'permanent_address', 'formalities', 'offer_acceptance', 'probation_period', 'date_of_confirmation', 'department', 'salary', 'account_number', 'bank_name', 'ifsc_code', 'pf_account_number', 'un_number', 'pf_status', 'user_id', 'created_at', 'updated_at'];
+			$headers = ['User id',' Employee id','role','photo','email','personal_email','code','name','status','gender','date_of_birth','date_of_joining','number','qualification',
+			'pan_number','aadhar_number','father_name','emergency_number','current_address','permanent_address','formalities','offer_acceptance',
+			'probation_period','date_of_confirmation','department',
+			'salary','account_number', 'bank_name','ifsc_code','pf_account_number','un_number','esic_number',
+			'pf_status','created_at','updated_at'];
+		
+			
 			$file->fputcsv($headers);
 			foreach ($emps as $emp) {
 				$file->fputcsv([
 					$emp->id,
+					$emp->employee->id,
+					$emp->role->role->name,
+
+
 					(
 						$emp->employee->photo) ? $emp->employee->photo : 'Not available',
+					$emp->email,
+					$emp->employee->personal_email,
 					$emp->employee->code,
 					$emp->employee->name,
-					$emp->employee->status,
-					$emp->employee->gender,
+					getSatus($emp->employee->status),
+					getGender($emp->employee->gender),
 					$emp->employee->date_of_birth,
 					$emp->employee->date_of_joining,
 					$emp->employee->number,
 					$emp->employee->qualification,
-					$emp->employee->emergency_number,
 					$emp->employee->pan_number,
+					$emp->employee->aadhar_number,
 					$emp->employee->father_name,
+					$emp->employee->emergency_number,
 					$emp->employee->current_address,
 					$emp->employee->permanent_address,
-					$emp->employee->formalities,
-					$emp->employee->offer_acceptance,
+					getFormality($emp->employee->formalities),
+					getOffer($emp->employee->offer_acceptance),
 					$emp->employee->probation_period,
 					$emp->employee->date_of_confirmation,
 					$emp->employee->department,
@@ -486,8 +416,10 @@ class EmpController extends Controller {
 					$emp->employee->ifsc_code,
 					$emp->employee->pf_account_number,
 					$emp->employee->un_number,
-					$emp->employee->pf_status,
-					
+					$emp->employee->esic_number,
+					getPfStatus($emp->employee->pf_status),
+					$emp->employee->created_at,
+					$emp->employee->updated_at,
 				]
 				);
 			}

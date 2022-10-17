@@ -1,6 +1,8 @@
 @extends('hrms.layouts.base')
 
 @section('content')
+
+
         <!-- START CONTENT -->
 <div class="content">
 
@@ -96,6 +98,7 @@
                                     <?php $i =0;?>
                                     @foreach($emps as $emp)
                                     <tr>
+                                      
                                         <td class="text-center">{{$i+=1}}</td>
                                         <td class="text-center">{{$emp->employee['code']}}</td>
                                         <td class="text-center">{{$emp->name}}</td>
@@ -120,7 +123,7 @@
                                                         <a href="/delete-emp/{{$emp->id}}">Delete</a>
                                                     </li>
                                                     <li>
-                                                        <a href="/showdata/{{$emp->employee['id']}}">View</a>
+                                                        <a href="/showdata/{{$emp->id}}">View</a>
                                                     </li>
                                                 </ul>
                                             </div>

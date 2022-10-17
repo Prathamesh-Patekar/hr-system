@@ -31,6 +31,8 @@
             headerTag: ".wizard-section-title",
             bodyTag: ".wizard-section",
             onStepChanging: function (event, currentIndex, newIndex) {
+                event.preventDefault();
+
 
                 // var selected = $('#datepicker4').val();
                 
@@ -226,15 +228,7 @@
                
             }
         });
-        $('#photo_upload').on("change", function(){
-            var ext = $('#photo_upload').val().split('.').pop().toLowerCase();
-            if($.inArray(ext, ['png','jpg','jpeg']) == -1) {
-                var text="Invalid Format(supported format:png,jpg,jpeg)";
-            }else{
-                var text = "";
-            }
-            $('#output').text(text);
-        });
+   
     
         $('#emp_email').change(function() {
             var val = $(this).val();
@@ -247,7 +241,15 @@
                
             }
         }); 
-    
+        $('#photo_upload').on("change", function(){
+            var ext = $('#photo_upload').val().split('.').pop().toLowerCase();
+            if($.inArray(ext, ['png','jpg','jpeg']) == -1) {
+                var text="Invalid Format(supported format:png,jpg,jpeg)";
+            }else{
+                var text = "";
+            }
+            $('#output').text(text);
+        });
         // $("#emp_email").keypress(function (e) {
         //     var keyCode = e.keyCode || e.which;
     
