@@ -361,4 +361,6 @@ Route::group(['middleware' => ['auth']], function ()
 
     Route::post('form/{key}', ['uses' => 'ResignController@save_form']);
 
+    Route::get('resignation_form/{id}', ['uses' => 'ResignController@resignation_form']);
+
 });

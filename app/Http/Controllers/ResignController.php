@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\Employee;
-
+use Form;
 use Session;
 use App\Models\Resignation;
 use App\Models\Role;
+use App\Models\Employee_form;
 
 Use Illuminate\Support\Facades\DB;
 
@@ -150,9 +151,72 @@ class ResignController extends Controller
     return view('hrms.separation.exit-formalities');
   }
 
+  function form_table($id, Request $request){
+
+    $var = Session::get('user');
+
+    $value = md5(Session::get('user'));
+
+    if($value == $id)
+    {
+      $entry = Employee_form::where('user_id', 'LIKE', $var)->get(); 
+      if(count($entry) == 0)
+      {
+        $data =  DB::table('resignations')
+        ->select('users.name as user','resignations.*')
+        ->join('users', 'users.id', '=', 'resignations.user_id')
+        ->where('user_id',"=", $var)
+        ->get();
+
+        $json  = json_encode($data);
+        $array = json_decode($json, true);
+      
+        foreach($array as $item1){
+          $msg = $item1;
+        }
+        return view('hrms.separation.form', ['data'=>$msg]);
+      }
+      else{
+        return "<div style= height:100%;><h1 style>You have already fill the form</h1></div>";
+      }
+    }
+
+    return "<h1>You can't access this page</h1>";
+
+  }
+
+  function save_form(Request $request)
+  {
+    $result = new Employee_form();
+
+    foreach($request->all() as $input_key => $input_value){ // split input one by one
+
+      if($request->get_emp != $input_value && '_token' !=  $input_key){
+        $collect[] = array( //customised inputs
+        $input_key => $input_value
+        );
+      }
+    } 
+    $data = json_encode($collect);
+
+    $table = DB::table('employees')
+    ->where('name', '=', $request->get_emp)
+    ->get();
+
+    foreach($table as $item){
+      $id = $item->id;
+    }
+
+    $result->user_id = $id;
+    $result->question_answers = $data;
+    $result->save();
+    return view("/");
+
+  }
+
   function show_exit_forms(){
 
-    $emps = Resignation::with('employee')->paginate(15);
+    $emps = Resignation::with('employee','employee_form')->paginate(15);
 
     $column = '';
 		$string = '';
@@ -160,41 +224,11 @@ class ResignController extends Controller
 		return view('hrms.separation.exit_forms', compact('emps', 'column', 'string'));
   }
 
-  function form_table($id, Request $request){
+  function resignation_form($id){ 
 
-    $var = Session::get('user');
+    $data = Resignation::with('employee','employee_form')->where('user_id', $id)->get();
 
-    $value = md5(Session::get('user'));
-
-    if($value == $id){
-
-      $data =  DB::table('resignations')
-      ->select('users.name as user','resignations.*')
-      ->join('users', 'users.id', '=', 'resignations.user_id')
-      ->where('user_id',"=", $var)
-      ->get();
-
-      // return $data1;
-
-      // $data = DB::table('resignations')
-      // ->where('user_id',"=", $var)->get();
-      
-      $json  = json_encode($data);
-      $array = json_decode($json, true);
-      
-      foreach($array as $item1){
-        $msg = $item1;
-      }
-      return view('hrms.separation.form', ['data'=>$msg]);
-    }
-    return "<h1>You can't access this page</h1>";
-  }
-
-  function save_form(Request $request){
-
-    return $request->get_emp;
-
-
+    return view('hrms.separation.show_form',['datas'=>$data]);
   }
   
 }

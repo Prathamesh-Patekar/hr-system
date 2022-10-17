@@ -23,7 +23,6 @@
         </div>
     </header>
 
-
     <!-- -------------- Content -------------- -->
     <section id="content" class="table-layout animated fadeIn">
 
@@ -43,8 +42,6 @@
                                 {{ Session::get('failed') }}
                             </div>
                         @endif
-                        
-
                         <div class="panel-body pn">
                             @if(Session::has('flash_message'))
                                 <div class="alert alert-success">
@@ -60,8 +57,8 @@
                                         <th class="text-center">Date of Resignation</th>
                                         <th class="text-center">Notice Period</th>
                                         <th class="text-center">last of working</th>
+                                        <th class="text-center">Form submited</th>
                                         <th class="text-center">View</th>
-                                        <th class="text-center">Actions</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -69,31 +66,20 @@
                                     @foreach($emps as $emp)
                                     <tr>
                                         <td class="text-center">{{$i+=1}}</td>
-                                        <!-- <td class="text-center">{{$emp->employee['code']}}</td> -->
                                         <td class="text-center">{{$emp->employee['name']}}</td>
-                                        <!-- <td class="text-center">{{convertStatusBack($emp->employee['status'])}}</td> -->
-                                        <!-- <td class="text-center">{{isset($emp->role->role->name)?$emp->role->role->name:''}}</td> -->
                                         <td class="text-center">{{date('Y-m-d', strtotime($emp->date_of_resignation))}}</td>
                                         <td class="text-center">{{$emp->notice_period}} days</td>
                                         <td class="text-center">{{date('Y-m-d', strtotime($emp->last_working_day))}}</td>
+                                        <td class="text-center"> <?php $data = $emp->employee_form ?>
+                                            @if( $data != "" )
+                                            Yes
+                                            </td>
+                                        <td class="text-center"><a href="/resignation_form/{{$emp->employee['id']}}">View</a></td>
+                                            @else
+                                            No
+                                            </td>
                                         <td class="text-center">View</td>
-                                        <td class="text-center">
-                                            <div class="btn-group text-right">
-                                                <button type="button"
-                                                        class="btn btn-info br2 btn-xs fs12 dropdown-toggle"
-                                                        data-toggle="dropdown" aria-expanded="false"> Action
-                                                    <span class="caret ml5"></span>
-                                                </button>
-                                                <ul class="dropdown-menu" role="menu">
-                                                    <li>
-                                                        <a href="/edit-emp/{{$emp->id}}">Edit</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="/delete-emp/{{$emp->id}}">Delete</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </td>
+                                            @endif
                                     </tr>
                                     @endforeach
                                     <tr><td colspan="10">

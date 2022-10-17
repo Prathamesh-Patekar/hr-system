@@ -255,31 +255,32 @@
                                     @endif
 
                                     <div class="section">
-                                        <label for="input002"><h6 class="mb20 mt40">Employee Name </h6></label>
+                                        <label for="input002" name="Label1" value="Employee Name"><h6 class="mb20 mt40">Employee Name </h6></label>
                                         <label for="input002" class="field prepend-icon">
                                                 <input type="text" name="get_emp" id="get_emp" class="gui-input form-control"
-                                                       placeholder="employee name..." value="{{$data['user']}}" disabled >
+                                                       placeholder="employee name..." value="{{$data['user']}}"  >
                                                 <label for="input002" class="field-icon">
                                                     <i class="fa fa-user"></i>
                                                 </label>
                                         </label>
                                     </div>
 
-                                    <div class="section">
+                                    <!-- <div class="section">
                                         <label for="datepicker10" class="field prepend-icon mb5"><h6 class="mb20 mt40">
                                         Last working day </h6></label>
                                         <div class="field prepend-icon">  
-                                                <input type="text" id="datepicker10" class="gui-input fs13" name="doj" value="{{$data['last_working_day']}}" disabled >
+                                                <input type="text" id="datepicker10" class="gui-input fs13" name="Lastday" value="{{$data['last_working_day']}}"  >
                                                 <label class="field-icon">
                                                     <i class="fa fa-calendar"></i>
                                                 </label>
                                         </div>
-                                    </div>
+                                    </div> -->
 
                                     <div class="section">
-                                        <label for="input002"><h6 class="mb20 mt40">Lorem Ipsum is simply dummy text of the printing and typesetting industry. ?</h6></label>
+                                    <?php $question1 = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. ?" ?>
+                                        <label for="input002"><h6 class="mb20 mt40">{{$question1}}</h6></label>
                                         <label for="input002" class="field prepend-icon">
-                                                <input type="text" name="answer1" id="answer1" class="gui-input form-control">
+                                                <input type="text" name="{{$question1}}" id="answer1" class="gui-input form-control">
                                                 <label for="input002" class="field-icon">
                                                     <i class="fa fa-user"></i>
                                                 </label>
@@ -287,16 +288,15 @@
                                     </div>
 
                                     <div class="section">
-                                        <label for="input002"><h6 class="mb20 mt40">Lorem Ipsum is simply dummy text of the printing and typesetting industry. ?</h6></label>
+                                    <?php $question2 = "Lorem Ipsum is simply dummy text of the printing ?" ?>
+                                        <label for="input002"><h6 class="mb20 mt40">{{$question2}}</h6></label>
                                         <label for="input002" class="field prepend-icon">
-                                                <input type="text" name="answer2" id="answer2" class="gui-input form-control">
+                                                <input type="text" name="{{$question2}}" id="answer2" class="gui-input form-control"  >
                                                 <label for="input002" class="field-icon">
                                                     <i class="fa fa-user"></i>
                                                 </label>
                                         </label>
                                     </div>
-                
-                                        
 
                                         <button type= "submit" class="btn btn-bordered btn-info btn-block" style="margin-top: 3rem; width: 20%; float:right" >submit</button>
                                

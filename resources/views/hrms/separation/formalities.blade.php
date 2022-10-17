@@ -346,7 +346,7 @@
                                     </div>  
 
                                     <div class="section" style = "display: none">
-                                        <label for="input002"><h6 class="mb20 mt40">Email</h6></label>
+                                        <label for="input002"><h6 class="mb20 mt40">Name</h6></label>
                                         <label for="input002" class="field prepend-icon">
                                            
                                                 <input type="text" name="emp_id" id="emp_id" class="gui-input"
