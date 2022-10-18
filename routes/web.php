@@ -368,8 +368,6 @@ Route::group(['middleware' => ['auth']], function ()
 
     Route::get('/search1',  ['uses' => 'ResignController@design_table'])->name('search1');
 
-  
-
     Route::get('resignation_form/{id}', ['uses' => 'ResignController@resignation_form']);
 
     

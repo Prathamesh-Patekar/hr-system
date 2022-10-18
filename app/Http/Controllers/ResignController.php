@@ -111,7 +111,7 @@ class ResignController extends Controller
     ->get();
 
     foreach($result as $item){
-      $id = $item->id;
+      $id = $item->user_id;
     }
 
     $request->validate([
@@ -120,7 +120,7 @@ class ResignController extends Controller
       'doj' => 'required',
       'notice_date' => 'required',
       'full_final' => 'required',
-  ]);
+    ]);
 
     $resign = new Resignation();
 		$resign->user_id = $id;
@@ -244,6 +244,8 @@ class ResignController extends Controller
 
     $column = '';
 		$string = '';
+
+    // return $emps;
 
 		return view('hrms.separation.exit_forms', compact('emps', 'column', 'string'));
   }

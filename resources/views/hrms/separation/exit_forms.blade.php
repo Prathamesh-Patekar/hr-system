@@ -63,6 +63,8 @@
                                     </thead>
                                     <tbody>
                                     <?php $i =0;?>
+                                    
+
                                     @foreach($emps as $emp)
                                     <tr>
                                         <td class="text-center">{{$i+=1}}</td>

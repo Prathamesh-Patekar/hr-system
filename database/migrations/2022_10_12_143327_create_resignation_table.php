@@ -20,7 +20,7 @@ class CreateResignationTable extends Migration
             $table->integer('notice_period');
             $table->date('last_working_day');
             $table->tinyInteger('full_final');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('employees')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -32,6 +32,6 @@ class CreateResignationTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('employee_resignation');
+        Schema::dropIfExists('resignations');
     }
 }
