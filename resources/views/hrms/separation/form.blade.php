@@ -265,7 +265,19 @@
                                         </label>
                                     </div>
 
-                                    <!-- <div class="section">
+                                    <div class="section">
+                                        <label for="datepicker9" class="field prepend-icon mb5"><h6 class="mb20 mt40">
+                                        Date of Resignation</h6></label>
+                                        <div class="field prepend-icon">
+                                                <input type="text" id="datepicker9" class="gui-input fs13" name="dor" value="{{$data['date_of_resignation']}}">
+                                                <label class="field-icon">
+                                                    <i class="fa fa-calendar"></i>
+                                                </label>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="section">
                                         <label for="datepicker10" class="field prepend-icon mb5"><h6 class="mb20 mt40">
                                         Last working day </h6></label>
                                         <div class="field prepend-icon">  
@@ -274,7 +286,7 @@
                                                     <i class="fa fa-calendar"></i>
                                                 </label>
                                         </div>
-                                    </div> -->
+                                    </div>
 
                                     <div class="section">
                                     <?php $question1 = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. ?" ?>

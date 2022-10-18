@@ -336,9 +336,20 @@ Route::group(['middleware' => ['auth']], function ()
     Route::get('delete-project-assignment/{id}', ['as' => 'delete-project-assignment', 'uses' => 'ProjectController@doDeleteAssign']);
 
 
+    Route::get('form/{key}', [ 'as' => 'form','uses' => 'ResignController@form_table']);
+
+
+    //Routes for Separation.
+
+    Route::post('form/{key}', ['uses' => 'ResignController@save_form']);
+
+    Route::view('noaccess', 'hrms.noaccess');
+
     //Route::get('assign-project', 'ProjectController@assignProject')->name('assign-project');
 
-
+});
+    Route::group(['middleware' => ['adminview']], function ()
+{
     //Routes for Separation.
 
     Route::get('resignation', ['uses' => 'ResignController@addresign']);
@@ -357,10 +368,13 @@ Route::group(['middleware' => ['auth']], function ()
 
     Route::get('/search1',  ['uses' => 'ResignController@design_table'])->name('search1');
 
-    Route::get('form/{key}', [ 'as' => 'form','uses' => 'ResignController@form_table']);
-
-    Route::post('form/{key}', ['uses' => 'ResignController@save_form']);
+  
 
     Route::get('resignation_form/{id}', ['uses' => 'ResignController@resignation_form']);
 
+    
+
 });
+
+
+

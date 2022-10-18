@@ -10,6 +10,7 @@ use Session;
 use App\Models\Resignation;
 use App\Models\Role;
 use App\Models\Employee_form;
+use Illuminate\Support\Str;
 
 Use Illuminate\Support\Facades\DB;
 
@@ -28,24 +29,24 @@ class ResignController extends Controller
 		return view('hrms.separation.formalities',compact('roles'));
 	}
 
-  //   public function autocompleteSearch(Request $request)
-  //   {
-  //       $query = $request->get('query');
-  //       $filterResult = Employee::where('name', 'LIKE', '%'. $query. '%')->get();
-  //       return response()->json($filterResult);
-  // } 
-
   public function searching(Request $request){
     $roles = Role::get();
 
     if($request->ajax()){
       $data = Employee::where('name', 'LIKE',  $request->name. '%')->get();
       $output = "";
+
       if(count($data) > 0){
         $output = '<ul class="list-group" style="display:block;position: relative, z-index: 1;"> ';
 
         foreach($data as $row){
-          $output .= '<li class="list-group-item">'.$row->name.'</li>';
+
+          $result = Resignation::where('user_id','LIKE',  $row->id)->get();
+
+          if(count($result) == 0){
+            
+            $output .= '<li class="list-group-item">'.$row->name.'</li>';
+          }
         }
         $output .= '</ul> ';
       }
@@ -78,7 +79,13 @@ class ResignController extends Controller
             $output = '<ul class="list-group" style="display:block;position: relative, z-index: 1;"> ';
     
             foreach($data as $row){
-              $output .= '<li class="list-group-item">'.$row->name.'</li>';
+
+              $result =  Employee_form::where('user_id','LIKE',  $row->id)->get();
+
+              if(count($result) ==  0)
+              {
+                $output .= '<li class="list-group-item">'.$row->name.'</li>';
+              }
             }
             $output .= '</ul> ';
           }
@@ -177,6 +184,8 @@ class ResignController extends Controller
         return view('hrms.separation.form', ['data'=>$msg]);
       }
       else{
+        // \Session::flash('flash_message', 'You have already fill the form!');
+        
         return "<div style= height:100%;><h1 style>You have already fill the form</h1></div>";
       }
     }
@@ -188,14 +197,29 @@ class ResignController extends Controller
   function save_form(Request $request)
   {
     $result = new Employee_form();
+    
 
     foreach($request->all() as $input_key => $input_value){ // split input one by one
 
-      if($request->get_emp != $input_value && '_token' !=  $input_key){
+      $value = Str::length($input_key);
+      if($value > 30){
+
+        $request->validate([
+          $input_key =>'required',
+      ]);
+
         $collect[] = array( //customised inputs
-        $input_key => $input_value
-        );
+            $input_key => $input_value
+            );
       }
+      // if($request->get_emp != $input_value && '_token' !=  $input_key){
+
+      //   return Str::length($input_key);
+
+      //   $collect[] = array( //customised inputs
+      //   $input_key => $input_value
+      //   );
+      // }
     } 
     $data = json_encode($collect);
 
@@ -210,7 +234,7 @@ class ResignController extends Controller
     $result->user_id = $id;
     $result->question_answers = $data;
     $result->save();
-    return view("/");
+    return view('/dashboard');
 
   }
 

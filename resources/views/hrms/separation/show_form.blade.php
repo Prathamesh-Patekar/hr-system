@@ -67,8 +67,13 @@
                                 </div>
 
                                 <div>
-                                    <label>Address : </label>
-                                    {{ $data->employee['Address'] }}
+                                    <label>Current Address : </label>
+                                    {{ $data->employee['current_address'] }}
+                                </div>
+
+                                <div>
+                                    <label>Permanent Address : </label>
+                                    {{ $data->employee['permanent_address'] }}
                                 </div>
 
                                 
