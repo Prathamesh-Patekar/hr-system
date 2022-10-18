@@ -15,12 +15,12 @@ class CreateResignationTable extends Migration
     {
         Schema::create('resignations', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id')->unsigned();
+            $table->integer('employee_id')->unsigned();
             $table->date('date_of_resignation');
             $table->integer('notice_period');
             $table->date('last_working_day');
             $table->tinyInteger('full_final');
-            $table->foreign('user_id')->references('id')->on('employees')->onDelete('cascade');
+            $table->foreign('employee_id')->references('id')->on('employees')->onDelete('cascade');
             $table->timestamps();
         });
     }

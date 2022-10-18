@@ -15,9 +15,9 @@ class CreateEmployeesFormTable extends Migration
     {
         Schema::create('employee_forms', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id')->unsigned();
+            $table->integer('employee_id')->unsigned();
             $table->string('question_answers', 1024);
-            $table->foreign('user_id')->references('id')->on('employees')->onDelete('cascade');
+            $table->foreign('employee_id')->references('id')->on('employees')->onDelete('cascade');
             $table->timestamps();
         });
     }

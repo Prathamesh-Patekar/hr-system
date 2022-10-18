@@ -584,6 +584,7 @@ $(document).ready(function ()
             type:"GET",
             data:{'name':value},
             success: function(data){
+                console.log(data);
                 $("#emp_list1").html(data)
             }
         });

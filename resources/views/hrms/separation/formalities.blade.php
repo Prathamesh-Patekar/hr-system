@@ -66,7 +66,7 @@
                                         <label for="input002" class="field prepend-icon">
                                             
                                                 <input type="text" name="get_emp1" id="get_emp1" class="gui-input"
-                                                       placeholder="employee name..." >
+                                                       placeholder="employee name..."  value = "">
                                                 <label for="input002" class="field-icon">
                                                     <i class="fa fa-user"></i>
                                                 </label>
@@ -92,7 +92,7 @@
                                         <label for="input002" class="field prepend-icon">
                                            
                                                 <input type="text" name="emp_email" id="emp_email" class="gui-input"
-                                                       placeholder="employee Email..." >
+                                                       placeholder="employee Email..." value = "">
                                                 <label for="input002" class="field-icon">
                                                     <i class="fa fa-user"></i>
                                                 </label>

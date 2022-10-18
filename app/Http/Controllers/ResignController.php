@@ -41,7 +41,7 @@ class ResignController extends Controller
 
         foreach($data as $row){
 
-          $result = Resignation::where('user_id','LIKE',  $row->id)->get();
+          $result = Resignation::where('employee_id','LIKE',  $row->id)->get();
 
           if(count($result) == 0){
             
@@ -64,40 +64,46 @@ class ResignController extends Controller
     $roles = Role::get();
 
     if($request->ajax()){
-      $data = Employee::where('name', 'LIKE',  $request->name. '%')->get();
 
-      foreach($data as $item){
-        $id = $item->id;
-      }
-     
-      if($id != "")
-      {
-        $data1 = Resignation::where('user_id', 'LIKE', $id. '%')->get(); 
+      $name = $request->name;
+      if($name != ""){
 
-        $output = "";
-          if(count($data1) > 0){
-            $output = '<ul class="list-group" style="display:block;position: relative, z-index: 1;"> ';
-    
-            foreach($data as $row){
+        $data = Employee::where('name', 'LIKE',  $name. '%')->get();
 
-              $result =  Employee_form::where('user_id','LIKE',  $row->id)->get();
+        foreach($data as $item){
+          $id = $item->id;
+        }
+      
+        if($id != "")
+        {
+          $data1 = Resignation::where('employee_id', 'LIKE', $id)->get(); 
+        
+          $output = "";
+            if(count($data1) > 0){
+              $output = '<ul class="list-group" style="display:block;position: relative, z-index: 1;"> ';
+      
+              foreach($data as $row){
 
-              if(count($result) ==  0)
-              {
-                $output .= '<li class="list-group-item">'.$row->name.'</li>';
+                $result =  Employee_form::where('employee_id','LIKE',  $row->id)->get();
+
+                if(count($result) ==  0)
+                {
+                  $output .= '<li class="list-group-item">'.$row->name.'</li>';
+                }
               }
+              $output .= '</ul> ';
             }
-            $output .= '</ul> ';
-          }
-          else{
-            $output .= '<li class="list-group-item">not found</li>';
-          }
-        return $output;
+            else{
+              $output .= '<li class="list-group-item">not found</li>';
+            }
+          return $output;
+
+        }
 
       }
+      
     }
-
-    return view('hrms.separation.resign');
+     return $output = "";
 
   }
  
@@ -111,7 +117,7 @@ class ResignController extends Controller
     ->get();
 
     foreach($result as $item){
-      $id = $item->user_id;
+      $id = $item->id;
     }
 
     $request->validate([
@@ -123,7 +129,7 @@ class ResignController extends Controller
     ]);
 
     $resign = new Resignation();
-		$resign->user_id = $id;
+		$resign->employee_id = $id;
 		$resign->date_of_resignation = date_format(date_create($request->dor), 'Y-m-d');
     $resign->notice_period = $request->notice_date;
 		$resign->last_working_day = date_format(date_create($request->doj), 'Y-m-d');
@@ -161,18 +167,19 @@ class ResignController extends Controller
   function form_table($id, Request $request){
 
     $var = Session::get('user');
+    // return $var;
 
     $value = md5(Session::get('user'));
 
     if($value == $id)
     {
-      $entry = Employee_form::where('user_id', 'LIKE', $var)->get(); 
+      $entry = Employee_form::where('employee_id', 'LIKE', $var)->get(); 
       if(count($entry) == 0)
       {
         $data =  DB::table('resignations')
-        ->select('users.name as user','resignations.*')
-        ->join('users', 'users.id', '=', 'resignations.user_id')
-        ->where('user_id',"=", $var)
+        ->select('employees.name as user','resignations.*')
+        ->join('employees', 'employees.id', '=', 'resignations.employee_id')
+        ->where('employee_id',"=", $var)
         ->get();
 
         $json  = json_encode($data);
@@ -197,7 +204,6 @@ class ResignController extends Controller
   function save_form(Request $request)
   {
     $result = new Employee_form();
-    
 
     foreach($request->all() as $input_key => $input_value){ // split input one by one
 
@@ -212,14 +218,7 @@ class ResignController extends Controller
             $input_key => $input_value
             );
       }
-      // if($request->get_emp != $input_value && '_token' !=  $input_key){
-
-      //   return Str::length($input_key);
-
-      //   $collect[] = array( //customised inputs
-      //   $input_key => $input_value
-      //   );
-      // }
+     
     } 
     $data = json_encode($collect);
 
@@ -231,10 +230,10 @@ class ResignController extends Controller
       $id = $item->id;
     }
 
-    $result->user_id = $id;
+    $result->employee_id = $id;
     $result->question_answers = $data;
     $result->save();
-    return view('/dashboard');
+    return redirect("dashboard");
 
   }
 
@@ -252,7 +251,7 @@ class ResignController extends Controller
 
   function resignation_form($id){ 
 
-    $data = Resignation::with('employee','employee_form')->where('user_id', $id)->get();
+    $data = Resignation::with('employee','employee_form')->where('employee_id', $id)->get();
 
     return view('hrms.separation.show_form',['datas'=>$data]);
   }
