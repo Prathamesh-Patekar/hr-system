@@ -8,6 +8,8 @@
         <div class="panel-heading">
          <strong> <span class="panel-title"><b> Personal Details</b></span></strong> 
         </div>
+        
+                     
         <table class="table">
             <tbody>
                 <tr>

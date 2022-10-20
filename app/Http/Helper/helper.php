@@ -203,6 +203,8 @@ function qualification()
         $data = [
             '0' => 'Male',
             '1' => 'Female',
+            '2' => 'Others',
+
         ];
 
         return $data[$gender];

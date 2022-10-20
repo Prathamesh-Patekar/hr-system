@@ -213,6 +213,9 @@
 
             $(this).toggleClass('holder-active');
         });
+        
+        
+      
         $('#mobile_phone,#emergency_number,#salary,#aadhar_number').keypress(function(event) {
             var keycode = event.which;
             console.log(keycode);
@@ -250,6 +253,32 @@
             }
             $('#output').text(text);
         });
+      
+        $('#emp_email').on('change',function() {
+            var emp_email = $('#emp_email').val(); 
+            $.ajax({
+                url:"/search-empemail",
+                type:"GET",
+                data:{'emp_email':emp_email},
+                success: function(data){
+                $('#mailError').html(data);
+                }
+
+            });
+        });
+        $('#emp_code').on('change',function() {
+            var emp_code = $('#emp_code').val(); 
+            $.ajax({
+                url:"/search-empcode",
+                type:"GET",
+                data:{'emp_code':emp_code},
+                success: function(data){
+                $('#codeerror').html(data);
+                }
+
+            });
+        });
+
         // $("#emp_email").keypress(function (e) {
         //     var keyCode = e.keyCode || e.which;
     

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 
@@ -308,14 +309,24 @@
                             <!-- -------------- Wizard -------------- -->
                     <!-- -------------- Spec Form -------------- -->
                     <div class="allcp-form">
-
+       
                         <form method="post" action="/" id="custom-form-wizard">
+                            
                             <div class="wizard steps-bg steps-left">
 
                                 <!-- -------------- step 1 -------------- -->
                                 <h4 class="wizard-section-title">
                                     <i class="fa fa-user pr5"></i> Personal Details</h4>
                                 <section class="wizard-section">
+                                @if ($errors->any())
+                                    <div class="alert alert-danger">
+                                        <ul>
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
                                     <div class="section">
                                         <label for="photo-upload"><h6 class="mb20 mt40"> Photo </h6></label>
                                         <label class="field prepend-icon append-button file">
@@ -324,7 +335,7 @@
                                                 <input type="hidden" value="edit-emp/{{$emps->id}}" id="url">
 
                                                 <input type="file" class="gui-file" name="photo" id="photo_upload"
-                                                       value="@if($emps && $emps->photo){{$emps->photo}}@endif"
+                                                       value="@if($emps && $emps->employee->photo){{$emps->employee->photo}}@endif"
                                                        onChange="document.getElementById('uploader1').value = this.value;" >
                                                 <input type="text" class="gui-input" id="uploader1"
                                                        placeholder="Select File">
@@ -332,6 +343,9 @@
                                                     <i class="fa fa-cloud-upload"></i>
                                                 </label>
                                                 <p id="output"></p>
+                                                @if($errors->any())
+                                                    <h4>{{$errors->first()}}</h4>
+                                                @endif
 
                                             @else
                                                 <input type="hidden" value="add-employee" id="url">
@@ -359,7 +373,6 @@
                                                 <label for="input0021" class="field-icon">
 
                                                 </label>
-                                                <span id="lblError"></span>
                                                 <span class="unit">@techsevin.com</span>
                                             @else
                                                 <input type="email" required='true' autocomplete="off" name="emp_email" id="emp_email" class="gui-input"
@@ -367,8 +380,9 @@
                                                 <label for="input0021" class="field-icon">
                                                     
                                                 </label>
-                                                <span id="lblError"></span>
                                                 <span class="unit">@techsevin.com</span>
+                                                <span id="mailError"></span>
+
                                             @endif
                                         </label>
                                     </div>
@@ -405,10 +419,13 @@
                                                 </label>
                                             @else
                                                 <input type="text" name="emp_code" id="emp_code" class="gui-input"
-                                                       placeholder="employee code..." required>
+                                                       placeholder="employee code..." value="" required>
                                                 <label for="input002" class="field-icon">
-                                                    <i class="fa fa-barcode"></i>
+                                                    <i class="fa fa-barcode"></i> 
                                                 </label>
+                                                <span  id="codeerror"></span>
+
+
                                             @endif
                                         </label>
                                     </div>
@@ -492,6 +509,12 @@
                                                 <input type="radio" value="1" name="gender" id="gender"
                                                        @if(isset($emps))@if($emps->employee->gender == '1')checked @endif @endif>
                                                 <span class="radio"></span>Female</label>
+                                                <label class="field option mb5">
+                                                <input type="radio" value="2" name="gender" id="gender"
+                                                       @if(isset($emps))@if($emps->employee->gender == '2')checked @endif @endif>
+                                                <span class="radio"></span>Others</label>
+
+                                            
                                             @else
                                                 <input type="radio" value="0" name="gender" id="gender" 
                                                        @if(isset($emps))@if($emps->employee->gender == '0')checked @endif @endif>
@@ -500,6 +523,10 @@
                                                 <input type="radio" value="1" name="gender" id="gender" checked
                                                        @if(isset($emps))@if($emps->employee->gender == '1')checked @endif @endif>
                                                 <span class="radio"></span>Female</label>
+                                                <label class="field option mb5">
+                                                <input type="radio" value="2" name="gender" id="gender" checked
+                                                       @if(isset($emps))@if($emps->employee->gender == '2')checked @endif @endif>
+                                                <span class="radio"></span>Others</label>
                                             @endif
                                         </div>
                                     </div>
@@ -744,7 +771,7 @@
                                         <label for="input002"><h6 class="mb20 mt40"> Probation Period </h6></label>
 
                                                 @if(\Route::getFacadeRoot()->current()->uri() == 'edit-emp/{id}')
-                                            <select class="select2-single form-control probation_select" name="prob_period" id="probation_period" >
+                                            <select class="select2-single form-control probation_select" name="prob_period" id="probation_period" required>
                                                 <option value="">Select probation period</option>
                                                     @if($emps->employee->probation_period == '0')
                                                         <option value="0" selected>0 days</option>
@@ -775,7 +802,7 @@
                                             </select>
                                                     <input type="text" class="form-control probation_text hidden" id="probation_text" value={{$emps->employee->probation_period}}>
                                                 @else
-                                                    <select class="select2-single form-control probation_select" name="prob_period" id="probation_period" >
+                                                    <select class="select2-single form-control probation_select" name="prob_period" id="probation_period" required>
                                                     <option value="">Select probation period</option>
                                                     <option value="0">0 days</option>
                                                     <option value="90">90 days</option>
@@ -1012,6 +1039,19 @@
                                     <i class="fa fa-file-text pr5"></i> Confirmation</h4>
                                 <section class="wizard-section">
 
+                               
+               
+
+<!-- 
+                                @if ($errors->any())
+                                    <div class="alert alert-danger">
+                                        <ul>
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif -->
 
                                     <!-- <div class="section">
                                         <label for="datepicker6" class="field prepend-icon mb5"><h6 class="mb20 mt40">
@@ -1085,7 +1125,7 @@
                                                 <input type="hidden" value="{!! csrf_token() !!}" id="token">
                                                 <input type="checkbox"  name="full_final" id="full_final" value="">
                                                 <span class="checkbox"></span>By checking this you confirm all the information filled by you is correct.</label>
-                                        </div>
+                                            </div>  
                                     </div>
                                 </section>
                             </div>
