@@ -296,7 +296,7 @@
             </li>
         </ul>
     </li>
-    @if(Auth::user()->isHR())
+
         <li>
             <a class="accordion-toggle" href="#">
                 <span class="fa fa-clock-o"></span>
@@ -304,14 +304,26 @@
                 <span class="caret"></span>
             </a>
             <ul class="nav sub-nav">
-                <li>
+                <!-- <li>
                     <a href="{{route('attendance-upload')}}">
                         <span class="glyphicon glyphicon-book"></span> Upload Sheets</a>
+                </li> -->
+                <li>
+                    <a href="/attendance_login">
+                        <span class="glyphicon glyphicon-book"></span>Daily Login</a>
+                </li>
+
+                <li>
+                    <a href="/attendance_list">
+                        <span class="glyphicon glyphicon-book"></span>Attendance list</a>
                 </li>
 
             </ul>
         </li>
+      
 
+        
+        @if(Auth::user()->isHR())
         <li>
             <a class="accordion-toggle" href="#">
                 <span class="fa fa-tree"></span>
