@@ -312,11 +312,13 @@
                     <a href="/attendance_login">
                         <span class="glyphicon glyphicon-book"></span>Daily Login</a>
                 </li>
-
+                
+                @if(\Auth::user()->isAdmin || \Auth::user()->isHR())
                 <li>
                     <a href="/attendance_list">
                         <span class="glyphicon glyphicon-book"></span>Attendance list</a>
                 </li>
+                @endif
 
             </ul>
         </li>

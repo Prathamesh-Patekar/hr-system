@@ -345,15 +345,14 @@ Route::group(['middleware' => ['auth']], function ()
     Route::post('/attendance_login', ['uses' => 'AttendanceController@process_task_login']);
 
 
-    Route::get('/attendance_list', ['uses' => 'AttendanceController@attendance_list']);
+    Route::group(['middleware' => ['adminview']], function ()
+    {
+        Route::get('/attendance_list', ['uses' => 'AttendanceController@attendance_list']);
 
-    Route::post('/attendance_list', 'AttendanceController@searchlist');
+        Route::post('/attendance_list', 'AttendanceController@searchlist');
 
-    Route::get('task_view/{id}', ['uses' => 'AttendanceController@task_view']);
-
-
-
-
+        Route::get('task_view/{id}', ['uses' => 'AttendanceController@task_view']);
+    });
 
 
 });

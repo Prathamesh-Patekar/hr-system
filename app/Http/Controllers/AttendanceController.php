@@ -322,21 +322,19 @@
            ->join('employees', 'users.id', '=', 'employees.user_id');
 
           if (!empty($column) && !empty($string) && empty($dateFrom) && empty($dateTo)) {
-            // return 'sdfkjskjf';
-            $list = $list->whereRaw($data[$column] . " like '%" . $string . "%' ")->get();
             
+            $list = $list->whereRaw($data[$column] . " like '%" . $string . "%' ")->get();
           } elseif (!empty($dateFrom) && !empty($dateTo) && empty($column) && empty($string)) {
             $dateTo = date_format(date_create($request->dateTo), 'Y-m-d');
             $dateFrom = date_format(date_create($request->dateFrom), 'Y-m-d');
-            $list = $list->whereBetween('date_from', [$dateFrom, $dateTo])->get();
+            $list = $list->whereBetween('in_date', [$dateFrom, $dateTo])->get();
           } elseif (!empty($column) && !empty($string) && !empty($dateFrom) && !empty($dateTo)) {
             $dateTo = date_format(date_create($request->dateTo), 'Y-m-d');
             $dateFrom = date_format(date_create($request->dateFrom), 'Y-m-d');
-            $list = $list->whereRaw($data[$column] . " like '%" . $string . "%'")->whereBetween('date_from', [$dateFrom, $dateTo])->get();
+            $list = $list->whereRaw($data[$column] . " like '%" . $string . "%'")->whereBetween('in_date', [$dateFrom, $dateTo])->get();
           } else {
             $list = $list->get();
           }
-         
           
           /*$leaves = $leaves->get();*/
           $fileName = 'attendance_Listing_' . rand(1, 1000) . '.csv';
@@ -346,7 +344,7 @@
           $file = new \SplFileObject($filePath, "a");
           
           // Add header to csv file.
-          $headers = ['id', 'name', 'code', 'date_from', 'date_to', 'in_time', 'out_time', 'worked_time'];
+          $headers = ['id', 'code', 'name', 'department', 'date_from', 'date_to', 'in_time', 'out_time', 'worked_time'];
           $file->fputcsv($headers);
           
           foreach ($list as $leave) {
@@ -359,7 +357,7 @@
             $sec = $diff->s." sec";
             $worked_time = $hours." ". $min." ".$sec;
 
-            $file->fputcsv([$leave->id, $leave->name, $leave->code, date('d-m-Y', strtotime($leave->in_date)), date('d-m-Y', strtotime($leave->out_date)), $leave->in_time, $leave->out_time, $worked_time]);
+            $file->fputcsv([$leave->id, $leave->code, $leave->name, $leave->department,  date('d-m-Y', strtotime($leave->in_date)), date('d-m-Y', strtotime($leave->out_date)), $leave->in_time, $leave->out_time, $worked_time]);
           }
          
   
