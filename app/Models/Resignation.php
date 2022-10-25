@@ -15,11 +15,11 @@ class Resignation extends Model
 
     public function employee()
     {
-        return $this->hasOne(Employee::class, 'id', 'user_id');
+        return $this->hasOne(Employee::class, 'id', 'employee_id');
     }
 
     public function employee_form()
     {
-        return $this->hasOne(Employee_form::class, 'user_id', 'user_id');
+        return $this->hasOne(Employee_form::class, 'employee_id', 'user_id');
     }
 }
