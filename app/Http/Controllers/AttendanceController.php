@@ -17,6 +17,7 @@
   use Stevebauman\Location\Facades\Location;
   use Carbon\Carbon;
   use Illuminate\Support\Facades\DB;
+  use Maatwebsite\Excel\Facades\Excel;
 
   class AttendanceController extends Controller
   {
@@ -255,14 +256,18 @@
 
     public function attendance_list(){
 
-      $data = Attendance_management::with('employee')->get(); 
+      // $list = Attendance_management::with('employee')->get(); 
+      $list = \DB::table('users')->select(
+        'users.name', 'attendance_managements.*')
+       ->join('attendance_managements', 'users.id', '=', 'attendance_managements.user_id')
+       ->get();
 
       $column = '';
 		  $string = '';
 		  $dateFrom = '';
 		  $dateTo = '';
 
-      return view('hrms.attendance.show_attendance_list', compact('data', 'column', 'string', 'dateFrom', 'dateTo'));
+      return view('hrms.attendance.show_attendance_list', compact('list', 'column', 'string', 'dateFrom', 'dateTo'));
     }
 
 
@@ -270,81 +275,93 @@
       try
       {
         $string = $request->string;
-  
         $column = $request->column;
         $dateTo = $request->dateTo;
         $dateFrom = $request->dateFrom;
   
-        $data = ['name' => 'users.name', 'department' => 'employee.department', 'days' => 'employee_leaves.days', 'leave_type' => 'leave_types.leave_type', 'status' => 'employee_leaves.status'];
-        
-       
+        $data = ['name' => 'users.name', 'department' => 'employees.department'];
   
         if ($request->button == 'Search') {
           
           /**
            * First we build a query string which is common in both cases whether we have a condition set or not
-           */
-          $data1 = \DB::table('users')->select(
-             'users.name', 'attendance_managements.*','employee.department')
+           */          
+
+          $list = \DB::table('users')->select(
+             'users.name', 'attendance_managements.*','employees.*')
             ->join('attendance_managements', 'users.id', '=', 'attendance_managements.user_id')
-            ->join('employee', 'users.id', '=', 'employee.user_id');
+            ->join('employees', 'users.id', '=', 'employees.user_id');
           if (!empty($column) && !empty($string) && empty($dateFrom) && empty($dateTo)) {
-            $data1 = $data1->whereRaw($data[$column] . " like '%" . $string . "%' ")->paginate(20);
-            // return $data;
+            $list = $list->whereRaw($data[$column] . " like '%" . $string . "%' ")->paginate(20);
+            
           } elseif (!empty($dateFrom) && !empty($dateTo) && empty($column) && empty($string)) {
             $dateTo = date_format(date_create($request->dateTo), 'Y-m-d');
             $dateFrom = date_format(date_create($request->dateFrom), 'Y-m-d');
-            $data1 = $data1->whereBetween('date_from', [$dateFrom, $dateTo])->paginate(20);
+            $list = $list->whereBetween('in_date', [$dateFrom, $dateTo])->paginate(20);
           } elseif (!empty($column) && !empty($string) && !empty($dateFrom) && !empty($dateTo)) {
             $dateTo = date_format(date_create($request->dateTo), 'Y-m-d');
             $dateFrom = date_format(date_create($request->dateFrom), 'Y-m-d');
-            $data1 = $data1->whereRaw($data[$column] . " like '%" . $string . "%'")->whereBetween('date_from', [$dateFrom, $dateTo])->paginate(20);
+            $list = $list->whereRaw($data[$column] . " like '%" . $string . "%'")->whereBetween('in_date', [$dateFrom, $dateTo])->paginate(20);
           } else {
-            $data1 = $data1->paginate(20);
+            $list = $list->paginate(20);
           }
           $post = 'post';
 
-          // return $data;
   
-          return view('hrms.attendance.show_attendance_list', compact('data1', 'post', 'column', 'string', 'dateFrom', 'dateTo'));
-        } else {
+          return view('hrms.attendance.show_attendance_list', compact('list', 'post', 'column', 'string', 'dateFrom', 'dateTo'));
+        } 
+        else {
           /**
            * First we build a query string which is common in both cases whether we have a condition set or not
            */
-          $leaves = \DB::table('users')->select('users.id', 'users.name', 'employees.code', 'employee_leaves.days', 'employee_leaves.date_from', 'employee_leaves.date_to', 'employee_leaves.status', 'leave_types.leave_type', 'employee_leaves.remarks')->join('employees', 'employees.user_id', '=', 'users.id')->join('employee_leaves', 'employee_leaves.user_id', '=', 'users.id')->join('leave_types', 'leave_types.id', '=', 'employee_leaves.leave_type_id');
+          // $list = \DB::table('users')->select('users.id', 'users.name', 'employees.code', 'employee_leaves.days', 'employee_leaves.date_from', 'employee_leaves.date_to', 'employee_leaves.status', 'leave_types.leave_type', 'employee_leaves.remarks')->join('employees', 'employees.user_id', '=', 'users.id')->join('employee_leaves', 'employee_leaves.user_id', '=', 'users.id')->join('leave_types', 'leave_types.id', '=', 'employee_leaves.leave_type_id');
   
+          $list = \DB::table('users')->select(
+            'users.name', 'attendance_managements.*','employees.*')
+           ->join('attendance_managements', 'users.id', '=', 'attendance_managements.user_id')
+           ->join('employees', 'users.id', '=', 'employees.user_id');
+
           if (!empty($column) && !empty($string) && empty($dateFrom) && empty($dateTo)) {
-            $leaves = $leaves->whereRaw($data[$column] . " like '%" . $string . "%' ")->get();
+            // return 'sdfkjskjf';
+            $list = $list->whereRaw($data[$column] . " like '%" . $string . "%' ")->get();
+            
           } elseif (!empty($dateFrom) && !empty($dateTo) && empty($column) && empty($string)) {
             $dateTo = date_format(date_create($request->dateTo), 'Y-m-d');
             $dateFrom = date_format(date_create($request->dateFrom), 'Y-m-d');
-            $leaves = $leaves->whereBetween('date_from', [$dateFrom, $dateTo])->get();
+            $list = $list->whereBetween('date_from', [$dateFrom, $dateTo])->get();
           } elseif (!empty($column) && !empty($string) && !empty($dateFrom) && !empty($dateTo)) {
             $dateTo = date_format(date_create($request->dateTo), 'Y-m-d');
             $dateFrom = date_format(date_create($request->dateFrom), 'Y-m-d');
-            $leaves = $leaves->whereRaw($data[$column] . " like '%" . $string . "%'")->whereBetween('date_from', [$dateFrom, $dateTo])->get();
+            $list = $list->whereRaw($data[$column] . " like '%" . $string . "%'")->whereBetween('date_from', [$dateFrom, $dateTo])->get();
           } else {
-            $leaves = $leaves->get();
+            $list = $list->get();
           }
+         
+          
           /*$leaves = $leaves->get();*/
-  
-          $fileName = 'Leave_Listing_' . rand(1, 1000) . '.csv';
+          $fileName = 'attendance_Listing_' . rand(1, 1000) . '.csv';
+          
           $filePath = storage_path('export/') . $fileName;
+          // return 'dsfkjndsbvckjbnds';
           $file = new \SplFileObject($filePath, "a");
+          
           // Add header to csv file.
-          $headers = ['id', 'name', 'code', 'leave_type', 'date_from', 'date_to', 'days', 'status', 'remarks', 'created_at', 'updated_at'];
+          $headers = ['id', 'name', 'code', 'date_from', 'date_to', 'in_time', 'out_time', 'worked_time'];
           $file->fputcsv($headers);
-          $status = '';
-          foreach ($leaves as $leave) {
-            if ($leave->status == 0) {
-              $status = 'Pending';
-            } elseif ($leave->status == 1) {
-              $status = 'Approved';
-            } elseif ($leave->status == 2) {
-              $status = 'Disapproved';
-            }
-            $file->fputcsv([$leave->id, $leave->name, $leave->code, $leave->leave_type, $leave->date_from, $leave->date_to, $leave->days, $status, $leave->remarks]);
+          
+          foreach ($list as $leave) {
+
+            $t1 = Carbon::createFromFormat('H:s:i',$leave->in_time);
+            $t2 = Carbon::createFromFormat('H:s:i', $leave->out_time);
+            $diff = $t1->diff($t2);
+            $hours = $diff->h." Hours";
+            $min = $diff->i." min";
+            $sec = $diff->s." sec";
+            $worked_time = $hours." ". $min." ".$sec;
+
+            $file->fputcsv([$leave->id, $leave->name, $leave->code, date('d-m-Y', strtotime($leave->in_date)), date('d-m-Y', strtotime($leave->out_date)), $leave->in_time, $leave->out_time, $worked_time]);
           }
+         
   
           return response()->download(storage_path('export/') . $fileName);
   
@@ -354,7 +371,24 @@
       }
     }
 
+    function task_view($id)
+    {
+      $data = Attendance_management::with('employee')->where('id', $id)->get();
+      foreach($data as $values){
+        $intime = $values->in_time;
+        $outtime = $values->out_time;
+      }
 
+     
+      $t1 = Carbon::createFromFormat('H:s:i',$intime);
+      $t2 = Carbon::createFromFormat('H:s:i', $outtime);
+     
+      $diff = $t1->diff($t2);
+  
+
+      return view('hrms.attendance.show_tasks', ['data'=>$data, 'diff'=>$diff]);
+
+    }
     
   }
 

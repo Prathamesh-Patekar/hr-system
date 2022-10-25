@@ -74,7 +74,7 @@
                                 </div>
                                 {!! Form::close() !!}
                                 <div class="col-md-2"><br />
-                                    <a href="/total-leave-list" >
+                                    <a href="/attendance_list" >
                                         <input type="submit" value="Reset" class="btn btn-warning"></a>
                                 </div>
 
@@ -102,22 +102,23 @@
                                         <th class="text-center">View</th>
                                     </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody> 
                                     <?php $i =0;?>
                                   
-
-                                        @foreach($data as $value)
+    
+                                        @foreach($list as $value)
                                         <tr>
                                             <td class="text-center">{{$i+=1}}</td>
-                                            <td class="text-center">{{$value->employee['name']}}</td>
+                                            <td class="text-center">{{$value->name}}</td>
                                             <td class="text-center">{{date('d-m-Y', strtotime($value->in_date))}}</td>
                                             <td class="text-center">{{$value->in_time}}</td>
                                             <td class="text-center">{{$value->out_time}}</td>
-                                            <td class="text-center">view</td>                                      
+                                            <!-- <td class="text-center">view</td>      -->
+                                            <td class="text-center">
+                                                <a href= "/task_view/{{$value->id}}">view</a>
+                                            </td>                                 
                                         </tr>
                                         @endforeach
-                                   
-                                   
                                     </tbody>
                                 </table>
                             </div>

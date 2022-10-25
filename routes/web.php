@@ -349,6 +349,8 @@ Route::group(['middleware' => ['auth']], function ()
 
     Route::post('/attendance_list', 'AttendanceController@searchlist');
 
+    Route::get('task_view/{id}', ['uses' => 'AttendanceController@task_view']);
+
 
 
 
