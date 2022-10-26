@@ -20,6 +20,6 @@ class Resignation extends Model
 
     public function employee_form()
     {
-        return $this->hasOne(Employee_form::class, 'employee_id', 'user_id');
+        return $this->hasOne(Employee_form::class, 'employee_id', 'employee_id');
     }
 }
