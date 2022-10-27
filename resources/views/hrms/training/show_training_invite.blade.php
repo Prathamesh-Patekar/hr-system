@@ -36,8 +36,37 @@
                         <div class="box box-success">
                         <div class="panel">
                             <div class="panel-heading">
-                                <span class="panel-title hidden-xs"> Training Invites Listings </span>
+                                <span class="panel-title hidden-xs"> Training Invites Listings </span><br />
+                            </div><br />
+                            
+
+                            <div class="panel-menu allcp-form theme-primary mtn">
+                                <div class="row">
+                                    {!! Form::open() !!}
+                                    <div class="col-md-3">
+                                        <input type="text" class="field form-control" placeholder="query string" style="height:40px" value="{{$string}}" name="string">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="field select">
+                                            {!! Form::select('column', getTrainingDropDown(),$column) !!}
+                                            <i class="arrow double"></i>
+                                        </label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="submit" value="Search" name="button" class="btn btn-primary">
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <input type="submit" value="Export" name="button" class="btn btn-success">
+                                    </div>
+                                    {!! Form::close() !!}
+                                    <div class="col-md-2">
+                                        <a href="/employee-manager" >
+                                            <input type="submit" value="Reset" class="btn btn-warning"></a>
+                                    </div>
+                                </div>
                             </div>
+
                             <div class="panel-body pn">
                                 @if(Session::has('flash_message'))
                                     <div class="alert alert-success">

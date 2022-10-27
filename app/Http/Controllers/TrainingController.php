@@ -9,6 +9,9 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
+use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
+
 class TrainingController extends Controller
 {
     public function addTrainingProgram(){
@@ -114,7 +117,10 @@ class TrainingController extends Controller
     public function showTrainingInvite()
     {
         $invites = TrainingInvite::with(['employee','program'])->paginate(15);
-        return view('hrms.training.show_training_invite',compact('invites'));
+
+        $string = "";
+        $column = "";
+        return view('hrms.training.show_training_invite',compact('invites' , 'string', 'column'));
     }
 
     public function doEditTrainingInvite($id)
@@ -160,5 +166,87 @@ class TrainingController extends Controller
     
 
     }
+
+
+    public function filter_program(Request $request) {
+		try
+		{
+			$string = $request->string;
+			$column = $request->column;
+
+			$data = ['name' => 'users.name', 'code' => 'employees.code', 'days' => 'employee_leaves.days', 'leave_type' => 'leave_types.leave_type', 'status' => 'employee_leaves.status'];
+
+			if ($request->button == 'Search') {
+				/**
+				 * First we build a query string which is common in both cases whether we have a condition set or not
+				 */
+				$leaves = \DB::table('employees')->select(
+					'users.id', 'users.name', 'employees.code', 'employee_leaves.days', 'employee_leaves.date_from',
+					'employee_leaves.date_to', 'employee_leaves.status', 'leave_types.leave_type', 'employee_leaves.remarks')
+					->join('employees', 'employees.user_id', '=', 'users.id')
+					->join('employee_leaves', 'employee_leaves.user_id', '=', 'users.id')
+					->join('leave_types', 'leave_types.id', '=', 'employee_leaves.leave_type_id');
+				if (!empty($column) && !empty($string) && empty($dateFrom) && empty($dateTo)) {
+					$leaves = $leaves->whereRaw($data[$column] . " like '%" . $string . "%' ")->paginate(20);
+				} elseif (!empty($dateFrom) && !empty($dateTo) && empty($column) && empty($string)) {
+					$dateTo = date_format(date_create($request->dateTo), 'Y-m-d');
+					$dateFrom = date_format(date_create($request->dateFrom), 'Y-m-d');
+					$leaves = $leaves->whereBetween('date_from', [$dateFrom, $dateTo])->paginate(20);
+				} elseif (!empty($column) && !empty($string) && !empty($dateFrom) && !empty($dateTo)) {
+					$dateTo = date_format(date_create($request->dateTo), 'Y-m-d');
+					$dateFrom = date_format(date_create($request->dateFrom), 'Y-m-d');
+					$leaves = $leaves->whereRaw($data[$column] . " like '%" . $string . "%'")->whereBetween('date_from', [$dateFrom, $dateTo])->paginate(20);
+				} else {
+					$leaves = $leaves->paginate(20);
+				}
+				$post = 'post';
+
+				return view('hrms.leave.total_leave_request', compact('leaves', 'post', 'column', 'string', 'dateFrom', 'dateTo'));
+			} else {
+				/**
+				 * First we build a query string which is common in both cases whether we have a condition set or not
+				 */
+				$leaves = \DB::table('users')->select('users.id', 'users.name', 'employees.code', 'employee_leaves.days', 'employee_leaves.date_from', 'employee_leaves.date_to', 'employee_leaves.status', 'leave_types.leave_type', 'employee_leaves.remarks')->join('employees', 'employees.user_id', '=', 'users.id')->join('employee_leaves', 'employee_leaves.user_id', '=', 'users.id')->join('leave_types', 'leave_types.id', '=', 'employee_leaves.leave_type_id');
+
+				if (!empty($column) && !empty($string) && empty($dateFrom) && empty($dateTo)) {
+					$leaves = $leaves->whereRaw($data[$column] . " like '%" . $string . "%' ")->get();
+				} elseif (!empty($dateFrom) && !empty($dateTo) && empty($column) && empty($string)) {
+					$dateTo = date_format(date_create($request->dateTo), 'Y-m-d');
+					$dateFrom = date_format(date_create($request->dateFrom), 'Y-m-d');
+					$leaves = $leaves->whereBetween('date_from', [$dateFrom, $dateTo])->get();
+				} elseif (!empty($column) && !empty($string) && !empty($dateFrom) && !empty($dateTo)) {
+					$dateTo = date_format(date_create($request->dateTo), 'Y-m-d');
+					$dateFrom = date_format(date_create($request->dateFrom), 'Y-m-d');
+					$leaves = $leaves->whereRaw($data[$column] . " like '%" . $string . "%'")->whereBetween('date_from', [$dateFrom, $dateTo])->get();
+				} else {
+					$leaves = $leaves->get();
+				}
+				/*$leaves = $leaves->get();*/
+
+				$fileName = 'Leave_Listing_' . rand(1, 1000) . '.csv';
+				$filePath = storage_path('export/') . $fileName;
+				$file = new \SplFileObject($filePath, "a");
+				// Add header to csv file.
+				$headers = ['id', 'name', 'code', 'leave_type', 'date_from', 'date_to', 'days', 'status', 'remarks', 'created_at', 'updated_at'];
+				$file->fputcsv($headers);
+				$status = '';
+				foreach ($leaves as $leave) {
+					if ($leave->status == 0) {
+						$status = 'Pending';
+					} elseif ($leave->status == 1) {
+						$status = 'Approved';
+					} elseif ($leave->status == 2) {
+						$status = 'Disapproved';
+					}
+					$file->fputcsv([$leave->id, $leave->name, $leave->code, $leave->leave_type, $leave->date_from, $leave->date_to, $leave->days, $status, $leave->remarks]);
+				}
+
+				return response()->download(storage_path('export/') . $fileName);
+
+			}
+		} catch (\Exception $e) {
+			return redirect()->back()->with('message', $e->getMessage());
+		}
+	}
     
 }
