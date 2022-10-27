@@ -353,6 +353,23 @@ Route::group(['middleware' => ['auth']], function ()
 
     //Route::get('assign-project', 'ProjectController@assignProject')->name('assign-project');
 
+    // Routes for Attendance
+
+    Route::get('/attendance_login', ['uses' => 'AttendanceController@taskslogin']);
+
+    Route::post('/attendance_login', ['uses' => 'AttendanceController@process_task_login']);
+
+
+    Route::group(['middleware' => ['adminview']], function ()
+    {
+        Route::get('/attendance_list', ['uses' => 'AttendanceController@attendance_list']);
+
+        Route::post('/attendance_list', 'AttendanceController@searchlist');
+
+        Route::get('task_view/{id}', ['uses' => 'AttendanceController@task_view']);
+    });
+
+
 });
     Route::group(['middleware' => ['adminview']], function ()
 {

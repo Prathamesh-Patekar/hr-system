@@ -109,6 +109,18 @@ function getEmployeeDropDown()
     return $data;
 }
 
+function getAttendDropDown()
+{
+    $data = [
+
+        "" => "Select",
+        'name' => 'Name',
+        'department' => 'Department',
+       
+    ];
+    return $data;
+}
+
 
 function getLeaveColumns()
 {

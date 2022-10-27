@@ -320,6 +320,7 @@ class LeaveController extends Controller {
 			$dateFrom = $request->dateFrom;
 
 			$data = ['name' => 'users.name', 'code' => 'employees.code', 'days' => 'employee_leaves.days', 'leave_type' => 'leave_types.leave_type', 'status' => 'employee_leaves.status'];
+			
 
 			if ($request->button == 'Search') {
 				/**

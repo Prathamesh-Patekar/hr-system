@@ -20,7 +20,7 @@ class Adminview
         {
             $userRole= \Auth::user()->employee->userrole->role_id;
 
-            if($userRole == '1')
+            if($userRole == '1' || $userRole == '7')
             {
                 return $next($request);
             }
