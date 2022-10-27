@@ -18,7 +18,8 @@ class AssetController extends Controller
      */
     public function addAsset()
     {
-        return view('hrms.asset.add_asset');
+        $emps = User::get();
+        return view('hrms.asset.add_asset', compact('emps'));
     }
 
     /**

@@ -100,6 +100,8 @@ class EmpController extends Controller {
 		
 		$emp->photo = $filename;
 		$emp->name = $request->emp_name;
+		$emp->mname = $request->mname;
+		$emp->lname = $request->mname;
 		$emp->personal_email = $request->personal_email;
 		$emp->code = $request->emp_code;
 		$emp->status = $request->emp_status;
@@ -107,7 +109,10 @@ class EmpController extends Controller {
 		$emp->date_of_birth = date_format(date_create($request->dob), 'Y-m-d');
 		$emp->date_of_joining = date_format(date_create($request->doj), 'Y-m-d');
 		$emp->number = $request->number;
+		$emp->mnumber_two = $request->mnumber_two;
 		$emp->qualification = $request->qualification;
+		$emp->emerg_name = $request->emerg_name;
+		$emp->emerg_rel = $request->emerg_rel;
 		$emp->emergency_number = $request->emergency_number;
 		$emp->pan_number = $request->pan_number;
 		$emp->aadhar_number = $request->aadhar_number;
@@ -179,6 +184,8 @@ class EmpController extends Controller {
 
 		$photo = $filename;
 		$emp_name = $request->emp_name;
+		$mname = $request->mname;
+		$lname = $request->lname;
 		$emp_code = $request->emp_code;
 		$emp_email = $request->emp_email;
 		$personal_email = $request->personal_email;
@@ -194,7 +201,11 @@ class EmpController extends Controller {
 		$dob = date_format(date_create($request->date_of_birth), 'Y-m-d');
 		$doj = date_format(date_create($request->date_of_joining), 'Y-m-d');
 		$mob_number = $request->number;
+		$mnumber_two = $request->mnumber_two;
 		$qualification = $request->qualification;
+		$emerg_name = $request->emerg_name;
+		$emerg_rel = $request->emerg_rel;
+
 		$emer_number = $request->emergency_number;
 		$pan_number = $request->pan_number;
 		$aadhar_number = $request->aadhar_number;
@@ -226,6 +237,12 @@ class EmpController extends Controller {
 		if (!empty($emp_name)) {
 			$edit->name = $emp_name;
 		}
+		if (!empty($mname)) {
+			$edit->mname = $mname;
+		}
+		if (!empty($lname)) {
+			$edit->lname = $lname;
+		}
 		if (!empty($personal_email)) {
 			$edit->personal_email = $personal_email;
 		}
@@ -252,8 +269,17 @@ class EmpController extends Controller {
 		if (!empty($mob_number)) {
 			$edit->number = $mob_number;
 		}
+		if (!empty($mnumber_two)) {
+			$edit->mnumber_two = $mnumber_two;
+		}
 		if (!empty($qualification)) {
 			$edit->qualification = $qualification;
+		}
+		if (!empty($emerg_rel)) {
+			$edit->emerg_rel = $emerg_rel;
+		}
+		if (!empty($emerg_name)) {
+			$edit->emerg_name = $emerg_name;
 		}
 		if (!empty($emer_number)) {
 			$edit->emergency_number = $emer_number;
@@ -339,8 +365,8 @@ class EmpController extends Controller {
 		/* try {*/
 		foreach ($files as $file) {
 			Excel::load($file, function ($reader) {
-				$rows =$reader->get( ['role','email','personal_email','code','name','status','gender','date_of_birth','date_of_joining','mobile_number','qualification',
-				'pan_number','aadhar_number','father_name','emergency_number','current_address','permanent_address','formalities','offer_acceptance',
+				$rows =$reader->get( ['role','email','personal_email','code','first_name','middle_name','last_name','status','gender','date_of_birth','date_of_joining','mobile_number','alt_mobile_number','qualification',
+				'pan_number','aadhar_number','father_name','emergency_number','emerg_name','emerg_rel','current_address','permanent_address','formalities','offer_acceptance',
 				'probation_period','date_of_confirmation','department',
 				'salary','account_number', 'bank_name','ifsc_code','pf_account_number','un_number','esic_number',
 				'pf_status']);
@@ -350,7 +376,9 @@ class EmpController extends Controller {
 					if (Employee::where('code', '=', $row->code)->exists()) {
 						$emp = Employee::where('code', '=', $row->code)->first();
 						$id=  $emp->user_id;
-						$emp_name = $row->name;
+						$emp_name = $row->first_name;
+						$middle_name = $row->middle_name;
+						$last_name = $row->last_name;
 						$emp_code = $row->code;
 						$emp_email = $row->email;
 						$personal_email = $row->personal_email;
@@ -362,7 +390,10 @@ class EmpController extends Controller {
 						$dob = date_format(date_create($row->date_of_birth), 'Y-m-d');
 						$doj = date_format(date_create($row->date_of_joining), 'Y-m-d');
 						$mob_number = $row->mobile_number;
+						$alt_mobile_number = $row->alt_mobile_number;
 						$qualification = $row->qualification;
+						$emerg_name = $row->emerg_name;
+						$emerg_rel = $row->emerg_rel;
 						$emer_number = $row->emergency_number;
 						$pan_number = $row->pan_number;
 						$aadhar_number = $row->aadhar_number;
@@ -409,6 +440,11 @@ class EmpController extends Controller {
 						if (!empty($emp_name)) {
 							$edit->name = $emp_name;
 						}
+						if (!empty($middle_name)) {
+							$edit->mname = $middle_name;
+						}if (!empty($last_name)) {
+							$edit->lname = $last_name;
+						}
 						if (!empty($personal_email)) {
 							$edit->personal_email = $personal_email;
 						}
@@ -435,8 +471,16 @@ class EmpController extends Controller {
 						if (!empty($mob_number)) {
 							$edit->number = $mob_number;
 						}
+						if (!empty($alt_mobile_number)) {
+							$edit->mnumber_two = $alt_mobile_number;
+						}
 						if (!empty($qualification)) {
 							$edit->qualification = $qualification;
+						}
+						if (!empty($emerg_name)) {
+							$edit->emerg_name = $emerg_name;
+						}	if (!empty($emerg_rel)) {
+							$edit->emerg_rel = $emerg_rel;
 						}
 						if (!empty($emer_number)) {
 							$edit->emergency_number = $emer_number;
@@ -506,7 +550,10 @@ class EmpController extends Controller {
 						$user->save();
 						$emp = new Employee;
 						// $emp->photo = $filename;
-						$emp->name = $row->name;
+						$emp->name = $row->first_name;
+						$emp->mname = $row->middle_name;
+						$emp->lname = $row->last_name;
+
 						$emp->personal_email = $row->personal_email;
 						$emp->code = $row->code;
 						$emp->status = $row->status;
@@ -514,7 +561,10 @@ class EmpController extends Controller {
 						$emp->date_of_birth = date_format(date_create($row->dob), 'Y-m-d');
 						$emp->date_of_joining = date_format(date_create($row->doj), 'Y-m-d');
 						$emp->number = $row->mobile_number;
+						$emp->mnumber_two = $row->alt_mobile_number;
 						$emp->qualification = $row->qualification;
+						$emp->emerg_name = $row->emerg_name;
+						$emp->emerg_rel = $row->emerg_rel;
 						$emp->emergency_number = $row->emergency_number;
 						$emp->pan_number = $row->pan_number;
 						$emp->aadhar_number = $row->aadhar_number;
@@ -596,8 +646,8 @@ class EmpController extends Controller {
 			$file = new \SplFileObject($filePath, "a");
 			// Add header to csv file.
 			// $headers = ['id','email','photo', 'code', 'name', 'status', 'gender', 'date_of_birth', 'date_of_joining', 'number', 'qualification', 'emergency_number', 'pan_number', 'father_name', 'current_address', 'permanent_address', 'formalities', 'offer_acceptance', 'probation_period', 'date_of_confirmation', 'department', 'salary', 'account_number', 'bank_name', 'ifsc_code', 'pf_account_number', 'un_number', 'pf_status', 'user_id', 'created_at', 'updated_at'];
-			$headers = ['User id',' Employee id','role','photo','email','personal_email','code','name','status','gender','date_of_birth','date_of_joining','number','qualification',
-			'pan_number','aadhar_number','father_name','emergency_number','current_address','permanent_address','formalities','offer_acceptance',
+			$headers = ['User id',' Employee id','role','photo','email','personal_email','code','first_name','middle_name','last_name','status','gender','date_of_birth','date_of_joining','number','alt_mobile_number','qualification',
+			'pan_number','aadhar_number','father_name','emerg_name','emerg_rel','emergency_number','current_address','permanent_address','formalities','offer_acceptance',
 			'probation_period','date_of_confirmation','department',
 			'salary','account_number', 'bank_name','ifsc_code','pf_account_number','un_number','esic_number',
 			'pf_status','created_at','updated_at'];
@@ -617,15 +667,20 @@ class EmpController extends Controller {
 					$emp->employee->personal_email,
 					$emp->employee->code,
 					$emp->employee->name,
+					$emp->employee->mname,
+					$emp->employee->lname,
 					getSatus($emp->employee->status),
 					getGender($emp->employee->gender),
 					$emp->employee->date_of_birth,
 					$emp->employee->date_of_joining,
 					$emp->employee->number,
+					$emp->employee->mnumber_two,
 					$emp->employee->qualification,
 					$emp->employee->pan_number,
 					$emp->employee->aadhar_number,
 					$emp->employee->father_name,
+					$emp->employee->emerg_name,
+					$emp->employee->emerg_rel,
 					$emp->employee->emergency_number,
 					$emp->employee->current_address,
 					$emp->employee->permanent_address,

@@ -108,6 +108,15 @@ function getEmployeeDropDown()
     ];
     return $data;
 }
+function getHolidayDropDown()
+{
+    $data = [
+
+        "" => "Select",
+        'occasion'=> 'Occasion',
+    ];
+    return $data;
+}
 
 
 function getLeaveColumns()

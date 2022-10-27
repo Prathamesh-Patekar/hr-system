@@ -457,12 +457,59 @@ class LeaveController extends Controller {
 		$filenames = HolidayFilenames::get();
 		return view('hrms.leave.holiday', compact('holidays', 'filenames'));
 	}
+	
 
 	/**
 	 * @param Request $request
 	 *
 	 * @return \Illuminate\Http\RedirectResponse
 	 */
+	// public function processHolidays(Request $request) {
+	// 	try
+	// 	{
+	// 		if (Input::hasFile('upload_file')) {
+	// 			$file = Input::file('upload_file');
+	// 			$allowedext = ["xlsx", "xls"];
+	// 			$extension = $file->getClientOriginalExtension();
+	// 			$filename = $file->getClientOriginalName();
+	// 			if (in_array($extension, $allowedext)) {
+
+	// 				//move this file to storage path
+	// 				$file->move(storage_path('holidays/'), $filename);
+	// 				$holiday = new HolidayFilenames();
+	// 				$holiday->name = $filename;
+	// 				$holiday->description = $request->description;
+	// 				$holiday->date = date_format(date_create($request->date), 'Y-m-d');
+	// 				$holiday->save();
+	// 				\Session::flash('flash_message', 'Holidays successfully added');
+	// 				return redirect()->back();
+	// 			} else {
+	// 				\Session::flash('flash_message', 'Please upload only excel files with xls or xlsx extension');
+	// 				return redirect()->back();
+	// 			}
+
+	// 			Excel::load(storage_path('holidays/' . $filename), function ($reader) {
+	// 				$rows = $reader->get(['occasion', 'date']);
+
+	// 				foreach ($rows as $row) {
+	// 					$holiday = new Holiday();
+	// 					$holiday->occasion = $row->occasion;
+	// 					$holiday->date_from = $row->date;
+	// 					$holiday->save();
+	// 				}
+	// 				\Session::flash('flash_message', 'Holidays successfullyy added');
+	// 				return redirect()->back();
+	// 			});
+	// 		}
+	// 	} catch (\Exception $e) {
+	// 		\Log::info($e->getMessage());
+	// 		\Log::info($e->getLine());
+	// 		return redirect()->back()->with('flash_message', $e->getMessage());
+	// 	}
+	// }
+
+	//addholiday via sheet
+
 	public function processHolidays(Request $request) {
 		try
 		{
@@ -481,6 +528,7 @@ class LeaveController extends Controller {
 					$holiday->description = $request->description;
 					$holiday->date = date_format(date_create($request->date), 'Y-m-d');
 					$holiday->save();
+					
 
 				} else {
 					\Session::flash('flash_message', 'Please upload only excel files with xls or xlsx extension');
@@ -489,17 +537,17 @@ class LeaveController extends Controller {
 				}
 
 				Excel::load(storage_path('holidays/' . $filename), function ($reader) {
-					$rows = $reader->get(['occasion', 'date_from', 'date_to']);
+					$rows = $reader->get(['occasion', 'date']);
 
 					foreach ($rows as $row) {
 						$holiday = new Holiday();
 						$holiday->occasion = $row->occasion;
-						$holiday->date_from = $row->date_from;
-						$holiday->date_to = $row->date_to;
+						$holiday->date_from = $row->date;
 						$holiday->save();
 					}
-					return redirect()->back()->with('flash_message', 'Holidays successfully added');
+				
 				});
+				return redirect()->back()->with('flash_message', 'Holidays successfully added');
 			}
 		} catch (\Exception $e) {
 			\Log::info($e->getMessage());
@@ -508,12 +556,28 @@ class LeaveController extends Controller {
 		}
 	}
 
+
 	public function showHoliday() {
 
 		$holidays = Holiday::paginate(10);
-		return view('hrms.leave.show_holiday', compact('holidays'));
+		$column = '';
+		$string = '';
+		return view('hrms.leave.show_holiday', compact('holidays', 'column', 'string'));
 	}
 
+	//addholiday maually
+
+	public function addHolidays() {
+		return view('hrms.leave.add_holiday');
+	}
+	public function addHoliday(Request $request) {
+		$holiday = new Holiday();
+		$holiday->occasion = $request->description;
+		$holiday->date_from = date_format(date_create($request->date), 'Y-m-d');
+		$holiday->save();
+		\Session::flash('flash_message', 'Holiday successfully updated!');
+		return redirect('holiday-listing');
+	}
 	public function showEditHoliday($id) {
 		$holidays = Holiday::where('id', $id)->first();
 		return view('hrms.leave.edit_holiday', compact('holidays'));
@@ -537,5 +601,44 @@ class LeaveController extends Controller {
 
 		\Session::flash('flash_message', 'Holiday successfully deleted!');
 		return redirect('holiday-listing');
+	}
+	public function searchHoliday(Request $request) {
+		$string = $request->string;
+		$column = $request->column;
+		\Log::info($string);
+		\Log::info($column);
+
+
+		if ($request->button == 'Search') {
+			if ($string == '' && $column == '') {
+				\Session::flash('success', ' Employee details uploaded successfully.');
+				return redirect()->to('holiday-listing');
+			} elseif ($string != '' && $column == '') {
+				\Session::flash('failed', ' Please select category.');
+				return redirect()->to('holiday-listing');
+			} elseif ($column == 'occasion') { 
+				$holidays = Holiday::where('occasion', 'like', "%$string%")->paginate(20);
+			} else {
+				$holidays = Holiday::where( function ($q) use ($column, $string) {
+					$q->whereRaw($column . " like '%" . $string . "%'");
+				}
+				)->with('employee')->paginate(20);
+			}
+
+			return view('hrms.leave.show_holiday', compact('holidays', 'column', 'string'));
+		} 
+		// else {
+		// 	if ($column == '') {
+		// 		$emps = User::with('employee' , 'role.role')->get();
+		// 	} elseif ($column == 'email') {
+		// 		$emps = Holiday::with('employee' , 'role.role')->where($request->column, $request->string)->paginate(20);
+		// 	} else {
+		// 		$emps = Holiday::whereHas('employee', function ($q) use ($column, $string) {
+		// 			$q->whereRaw($column . " like '%" . $string . "%'");
+		// 		}
+		// 		)->0000000with('employee','role.role')->get();
+		// 	}
+
+		// }e
 	}
 }

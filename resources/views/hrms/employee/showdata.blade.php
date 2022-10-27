@@ -7,9 +7,7 @@
     <div>   
         <div class="panel-heading">
          <strong> <span class="panel-title"><b> Personal Details</b></span></strong> 
-        </div>
-        
-                     
+        </div>           
         <table class="table">
             <tbody>
                 <tr>
@@ -21,8 +19,20 @@
                 <tr>
                     <td style="width: 10px" class="text-center">
                     </td>
-                    <td><strong>Name</strong></td>
+                    <td><strong>First Name</strong></td>
                     <td>{{ $emps->employee->name}}</td>
+                </tr> 
+                <tr>
+                    <td style="width: 10px" class="text-center">
+                    </td>
+                    <td><strong>Middle Name</strong></td>
+                    <td>{{ $emps->employee->mname}}</td>
+                </tr>
+                <tr>
+                    <td style="width: 10px" class="text-center">
+                    </td>
+                    <td><strong>Last Name</strong></td>
+                    <td>{{ $emps->employee->lname}}</td>
                 </tr>
                 <tr>
                     <td class="text-center"></td>
@@ -49,6 +59,12 @@
                     </td>
                     <td><strong>Mobile Number</strong></td>
                     <td>{{$emps->employee->number}}</td>
+                </tr>
+                <tr>
+                    <td style="width: 10px" class="text-center">
+                    </td>
+                    <td><strong>Alternative Mobile Number</strong></td>
+                    <td>{{$emps->employee->mnumber_two}}</td>
                 </tr>
            
                 <tr>
@@ -100,6 +116,19 @@
                     <td><strong>Father's Name</strong></td>
                     <td>{{$emps->employee->father_name}}</td>
                 </tr>
+                <tr>
+                    <td style="width: 10px" class="text-center">
+                    </td>
+                    <td><strong>Emergency Contact Person Name </strong></td>
+                    <td>{{$emps->employee->emerg_name}}</td>
+                </tr>
+                <tr>
+                    <td style="width: 10px" class="text-center">
+                    </td>
+                    <td><strong>Emergency Contact Person Relation</strong></td>
+                    <td>{{$emps->employee->emerg_rel}}</td>
+                </tr>
+            
                 <tr>
                     <td style="width: 10px" class="text-center">
                     </td>

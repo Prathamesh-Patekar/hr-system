@@ -319,9 +319,13 @@
                 <span class="caret"></span>
             </a>
             <ul class="nav sub-nav">
-                <li>
-                    <a href="/add-holidays">
+            <li>
+                    <a href="/add-holiday">
                         <span class="glyphicon glyphicon-book"></span> Add Holiday </a>
+                </li>
+                <li>
+                    <a href="/upload-holidays">
+                        <span class="glyphicon glyphicon-book"></span> Upload Holiday Sheet </a>
                 </li>
                 <li>
                     <a href="/holiday-listing">
