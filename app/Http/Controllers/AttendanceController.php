@@ -349,8 +349,8 @@
           
           foreach ($list as $leave) {
 
-            $t1 = Carbon::createFromFormat('H:s:i',$leave->in_time);
-            $t2 = Carbon::createFromFormat('H:s:i', $leave->out_time);
+            $t1 = Carbon::createFromFormat('H:i:s',$leave->in_time);
+            $t2 = Carbon::createFromFormat('H:i:s', $leave->out_time);
             $diff = $t1->diff($t2);
             $hours = $diff->h." Hours";
             $min = $diff->i." min";
@@ -380,8 +380,8 @@
       
       if($intime !="" && $outtime!=""){
 
-        $t1 = Carbon::createFromFormat('H:s:i',$intime);
-        $t2 = Carbon::createFromFormat('H:s:i', $outtime);
+        $t1 = Carbon::createFromFormat('H:i:s',$intime);
+        $t2 = Carbon::createFromFormat('H:i:s', $outtime);
        
         $diff = $t1->diff($t2);
 

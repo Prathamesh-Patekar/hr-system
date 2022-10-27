@@ -64,7 +64,8 @@
                                     @if($out != "out")
                                         <div class="section">
                                             <label for="task" class="field prepend-icon"> <h6 > Task </h6> </label>
-                                            <input type="text" class="gui-input" name="task" placeholder="Task" required>
+                                            <textarea type="text" class="select2-single form-control"  rows="3" name="task" placeholder="Task" required></textarea>
+
                                         </div>
                                     
                                         <?php $late = '11:00:00';
@@ -74,7 +75,7 @@
 
                                             <div class="section">
                                                 <label for="reason_box" class="field prepend-icon"> <h6 > Reason Box </h6> </label>
-                                                <input type="text" class="gui-input" name="reason" placeholder="Reason" required>
+                                                <textarea type="text" class="select2-single form-control" rows="3" name="reason" placeholder="Reason" required></textarea>
                                             </div>
                                         @endif
                                 
@@ -86,7 +87,7 @@
                                     @else
                                         <div class="section">
                                             <label for="task" class="field prepend-icon"> <h6 > Task </h6> </label>
-                                            <input type="text" class="gui-input" name="task1" placeholder="Task" required>
+                                            <textarea type="text"class="select2-single form-control"  rows="3" name="task1" placeholder="Task" required></textarea>
                                         </div>
 
                                         <div class="section">
