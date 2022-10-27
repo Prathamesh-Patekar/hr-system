@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
+use App\User;
+use App\Models\Role;
+use App\Models\UserRole;
 use App\Models\Event;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -15,8 +18,18 @@ class ProfileController extends Controller
 
         $details = Employee::where('user_id', \Auth::user()->id)->with('userrole.role')->first();
         $events = $this->convertToArray(Event::where('date', '>', Carbon::now())->orderBy('date','desc')->take(3)->get());
-        return view('hrms.profile', compact('details','events'));
+        $emps = User::with('employee', 'role.role');
+        return view('hrms.profile', compact('details','events','emps'));
     }
+    public function showData($id){
+        $find= Employee::find($id);
+		$emps = User::where('id', $id)->with('employee', 'role.role')->find($id);
+        // $emp=get_class_methods($emps);
+        // return $emps;
+        return view('hrms.employee.showdata', compact('find','emps'));
+
+    }
+
     public function convertToArray($values)
     {
         $result = [];

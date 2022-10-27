@@ -47,6 +47,8 @@ Route::group(['middleware' => ['auth']], function ()
     Route::get('dashboard', ['as' => 'dashboard', 'uses' => 'AuthController@dashboard']);
 
     Route::get('profile', 'ProfileController@show');
+    Route::get('showdata/{id}', 'ProfileController@showData');
+
 
     //Routes for add-employees
 
@@ -333,7 +335,11 @@ Route::group(['middleware' => ['auth']], function ()
 
     Route::post('edit-project-assignment/{id}', ['as' => 'edit-project-assignment', 'uses' => 'ProjectController@doEditAssign']);
 
+   
     Route::get('delete-project-assignment/{id}', ['as' => 'delete-project-assignment', 'uses' => 'ProjectController@doDeleteAssign']);
+  
+    Route::get('search-empcode',  ['uses' => 'EmpController@search_empcode'])->name('/search-empcode');
+    Route::get('search-empemail',  ['uses' => 'EmpController@search_empemail'])->name('/search-empemail');
 
 
     Route::get('form/{key}', [ 'as' => 'form','uses' => 'ResignController@form_table']);

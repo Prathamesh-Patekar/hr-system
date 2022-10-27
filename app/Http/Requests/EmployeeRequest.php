@@ -24,7 +24,6 @@ class EmployeeRequest extends Request
     public function rules()
     {
         return [
-            'full_final' => 'required',
             'emp_code' => 'required',
             'emp_name' => 'required',
             'emp_status' => 'required',

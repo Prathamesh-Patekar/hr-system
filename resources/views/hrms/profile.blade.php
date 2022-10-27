@@ -11,20 +11,27 @@
                     <div class="panel">
                         <div class="panel-heading text-center">
                             <span class="panel-title">{{isset($details->name)?$details->name:''}}</span>
-                        </div>
+                            
+                        </div>               
                         <div class="panel-body pn pb5 text-center">
                             <hr class="short br-lighter">
-                            <img src="{{isset($details->photo) ? $details->photo : '/assets/img/avatars/profile_pic.png'}}" width="80px" height="80px" class="img-circle img-thumbnail" alt="User Image">
-
+                            @if(isset(Auth::user()->employee->photo))
+                                <img src="{{asset('photos/'.Auth::user()->employee->photo)}}" width="80px" height="80px" class="img-circle img-thumbnail" alt="User Image" >
+                            @else
+                                <img src="/assets/img/avatars/profile_pic.png" class="img-responsive">
+                            @endif
                         </div>
+                     
+                      @foreach($emps as $emp)
+                      <p>{{isset($emp->role->role->name)?$emp->role->role->name:''}}</p>
+                      @endforeach
+                      
                         <p class="text-center no-margin">{{isset($details->userrole->role->name)?$details->userrole->role->name:''}}</p>
                         <p class="small text-center no-margin"><span class="text-muted">Department:</span> {{isset($details->department) ? $details->department:'' }}</p>
                         <p class="small text-center no-margin"><span class="text-muted">Employee ID:</span> {{isset($details->code) ? $details->code:''}}</p>
-
-
                     </div>
                 </div>
-
+              
                 <div class="box box-success">
                     <div class="panel">
                         <div class="panel-heading">
@@ -40,13 +47,6 @@
                                         <td style="width: 10px" class="text-center"><i class="fa fa-credit-card"></i></td>
                                         <td><strong>Account Number</strong></td>
                                         <td>{{isset($details->account_number) ? $details->account_number:''}}</td>
-
-                                    </tr>
-                                    <tr>
-
-                                        <td style="width: 10px" class="text-center"><i class="fa fa-tags"></i></td>
-                                        <td><strong>Pf Account Number</strong></td>
-                                        <td>{{isset($details->pf_account_number) ? $details->pf_account_number:''}}</td>
                                     </tr>
                                     <tr>
                                         <td style="width: 10px" class="text-center"><i class="fa fa-bank"></i></td>
@@ -60,8 +60,25 @@
                                     </tr>
                                     <tr>
                                         <td style="width: 10px" class="text-center"><i class="fa fa-tags"></i></td>
+                                        <td><strong>Pf Account Number</strong></td>
+                                        <td>{{isset($details->pf_account_number) ? $details->pf_account_number:''}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center"><i class="fa fa-calendar"></i></td>
+                                        <td><strong> PF Status</strong></td>
+                                        <td>{{getPfStatus($details->pf_status)}}</td>
+                                    </tr>
+                                   
+                                    <tr>
+                                        <td style="width: 10px" class="text-center"><i class="fa fa-tags"></i></td>
                                         <td><strong>Un Number</strong></td>
                                         <td>{{isset($details->un_number) ? $details->un_number:''}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 10px" class="text-center"><i class="fa fa-tags"></i>
+                                        </td>
+                                        <td><strong>ESIC Number</strong></td>
+                                        <td>{{isset($details->esic_number) ? $details->esic_number:''}}</td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -72,6 +89,7 @@
                     </div>
                 </div>
             </div>
+          
 
             <div class="col-md-5">
                 <div class="box box-success">
@@ -101,16 +119,56 @@
                                         <td>{{getGender($details->gender)}}</td>
                                     </tr>
                                     <tr>
+                                        <td style="width: 10px" class="text-center"><i class="fa fa-mobile-phone"></i>
+                                        </td>
+                                        <td><strong>Cellphone</strong></td>
+                                        <td>{{isset($details->number)? $details->number:''}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 10px" class="text-center"><i class="fa fa-envelope-o"></i>
+                                        </td>
+                                        <td><strong>Employee Work Email</strong></td>
+                                        <td>{{isset($details->email)?$details->email:''}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 10px" class="text-center"><i class="fa fa-envelope-o"></i>
+                                        </td>
+                                        <td><strong>Employee Personal Email</strong></td>
+                                        <td>{{isset($details->personal_email)?$details->personal_email:''}}</td>
+                                    </tr>
+                                    
+                                  
+                                    
+                                    <tr>
                                         <td style="width: 10px" class="text-center"><i class="fa fa-envelope-o"></i>
                                         </td>
                                         <td><strong>Father's Name</strong></td>
                                         <td>{{isset($details->father_name)? $details->father_name:''}}</td>
                                     </tr>
                                     <tr>
-                                        <td style="width: 10px" class="text-center"><i class="fa fa-mobile-phone"></i>
+                                        <td style="width: 10px" class="text-center"><i class="fa fa-envelope-o"></i>
                                         </td>
-                                        <td><strong>Cellphone</strong></td>
-                                        <td>{{isset($details->number)? $details->number:''}}</td>
+                                        <td><strong>Emergency Number</strong></td>
+                                        <td>{{isset($details->emergency_number)? $details->emergency_number:''}}</td>
+                                    </tr>
+                                   
+                                    <tr>
+                                        <td style="width: 10px" class="text-center"><i class="fa fa-map-marker"></i>
+                                        </td>
+                                        <td><strong>Qualification</strong></td>
+                                        <td>{{isset($details->qualification) ? $details->qualification:''}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 10px" class="text-center"><i class="fa fa-map-marker"></i>
+                                        </td>
+                                        <td><strong>AADHAR Number</strong></td>
+                                        <td>{{isset($details->aadhar_number) ? $details->aadhar_number:''}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 10px" class="text-center"><i class="fa fa-map-marker"></i>
+                                        </td>
+                                        <td><strong>PAN Number</strong></td>
+                                        <td>{{isset($details->pan_number) ? $details->pan_number:''}}</td>
                                     </tr>
                                     <tr>
                                         <td style="width: 10px" class="text-center"><i class="fa fa-map-marker"></i>
@@ -141,6 +199,7 @@
 
                 </div>
             </div>
+        
 
             <div class="col-md-3 pull-right">
                 <div class="small-box bg-black">
@@ -200,14 +259,26 @@
                                         <td>{{$details->code}}</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center"><i class="fa fa-briefcase"></i></td>
-                                        <td><strong>Department</strong></td>
-                                        <td>{{$details->department}}</td>
+                                        <td style="width: 10px" class="text-center"><i class="fa fa-genderless"></i>
+                                        </td>
+                                        <td><strong>Employee status</strong></td>
+                                        <td>{{getSatus($details->status)}}</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center"><i class="fa fa-cubes"></i></td>
-                                        <td><strong>Designation</strong></td>
-                                        <td>{{$details->userrole->role->name}}</td>
+                                        <td class="text-center"><i class="fa fa-calendar"></i></td>
+                                        <td><strong>Joining Formalities</strong></td>
+                                        <td>{{getFormality($details->formalities)}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center"><i class="fa fa-calendar"></i></td>
+                                        <td><strong>Offer Acceptance</strong></td>
+                                        <td>{{getOffer($details->formalities)}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 10px" class="text-center"><i class="fa fa-genderless"></i>
+                                        </td>
+                                        <td><strong>Probation Period</strong></td>
+                                        <td>{{isset($details->probation_period) ? $details->probation_period:''}}</td>
                                     </tr>
                                     <tr>
                                         <td class="text-center"><i class="fa fa-calendar"></i></td>
@@ -219,6 +290,17 @@
                                         <td><strong>Date Confirmed</strong></td>
                                         <td>{{$details->date_of_confirmation}}</td>
                                     </tr>
+                                    <tr>
+                                        <td class="text-center"><i class="fa fa-briefcase"></i></td>
+                                        <td><strong>Department</strong></td>
+                                        <td>{{$details->department}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center"><i class="fa fa-cubes"></i></td>
+                                        <td><strong>Designation</strong></td>
+                                        <td>{{isset($details->userrole->role->name)?$details->userrole->role->name:''}}</td>
+                                    </tr>
+                                    
                                     <tr>
                                         <td class="text-center"><i class="fa fa-credit-card"></i></td>
                                         <td><strong>Salary</strong></td>
@@ -239,7 +321,7 @@
         </div>
 
     </section>
-
+    
 @endsection
 <script type="text/javascript">
     function startTime() {
