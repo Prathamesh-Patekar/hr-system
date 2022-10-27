@@ -372,18 +372,24 @@
     function task_view($id)
     {
       $data = Attendance_management::with('employee')->where('id', $id)->get();
+     
       foreach($data as $values){
         $intime = $values->in_time;
         $outtime = $values->out_time;
       }
+      
+      if($intime !="" && $outtime!=""){
 
-     
-      $t1 = Carbon::createFromFormat('H:s:i',$intime);
-      $t2 = Carbon::createFromFormat('H:s:i', $outtime);
-     
-      $diff = $t1->diff($t2);
-  
+        $t1 = Carbon::createFromFormat('H:s:i',$intime);
+        $t2 = Carbon::createFromFormat('H:s:i', $outtime);
+       
+        $diff = $t1->diff($t2);
 
+      }else{
+        $diff = "";
+      }
+     
+     
       return view('hrms.attendance.show_tasks', ['data'=>$data, 'diff'=>$diff]);
 
     }

@@ -78,6 +78,7 @@
                                     <label>In Time : </label>
                                     {{ $value->in_time }}
                                 </div>
+                                @if($value->out_date != "")
                                 <div>
                                     <label>Out Date : </label>
                                     {{date('d-m-Y', strtotime($value->out_date))}}
@@ -90,6 +91,7 @@
                                     <label>Worked time : </label>
                                     {{ $diff->h }} hours {{ $diff->i }} minutes {{$diff->s}} seconds
                                 </div>
+                                @endif
                            
                                 @endforeach
                            </div>
