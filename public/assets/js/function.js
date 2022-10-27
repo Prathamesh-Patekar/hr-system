@@ -560,3 +560,24 @@ $('#code').blur(function(){
     });
 });
 
+
+$('#program').on('click',function(){
+    var value  = $(this).val();
+    console.log(value);
+    $.ajax({
+        url:"/search_program",
+        type:"GET",
+        data:{'name':value},
+        success: function(data){
+            console.log(data);
+            var obj = jQuery.parseJSON(data);
+            console.log(obj.date_from);
+            $("#description").val(obj.description);
+            $("#datepicker1").val(obj.date_from);
+            $("#datepicker4").val(obj.date_to);
+
+        }
+    });
+    
+});
+

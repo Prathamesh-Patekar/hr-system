@@ -288,6 +288,8 @@ Route::group(['middleware' => ['auth']], function ()
 
     Route::get('post/{id}', 'UpdateController@post');
 
+    Route::get('/search_program',['uses'=>'TrainingController@search_program'])->name('search');
+
     /** Routes for clients **/
     Route::get('add-client', 'ClientController@addClient')->name('add-client');
 

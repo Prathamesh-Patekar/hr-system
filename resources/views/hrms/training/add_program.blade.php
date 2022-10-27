@@ -63,6 +63,31 @@
 
 
                                         <div class="form-group">
+                                                <label for="datepicker1" class="col-md-3 control-label"> Date From </label>
+                                                <div class="col-md-6">
+                                                    <div class="input-group">
+                                                        <div class="input-group-addon">
+                                                            <i class="fa fa-calendar text-alert pr11"></i>
+                                                        </div>
+                                                        <input type="text" id="datepicker1" value="" class="select2-single form-control" name="date_from" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="datepicker4" class="col-md-3 control-label"> Date To </label>
+                                                <div class="col-md-6">
+                                                    <div class="input-group">
+                                                        <div class="input-group-addon">
+                                                            <i class="fa fa-calendar text-alert pr11"></i>
+                                                        </div>
+                                                        <input type="text" id="datepicker4" value="" class="select2-single form-control" name="date_to" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                        <div class="form-group">
                                             <label class="col-md-3 control-label"></label>
                                             <div class="col-md-2">
 
@@ -72,6 +97,8 @@
                                             <div class="col-md-2"><a href="/add-training-program" >
                                                     <input type="button" class="btn btn-bordered btn-success btn-block" value="Reset"></a></div>
                                         </div>
+
+                                        
                                     </div>
                                     {!! Form::close() !!}
                                 </div>

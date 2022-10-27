@@ -19,6 +19,8 @@ class TrainingController extends Controller
        $programs = new TrainingProgram();
        $programs->name = $request->name;
        $programs->description = $request->description;
+       $programs->date_from = $request->date_from;
+       $programs->date_to = $request->date_to;
        $programs->save();
 
         \Session::flash('flash_message', 'Training Program successfully added!');
@@ -40,6 +42,8 @@ class TrainingController extends Controller
     public function processEditTrainingProgram($id,Request $request){
         $name = $request->name;
         $description = $request->description;
+        $date_from = $request->date_from;
+        $date_to = $request->date_to;
 
         $edit = TrainingProgram::findOrFail($id);
         if (!empty($name)) {
@@ -47,6 +51,12 @@ class TrainingController extends Controller
         }
         if (!empty($description)) {
             $edit->description = $description;
+        }
+        if (!empty($description)) {
+            $edit->date_from = $date_from;
+        }
+        if (!empty($description)) {
+            $edit->date_to = $date_to;
         }
         $edit->save();
 
@@ -140,4 +150,15 @@ class TrainingController extends Controller
             return redirect('show-training-invite');
     }
 
+    public function search_program(Request $request){
+
+        $training_id = $request->name;
+        $data = TrainingProgram::where('id',$training_id)->first();
+
+        
+            return json_encode(array("description" => $data->description ,"date_from" => $data->date_from, "date_to" => $data->date_to,));
+    
+
+    }
+    
 }

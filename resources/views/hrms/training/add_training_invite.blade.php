@@ -61,7 +61,7 @@
                                             <label class="col-md-3 control-label"> Select Programs </label>
                                             <div class="col-md-6">
                                                 <select class="select2-multiple form-control select-primary"
-                                                        name="program_id" required>
+                                                        name="program_id" id= "program" required>
                                                     <option value="" selected>Select One</option>
                                                     @foreach($programs as $program)
                                                         <option value="{{$program->id}}">{{$program->name}}</option>
@@ -73,7 +73,7 @@
                                             <div class="form-group">
                                                 <label class="col-md-3 control-label"> Description </label>
                                                 <div class="col-md-6">
-                                                    <input type="text" name="description" id="input002" class="select2-single form-control" placeholder="description" required>
+                                                    <input type="text" name="description" id="description" class="select2-single form-control " placeholder="description" value="" required>
                                                 </div>
                                             </div>
 
@@ -130,4 +130,5 @@
     <script src="/assets/js/pages/forms-widgets.js"></script>
     <script src="/assets/js/custom.js"></script>
     <script src="/assets/allcp/forms/js/bootstrap-select.js"></script>
+    <script src="/assets/js/function.js"></script>
 @endpush

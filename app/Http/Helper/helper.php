@@ -109,6 +109,17 @@ function getEmployeeDropDown()
     return $data;
 }
 
+function getTrainingDropDown()
+{
+    $data = [
+
+        "" => "Select",
+        'name' => 'Name',
+        'program' => 'Program'
+    ];
+    return $data;
+}
+
 
 function getLeaveColumns()
 {
