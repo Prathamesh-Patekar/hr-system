@@ -177,6 +177,8 @@ class TrainingController extends Controller
 		$string = $request->string;
 		$column = $request->column;
 
+        $data = ['name' => 'users.name', 'program' => 'training_programs.name'];
+
         $invites = \DB::table('users')->select(
             'users.name', 'training_invites.id','training_programs.name as program_name', 'training_programs.description', 'training_programs.date_from','training_programs.date_to')
            ->join('training_invites', 'users.id', '=', 'training_invites.user_id')
@@ -190,20 +192,45 @@ class TrainingController extends Controller
 				\Session::flash('failed', ' Please select category.');
 				return redirect()->to('show-training-invite');
 			} elseif ($column == 'name') {
-                // $invites = $invites->where($column, 'like', "%$string%")->paginate(20);
-                $invites = $invites->whereRaw($column . " like '%" . $string . "%' ")->paginate(20);
-                return $invites;
-				// $emps = User::with('employee')->where($column, 'like', "%$string%")->paginate(20);
+                $invites = $invites->whereRaw($data[$column] . " like '%" . $string . "%' ")->paginate(20);
+			} elseif ($column == 'program') {
+                $invites = $invites->whereRaw($data[$column] . " like '%" . $string . "%' ")->paginate(20);
 			} else {
-				$invites = TrainingInvite::whereHas('employee', function ($q) use ($column, $string) {
-					$q->whereRaw($column . " like '%" . $string . "%'");
-				}
-				)->with('employee')->paginate(20);
-			}
-
-            return view('hrms.training.show_training_invite',compact('invites' , 'string', 'column'));
-			// return view('hrms.employee.show_emp', compact('emps', 'column', 'string')); 
+                $invites = $invites->paginate(20);
             }
+            return view('hrms.training.show_training_invite',compact('invites' , 'string', 'column'));
+
+        }else{
+
+            if ($string != '' && $column == '') {
+				\Session::flash('failed', ' Please select category.');
+				return redirect()->to('show-training-invite');
+			} elseif ($column == 'name') {
+                $invites = $invites->whereRaw($data[$column] . " like '%" . $string . "%' ")->get();
+			} elseif ($column == 'program') {
+                $invites = $invites->whereRaw($data[$column] . " like '%" . $string . "%' ")->get();			
+            } else {
+                $invites = $invites->get();
+            } 
+
+           
+
+            $fileName = 'Program_Listing_' . rand(1, 1000) . '.csv';
+				$filePath = storage_path('export/') . $fileName;
+				$file = new \SplFileObject($filePath, "a");
+				// Add header to csv file.
+				$headers = ['id', 'name', 'program name', 'description', 'date_from', 'date_to'];
+				$file->fputcsv($headers);
+				$id = 1;
+				foreach ($invites as $invite) {
+					
+					$file->fputcsv([$id, $invite->name, $invite->program_name, $invite->description, $invite->date_from, $invite->date_to ]);
+                    $id+=1;
+				}
+
+				return response()->download(storage_path('export/') . $fileName);
+
+        }
 		
 	}
     
