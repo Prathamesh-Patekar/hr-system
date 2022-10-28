@@ -276,9 +276,9 @@ Route::group(['middleware' => ['auth']], function ()
 
     Route::get('show-training-invite', ['uses'=>'TrainingController@showTrainingInvite']);
 
-    Route::get('edit-training-invite/{id}', ['uses'=>'TrainingController@doEditTrainingInvite']);
+    // Route::get('edit-training-invite/{id}', ['uses'=>'TrainingController@doEditTrainingInvite']);
 
-    Route::post('edit-training-invite/{id}', ['uses'=>'TrainingController@processEditTrainingInvite']);
+    // Route::post('edit-training-invite/{id}', ['uses'=>'TrainingController@processEditTrainingInvite']);
 
     Route::get('delete-training-invite/{id}',['uses'=>'TrainingController@deleteTrainingInvite']);
 

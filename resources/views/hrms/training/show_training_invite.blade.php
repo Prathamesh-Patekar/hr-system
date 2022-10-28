@@ -106,9 +106,7 @@
                                                             <span class="caret ml5"></span>
                                                         </button>
                                                         <ul class="dropdown-menu" role="menu">
-                                                            <li>
-                                                                <a href="/edit-training-invite/{{$invite->id}}">Edit</a>
-                                                            </li>
+                                                           
                                                             <li>
                                                                 <a href="/delete-training-invite/{{$invite->id}}">Delete</a>
                                                             </li>

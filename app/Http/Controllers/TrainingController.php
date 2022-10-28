@@ -105,8 +105,6 @@ class TrainingController extends Controller
                     $invites->user_id = $member_id;
                     $invites->program_id = $request->program_id;
                     $invites->description = $request->description;
-                    $invites->date_from = date_format(date_create($request->date_from), 'Y-m-d');
-                    $invites->date_to = date_format(date_create($request->date_to), 'Y-m-d');
                     $email[] += $member_id;
                     $invites->save();
                     $i++;
