@@ -15,6 +15,9 @@ use Illuminate\Contracts\Mail\Mailer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\HolidaysImport;
+use App\Http\Controllers\Controller;
+
 
 class LeaveController extends Controller {
 	/**
@@ -133,8 +136,8 @@ class LeaveController extends Controller {
 		}
 
 		$leave->user_id = \Auth::user()->id;
-		$leave->date_from = date_format(date_create($request->dateFrom), 'Y-m-d');
-		$leave->date_to = date_format(date_create($request->dateTo), 'Y-m-d');
+		$leave->date_from = date('Y-m-d', strtotime($request->date_from));
+		$leave->date_to = date('Y-m-d', strtotime($rrequest->dateTo));
 		$leave->from_time = $request->time_from;
 		$leave->to_time = $request->time_to;
 		$leave->reason = $request->reason;
@@ -334,12 +337,12 @@ class LeaveController extends Controller {
 				if (!empty($column) && !empty($string) && empty($dateFrom) && empty($dateTo)) {
 					$leaves = $leaves->whereRaw($data[$column] . " like '%" . $string . "%' ")->paginate(20);
 				} elseif (!empty($dateFrom) && !empty($dateTo) && empty($column) && empty($string)) {
-					$dateTo = date_format(date_create($request->dateTo), 'Y-m-d');
-					$dateFrom = date_format(date_create($request->dateFrom), 'Y-m-d');
+					$dateTo = date('Y-m-d', strtotime($request->dateTo)) ;
+					$dateFrom =date('Y-m-d', strtotime($request->dateFrom) );
 					$leaves = $leaves->whereBetween('date_from', [$dateFrom, $dateTo])->paginate(20);
 				} elseif (!empty($column) && !empty($string) && !empty($dateFrom) && !empty($dateTo)) {
-					$dateTo = date_format(date_create($request->dateTo), 'Y-m-d');
-					$dateFrom = date_format(date_create($request->dateFrom), 'Y-m-d');
+					$dateTo = date('Y-m-d', strtotime($request->dateTo ));
+					$dateFrom =date('Y-m-d', strtotime($request->dateFrom));
 					$leaves = $leaves->whereRaw($data[$column] . " like '%" . $string . "%'")->whereBetween('date_from', [$dateFrom, $dateTo])->paginate(20);
 				} else {
 					$leaves = $leaves->paginate(20);
@@ -356,12 +359,12 @@ class LeaveController extends Controller {
 				if (!empty($column) && !empty($string) && empty($dateFrom) && empty($dateTo)) {
 					$leaves = $leaves->whereRaw($data[$column] . " like '%" . $string . "%' ")->get();
 				} elseif (!empty($dateFrom) && !empty($dateTo) && empty($column) && empty($string)) {
-					$dateTo = date_format(date_create($request->dateTo), 'Y-m-d');
-					$dateFrom = date_format(date_create($request->dateFrom), 'Y-m-d');
+					$dateTo = date('Y-m-d', strtotime($request->dateTo));
+					$dateFrom = date('Y-m-d', strtotime($request->dateFrom));
 					$leaves = $leaves->whereBetween('date_from', [$dateFrom, $dateTo])->get();
 				} elseif (!empty($column) && !empty($string) && !empty($dateFrom) && !empty($dateTo)) {
-					$dateTo = date_format(date_create($request->dateTo), 'Y-m-d');
-					$dateFrom = date_format(date_create($request->dateFrom), 'Y-m-d');
+					$dateTo = date('Y-m-d' ,strtotime($request->dateTo));
+					$dateFrom = date('Y-m-d', strtotime($request->dateFrom));
 					$leaves = $leaves->whereRaw($data[$column] . " like '%" . $string . "%'")->whereBetween('date_from', [$dateFrom, $dateTo])->get();
 				} else {
 					$leaves = $leaves->get();
@@ -518,6 +521,8 @@ class LeaveController extends Controller {
 				$allowedext = ["xlsx", "xls"];
 				$extension = $file->getClientOriginalExtension();
 				$filename = $file->getClientOriginalName();
+				// \Log::info($filename);
+
 
 				if (in_array($extension, $allowedext)) {
 
@@ -526,7 +531,7 @@ class LeaveController extends Controller {
 					$holiday = new HolidayFilenames();
 					$holiday->name = $filename;
 					$holiday->description = $request->description;
-					$holiday->date = date_format(date_create($request->date), 'Y-m-d');
+					$holiday->date =date('Y-m-d', strtotime($request->date));
 					$holiday->save();
 					
 
@@ -535,25 +540,23 @@ class LeaveController extends Controller {
 
 					return redirect()->back();
 				}
-
-				Excel::load(storage_path('holidays/' . $filename), function ($reader) {
-					$rows = $reader->get(['occasion', 'date']);
-
-					foreach ($rows as $row) {
-						$holiday = new Holiday();
-						$holiday->occasion = $row->occasion;
-						$holiday->date_from = $row->date;
-						$holiday->save();
-					}
+					Excel::import(new HolidaysImport,storage_path('holidays/' . $filename)
 				
-				});
-				return redirect()->back()->with('flash_message', 'Holidays successfully added');
-			}
-		} catch (\Exception $e) {
+			);
+
+		    
+		}
+
+		} 
+		catch (\Exception $e) {
 			\Log::info($e->getMessage());
 			\Log::info($e->getLine());
 			return redirect()->back()->with('flash_message', $e->getMessage());
 		}
+	
+		return redirect()->back()->with('flash_message', 'Excel Data Imported successfully.');
+
+
 	}
 
 
@@ -573,7 +576,7 @@ class LeaveController extends Controller {
 	public function addHoliday(Request $request) {
 		$holiday = new Holiday();
 		$holiday->occasion = $request->description;
-		$holiday->date_from = date_format(date_create($request->date), 'Y-m-d');
+		$holiday->date_from = date('Y-m-d', strtotime($request->date));
 		$holiday->save();
 		\Session::flash('flash_message', 'Holiday successfully updated!');
 		return redirect('holiday-listing');
@@ -586,8 +589,7 @@ class LeaveController extends Controller {
 	public function doEditHoliday($id, Request $request) {
 		$holiday = Holiday::where('id', $id)->first();
 		$holiday->occasion = $request->occasion;
-		$holiday->date_from = date_format(date_create($request->date_from), 'Y-m-d');
-		$holiday->date_from = date_format(date_create($request->date_from), 'Y-m-d');
+		$holiday->date_from = date('Y-m-d', strtotime($request->date_from));
 		$holiday->save();
 
 		\Session::flash('flash_message', 'Holiday successfully updated!');
