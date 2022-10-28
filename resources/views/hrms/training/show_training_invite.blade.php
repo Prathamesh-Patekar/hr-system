@@ -92,8 +92,8 @@
                                         @foreach($invites as $invite)
                                             <tr>
                                                 <td class="text-center">{{$i+=1}}</td>
-                                                <td class="text-center">{{$invite->employee->name}}</td>
-                                                <td class="text-center">{{$invite->program->name}}</td>
+                                                <td class="text-center">{{$invite->name}}</td>
+                                                <td class="text-center">{{$invite->program_name}}</td>
                                                 <td class="text-center">{{$invite->description}}</td>
                                                 <td class="text-center">{{$invite->date_from}}</td>
                                                 <td class="text-center">{{$invite->date_to}}</td>
@@ -118,7 +118,7 @@
                                             </tr>
                                         @endforeach
                                         <tr>
-                                            {!! $invites->render() !!}
+                                          
                                         </tr>
                                         </tbody>
                                     </table>
