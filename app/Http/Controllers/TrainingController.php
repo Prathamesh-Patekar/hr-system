@@ -8,6 +8,8 @@ use App\User;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use App\Mail\Invite_mail;
+use Mail;
 
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
@@ -85,6 +87,11 @@ class TrainingController extends Controller
     public function processTrainingInvite(Request $request)
     {
 
+        $email = [];
+        $program_id = $request->program_id;
+        $date_from = $request->date_from;
+        $date_to = $request->date_to;
+
         $totalMembers = count($request->member_ids);
         $i = 0;
         try
@@ -100,10 +107,13 @@ class TrainingController extends Controller
                     $invites->description = $request->description;
                     $invites->date_from = date_format(date_create($request->date_from), 'Y-m-d');
                     $invites->date_to = date_format(date_create($request->date_to), 'Y-m-d');
+                    $email[] += $member_id;
                     $invites->save();
                     $i++;
-                }
+
+                }  
             }
+    
         }
         catch(\Exception $e)
         {
@@ -111,7 +121,9 @@ class TrainingController extends Controller
         }
 
         \Session::flash('flash_message', $i . ' out of '. $totalMembers. ' members have been invited for the training!');
-        return redirect()->back();
+        $this->invite_mail($email, $program_id, $date_from, $date_to);
+        return redirect('dashboard');  
+
     }
 
     public function showTrainingInvite()
@@ -233,5 +245,20 @@ class TrainingController extends Controller
         }
 		
 	}
+
+    function invite_mail($email, $program_id, $date_from, $date_to){
+     
+        $program = TrainingProgram::where('id', '=', $program_id)->first();
+        $program_name = $program->name;
+
+        foreach($email as $id){
+ 
+            $result = \DB::table('users')->where('id','=' ,$id)->first(); 
+             
+            $data  = ['message' => 'You are invited for training program.\n Program name '.$program_name.' \n Schedule on given dates '.$date_from.' to '.$date_to];
+            Mail::to($result->email)->send(new Invite_mail($data));
+        }
+              return redirect('dashboard');  
+    }
     
 }

@@ -287,7 +287,7 @@ Route::group(['middleware' => ['auth']], function ()
     Route::post('post-reply', 'UpdateController@reply');
 
     Route::get('post/{id}', 'UpdateController@post');
-
+// edit
     Route::get('/search_program',['uses'=>'TrainingController@search_program'])->name('search');
     Route::post('/show-training-invite',['uses'=>'TrainingController@filter_program']);
 

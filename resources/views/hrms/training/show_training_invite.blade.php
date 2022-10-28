@@ -61,7 +61,7 @@
                                     </div>
                                     {!! Form::close() !!}
                                     <div class="col-md-2">
-                                        <a href="/employee-manager" >
+                                        <a href="/show-training-invite" >
                                             <input type="submit" value="Reset" class="btn btn-warning"></a>
                                     </div>
                                 </div>
