@@ -45,7 +45,6 @@
                                         @endif
                                         {!! Form::open(['class' => 'form-horizontal']) !!}
 
-
                                         <div class="form-group">
                                             <label class="col-md-3 control-label"> Training Program </label>
                                             <div class="col-md-6">
@@ -63,28 +62,56 @@
 
 
                                         <div class="form-group">
-                                                <label for="datepicker1" class="col-md-3 control-label"> Date From </label>
-                                                <div class="col-md-6">
-                                                    <div class="input-group">
-                                                        <div class="input-group-addon">
-                                                            <i class="fa fa-calendar text-alert pr11"></i>
-                                                        </div>
-                                                        <input type="text" id="datepicker1" value="" class="select2-single form-control" name="date_from" required>
+                                            <label for="datepicker1" class="col-md-3 control-label"> Date From </label>
+                                            <div class="col-md-6">
+                                                <div class="input-group">
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-calendar text-alert pr11"></i>
                                                     </div>
+                                                    <input type="text" id="datepicker1" value="" class="select2-single form-control" name="date_from" required>
                                                 </div>
                                             </div>
+                                        </div>
 
-                                            <div class="form-group">
-                                                <label for="datepicker4" class="col-md-3 control-label"> Date To </label>
-                                                <div class="col-md-6">
-                                                    <div class="input-group">
-                                                        <div class="input-group-addon">
-                                                            <i class="fa fa-calendar text-alert pr11"></i>
-                                                        </div>
-                                                        <input type="text" id="datepicker4" value="" class="select2-single form-control" name="date_to" required>
+                                        <div class="form-group">
+                                            <label for="datepicker4" class="col-md-3 control-label"> Date To </label>
+                                            <div class="col-md-6">
+                                                <div class="input-group">
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-calendar text-alert pr11"></i>
                                                     </div>
+                                                    <input type="text" id="datepicker4" value="" class="select2-single form-control" name="date_to" required>
                                                 </div>
                                             </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label"> Select Weekly/Daily </label>
+                                            <div class="col-md-6">
+                                                <select class="select2-multiple form-control select-primary"
+                                                        name="program_id" id= "program" required>
+                                                    <option value="" selected>Select One</option>
+                                                    <option value="weekly">Weekly</option>
+                                                    <option value="daily">Daily</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                           
+                                        <div class="form-group">
+                                                <label for="multiselect2" class="col-md-3 control-label"> Select Employees </label>
+                                                <div class="col-md-6">
+                                                    <select id="done" class="selectpicker form-control" multiple data-done-button="true"
+                                                            name="member_ids[]" required>
+                                                       
+                                                        <option value="monday">Monday</option>
+                                                        <option value="tuesday">Tuesday</option>
+                                                        <option value="wednesday">Wednesday</option>
+                                                        <option value="thursday">Thursday</option>
+                                                        <option value="friday">Friday</option>
+                                                        
+                                                    </select>
+                                                </div>
+                                        </div>
 
 
                                         <div class="form-group">
@@ -112,4 +139,13 @@
     </section>
 
     </div>
+    @push('styles')
+        <link rel="stylesheet" type="text/css" href="/assets/allcp/forms/css/bootstrap-select.css">
+    @endpush
 @endsection
+@push('scripts')
+    <script src="/assets/js/pages/forms-widgets.js"></script>
+    <script src="/assets/js/custom.js"></script>
+    <script src="/assets/allcp/forms/js/bootstrap-select.js"></script>
+    <script src="/assets/js/function.js"></script>
+@endpush

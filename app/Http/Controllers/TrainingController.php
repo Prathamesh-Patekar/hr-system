@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Mail\Invite_mail;
 use Mail;
+use Carbon\Carbon;
 
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
@@ -26,7 +27,16 @@ class TrainingController extends Controller
        $programs->description = $request->description;
        $programs->date_from = $request->date_from;
        $programs->date_to = $request->date_to;
-       $programs->save();
+    //    $programs->save();
+    
+    $t1 = Carbon::createFromFormat('H:i:s', $request->date_from);
+    return $t1;
+    $t2 = Carbon::createFromFormat('H:i:s', $request->date_to);
+
+    $diff = $t1->diff($t2);
+
+   
+
 
         \Session::flash('flash_message', 'Training Program successfully added!');
         return redirect()->back();
