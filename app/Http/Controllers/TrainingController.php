@@ -11,6 +11,7 @@ use App\Http\Requests;
 use App\Mail\Invite_mail;
 use Mail;
 use Carbon\Carbon;
+use App\ScheduleLecture;
 
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
@@ -22,25 +23,56 @@ class TrainingController extends Controller
     }
 
     public function processTrainingProgram(Request $request){
-       $programs = new TrainingProgram();
-       $programs->name = $request->name;
-       $programs->description = $request->description;
-       $programs->date_from = $request->date_from;
-       $programs->date_to = $request->date_to;
-    //    $programs->save();
-    
-    $t1 = Carbon::createFromFormat('H:i:s', $request->date_from);
-    return $t1;
-    $t2 = Carbon::createFromFormat('H:i:s', $request->date_to);
+        $programs = new TrainingProgram();
+        $programs->name = $request->name;
+        $programs->description = $request->description;
+        $programs->date_from = date('Y-m-d', strtotime($request->date_from));
+        $programs->date_to = date('Y-m-d', strtotime($request->date_to));
+        $programs->lecture = $request->lecture;
+        $programs->days = json_encode($request->day_ids);
 
-    $diff = $t1->diff($t2);
+        $date1 = date('Y-m-d', strtotime($request->date_from));
+        $date2 = date('Y-m-d', strtotime($request->date_to));
 
-   
+        $programs->save();
+        $id =  $programs->id;
 
+        $startDate = new Carbon($date1);
+        $endDate = new Carbon($date2);
+        $all_dates = array();
+        while ($startDate->lte($endDate)){
+//   return  date('l',strtotime($startDate->toDateString()));
+            $all_dates[] = $startDate->toDateString();
+            $startDate->addDay();
+        }
+       
+        $this->schedulelecture($id, $all_dates);
 
         \Session::flash('flash_message', 'Training Program successfully added!');
         return redirect()->back();
 
+    }
+
+
+    public function schedulelecture($id, $all_dates){
+
+        $program = TrainingProgram::where('id', '=',$id)->first();
+        $days = json_decode($program->days);
+    
+        foreach($all_dates as $date){
+
+            foreach($days as $day){
+                $data = date('l',strtotime($date));
+               
+                if($day == $data){
+                    $lecture =  new ScheduleLecture();
+                    $lecture->program_id = $id;
+                    $lecture->date_on = $date;
+                    $lecture->save();
+                }
+                
+            }
+        }
     }
 
     public function showTrainingProgram(){

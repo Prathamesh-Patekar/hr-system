@@ -89,7 +89,7 @@
                                             <label class="col-md-3 control-label"> Select Weekly/Daily </label>
                                             <div class="col-md-6">
                                                 <select class="select2-multiple form-control select-primary"
-                                                        name="program_id" id= "program" required>
+                                                        name="lecture" id= "lecture" required>
                                                     <option value="" selected>Select One</option>
                                                     <option value="weekly">Weekly</option>
                                                     <option value="daily">Daily</option>
@@ -101,13 +101,13 @@
                                                 <label for="multiselect2" class="col-md-3 control-label"> Select Employees </label>
                                                 <div class="col-md-6">
                                                     <select id="done" class="selectpicker form-control" multiple data-done-button="true"
-                                                            name="member_ids[]" required>
+                                                            name="day_ids[]" required>
                                                        
-                                                        <option value="monday">Monday</option>
-                                                        <option value="tuesday">Tuesday</option>
-                                                        <option value="wednesday">Wednesday</option>
-                                                        <option value="thursday">Thursday</option>
-                                                        <option value="friday">Friday</option>
+                                                        <option value="Monday">Monday</option>
+                                                        <option value="Tuesday">Tuesday</option>
+                                                        <option value="Wednesday">Wednesday</option>
+                                                        <option value="Thursday">Thursday</option>
+                                                        <option value="Friday">Friday</option>
                                                         
                                                     </select>
                                                 </div>
