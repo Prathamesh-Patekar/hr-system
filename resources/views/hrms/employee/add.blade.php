@@ -1037,7 +1037,7 @@
 
                                         <div class="option-group field">
                                             <label class="field option mb5">
-                                                <input type="radio" value="1" name="pf_status" id="pf_status"
+                                                <input type="radio" value="1" name="pf_status" id="pf_status"  checked
                                                        @if(isset($emps))@if($emps->employee->pf_status == '1')checked @endif @endif>
                                                 <span class="radio"></span>Active</label>
                                             <label class="field option mb5">
@@ -1334,7 +1334,7 @@
                 <p></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
+            <a href="/" class="btn btn-default" role="button">Ok</a>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

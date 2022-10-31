@@ -231,7 +231,7 @@
         
         
       
-        $('#mobile_phone,#emergency_number,#salary,#aadhar_number,#salary').keypress(function(event) {
+        $('#mobile_phone,#emergency_number,#salary,#aadhar_number,#salary,#mnumber_two').keypress(function(event) {
             var keycode = event.which;
             console.log(keycode);
             if (!(keycode >= 48 && keycode <= 57)) {

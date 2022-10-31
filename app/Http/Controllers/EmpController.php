@@ -149,7 +149,7 @@ class EmpController extends Controller {
 		//$emp->userrole()->create(['role_id' => $request->role]);
 
 		return json_encode(['title' => 'Success', 'message' => 'Employee added successfully', 'class' => 'modal-header-success']);
-
+		
 	}
 
 	public function showEmployee() {
@@ -347,6 +347,7 @@ class EmpController extends Controller {
 	
 
 		$edit->save();
+		\Session::flash('flash_message', 'Employee added successfully');
 		return json_encode(['title' => 'Success', 'message' => 'Employee details successfully updated', 'class' => 'modal-header-success']);
 	}
 
