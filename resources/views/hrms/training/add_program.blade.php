@@ -98,7 +98,7 @@
                                         </div>
                                            
                                         <div class="form-group">
-                                                <label for="multiselect2" class="col-md-3 control-label"> Select Employees </label>
+                                                <label for="multiselect2" class="col-md-3 control-label"> Select Days </label>
                                                 <div class="col-md-6">
                                                     <select id="done" class="selectpicker form-control" multiple data-done-button="true"
                                                             name="day_ids[]" required>

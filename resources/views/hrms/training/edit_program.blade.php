@@ -68,7 +68,7 @@
                                                         <div class="input-group-addon">
                                                             <i class="fa fa-calendar text-alert pr11"></i>
                                                         </div>
-                                                        <input type="text" id="datepicker1" value="{{$programs->date_from}}" class="select2-single form-control" name="date_from" required>
+                                                        <input type="text" id="datepicker1" value="{{date('d-m-Y', strtotime($programs->date_from))}}" class="select2-single form-control" name="date_from" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -80,10 +80,35 @@
                                                         <div class="input-group-addon">
                                                             <i class="fa fa-calendar text-alert pr11"></i>
                                                         </div>
-                                                        <input type="text" id="datepicker4" value="{{$programs->date_to}}" class="select2-single form-control" name="date_to" required>
+                                                        <input type="text" id="datepicker4" value="{{date('d-m-Y', strtotime($programs->date_to))}}" class="select2-single form-control" name="date_to" required>
                                                     </div>
                                                 </div>
                                             </div>
+                                        
+                                            <?php 
+                                            $name = "";
+                                            $days =json_decode($programs->days) ;
+                                            foreach($days as $day){
+                                                $name .= $day.",";
+                                            }
+                                            $data = rtrim ($name , ","); 
+                                                ?>
+
+                                            <div class="form-group">
+                                                <label for="multiselect2" class="col-md-3 control-label"> Select Days </label>
+                                                <div class="col-md-6">
+                                                    <select id="done" class="selectpicker form-control" multiple data-done-button="true"
+                                                            name="day_ids[]"  value= '$day' required>
+                                                        <option value= {{$data}} selected>{{$data}}</option>
+                                                        <option value="Monday">Monday</option>
+                                                        <option value="Tuesday">Tuesday</option>
+                                                        <option value="Wednesday">Wednesday</option>
+                                                        <option value="Thursday">Thursday</option>
+                                                        <option value="Friday">Friday</option>
+                                                        
+                                                    </select>
+                                                </div>
+                                        </div>
 
 
                                         <div class="form-group">
@@ -110,4 +135,12 @@
         </section>
 
     </div>
+    @push('styles')
+        <link rel="stylesheet" type="text/css" href="/assets/allcp/forms/css/bootstrap-select.css">
+    @endpush
 @endsection
+@push('scripts')
+    <script src="/assets/js/pages/forms-widgets.js"></script>
+    <script src="/assets/js/custom.js"></script>
+    <script src="/assets/allcp/forms/js/bootstrap-select.js"></script>
+@endpush
