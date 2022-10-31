@@ -13,6 +13,11 @@ use Maatwebsite\Excel\Facades\Excel;
 use Validator;
 use Redirect;
 
+use App\Imports\UsersImport;
+use App\Imports\ImportEmployee;
+
+use App\Http\Controllers\Controller;
+
 class EmpController extends Controller {
 
 	public function search_empcode(Request $request){
@@ -64,7 +69,7 @@ class EmpController extends Controller {
 			$allowedExtension = ['jpg', 'jpeg', 'png'];
 			$destinationPath = public_path('photos');
 			if (!in_array($fileExt, $allowedExtension)) {
-				return redirect()->back()->with('message', 'Extension not allowed');
+				return redirect()->back()->with('flash_message', 'Extension not allowed');
 			}
 			$filename = $filename . '.' . $fileExt;
 			$file->move($destinationPath, $filename);
@@ -100,14 +105,19 @@ class EmpController extends Controller {
 		
 		$emp->photo = $filename;
 		$emp->name = $request->emp_name;
+		$emp->mname = $request->mname;
+		$emp->lname = $request->mname;
 		$emp->personal_email = $request->personal_email;
 		$emp->code = $request->emp_code;
 		$emp->status = $request->emp_status;
 		$emp->gender = $request->gender;
-		$emp->date_of_birth = date_format(date_create($request->dob), 'Y-m-d');
-		$emp->date_of_joining = date_format(date_create($request->doj), 'Y-m-d');
+		$emp->date_of_birth = date('Y-m-d', strtotime($request->dob));
+		$emp->date_of_joining =date('Y-m-d', strtotime($request->doj));
 		$emp->number = $request->number;
+		$emp->mnumber_two = $request->mnumber_two;
 		$emp->qualification = $request->qualification;
+		$emp->emerg_name = $request->emerg_name;
+		$emp->emerg_rel = $request->emerg_rel;
 		$emp->emergency_number = $request->emergency_number;
 		$emp->pan_number = $request->pan_number;
 		$emp->aadhar_number = $request->aadhar_number;
@@ -118,7 +128,7 @@ class EmpController extends Controller {
 		$emp->formalities = $request->formalities;
 		$emp->offer_acceptance = $request->offer_acceptance;
 		$emp->probation_period = $request->probation_period;
-		$emp->date_of_confirmation = date_format(date_create($request->date_of_confirmation), 'Y-m-d');
+		$emp->date_of_confirmation =date('Y-m-d', strtotime($request->date_of_confirmation));
 		$emp->department = $request->department;
 		$emp->salary = $request->salary;
 		$emp->account_number = $request->account_number;
@@ -139,7 +149,7 @@ class EmpController extends Controller {
 		//$emp->userrole()->create(['role_id' => $request->role]);
 
 		return json_encode(['title' => 'Success', 'message' => 'Employee added successfully', 'class' => 'modal-header-success']);
-
+		
 	}
 
 	public function showEmployee() {
@@ -180,6 +190,8 @@ class EmpController extends Controller {
 
 		$photo = $filename;
 		$emp_name = $request->emp_name;
+		$mname = $request->mname;
+		$lname = $request->lname;
 		$emp_code = $request->emp_code;
 		$emp_email = $request->emp_email;
 		$personal_email = $request->personal_email;
@@ -192,10 +204,14 @@ class EmpController extends Controller {
 		$emp_status = $request->status;
 		$emp_role = $request->role;
 		$gender = $request->gender;
-		$dob = date_format(date_create($request->date_of_birth), 'Y-m-d');
-		$doj = date_format(date_create($request->date_of_joining), 'Y-m-d');
+		$dob =  date('Y-m-d', strtotime($request->date_of_birth));
+		$doj = date('Y-m-d', strtotime($request->date_of_joining));
 		$mob_number = $request->number;
+		$mnumber_two = $request->mnumber_two;
 		$qualification = $request->qualification;
+		$emerg_name = $request->emerg_name;
+		$emerg_rel = $request->emerg_rel;
+
 		$emer_number = $request->emergency_number;
 		$pan_number = $request->pan_number;
 		$aadhar_number = $request->aadhar_number;
@@ -205,7 +221,7 @@ class EmpController extends Controller {
 		$formalities = $request->formalities;
 		$offer_acceptance = $request->offer_acceptance;
 		$prob_period = $request->probation_period;
-		$doc = date_format(date_create($request->date_of_confirmation), 'Y-m-d');
+		$doc = date('Y-m-d', strtotime($request->date_of_confirmation));
 		$department = $request->department;
 		$salary = $request->salary;
 		$account_number = $request->account_number;
@@ -226,6 +242,12 @@ class EmpController extends Controller {
 		}
 		if (!empty($emp_name)) {
 			$edit->name = $emp_name;
+		}
+		if (!empty($mname)) {
+			$edit->mname = $mname;
+		}
+		if (!empty($lname)) {
+			$edit->lname = $lname;
 		}
 		if (!empty($personal_email)) {
 			$edit->personal_email = $personal_email;
@@ -253,8 +275,17 @@ class EmpController extends Controller {
 		if (!empty($mob_number)) {
 			$edit->number = $mob_number;
 		}
+		if (!empty($mnumber_two)) {
+			$edit->mnumber_two = $mnumber_two;
+		}
 		if (!empty($qualification)) {
 			$edit->qualification = $qualification;
+		}
+		if (!empty($emerg_rel)) {
+			$edit->emerg_rel = $emerg_rel;
+		}
+		if (!empty($emerg_name)) {
+			$edit->emerg_name = $emerg_name;
 		}
 		if (!empty($emer_number)) {
 			$edit->emergency_number = $emer_number;
@@ -317,6 +348,7 @@ class EmpController extends Controller {
 	
 
 		$edit->save();
+		\Session::flash('flash_message', 'Employee added successfully');
 		return json_encode(['title' => 'Success', 'message' => 'Employee details successfully updated', 'class' => 'modal-header-success']);
 	}
 
@@ -337,218 +369,247 @@ class EmpController extends Controller {
 	public function uploadFile(Request $request) {
 		$files = Input::file('upload_file');
 
+
 		/* try {*/
 		foreach ($files as $file) {
-			Excel::load($file, function ($reader) {
-				$rows =$reader->get( ['role','email','personal_email','code','name','status','gender','date_of_birth','date_of_joining','mobile_number','qualification',
-				'pan_number','aadhar_number','father_name','emergency_number','current_address','permanent_address','formalities','offer_acceptance',
-				'probation_period','date_of_confirmation','department',
-				'salary','account_number', 'bank_name','ifsc_code','pf_account_number','un_number','esic_number',
-				'pf_status']);
+					// \Log::info($file);
+			Excel::import(new UsersImport, $file
+			// function ($reader) {
+
+			// 	$rows =$reader->get( ['role','email','personal_email','code','first_name','middle_name','last_name','status','gender','date_of_birth','date_of_joining','mobile_number','alt_mobile_number','qualification',
+			// 	'pan_number','aadhar_number','father_name','emergency_number','emerg_name','emerg_rel','current_address','permanent_address','formalities','offer_acceptance',
+			// 	'probation_period','date_of_confirmation','department',
+			// 	'salary','account_number', 'bank_name','ifsc_code','pf_account_number','un_number','esic_number',
+			// 	'pf_status']);
 			
-				foreach ($rows as $row) {
-					// \Log::info($row->name);
-					if (Employee::where('code', '=', $row->code)->exists()) {
-						$emp = Employee::where('code', '=', $row->code)->first();
-						$id=  $emp->user_id;
-						$emp_name = $row->name;
-						$emp_code = $row->code;
-						$emp_email = $row->email;
-						$personal_email = $row->personal_email;
+			// 	foreach ($rows as $row) {
+			// 		// \Log::info($row->name);
+			// 		if (Employee::where('code', '=', $row->code)->exists()) {
+			// 			$emp = Employee::where('code', '=', $row->code)->first();
+			// 			$id=  $emp->user_id;
+			// 			$emp_name = $row->first_name;
+			// 			$middle_name = $row->middle_name;
+			// 			$last_name = $row->last_name;
+			// 			$emp_code = $row->code;
+			// 			$emp_email = $row->email;
+			// 			$personal_email = $row->personal_email;
 				
 						
-						$emp_status = $row->status;
-						$emp_role = $row->role;
-						$gender = $row->gender;
-						$dob = date_format(date_create($row->date_of_birth), 'Y-m-d');
-						$doj = date_format(date_create($row->date_of_joining), 'Y-m-d');
-						$mob_number = $row->mobile_number;
-						$qualification = $row->qualification;
-						$emer_number = $row->emergency_number;
-						$pan_number = $row->pan_number;
-						$aadhar_number = $row->aadhar_number;
-						$father_name = $row->father_name;
-						$address = $row->current_address;
-						$permanent_address = $row->permanent_address;
-						$formalities = $row->formalities;
-						$offer_acceptance = $row->offer_acceptance;
-						$prob_period = $row->probation_period;
-						$doc = date_format(date_create($row->date_of_confirmation), 'Y-m-d');
-						$department = $row->department;
-						$salary = $row->salary;
-						$account_number = $row->account_number;
-						$bank_name = $row->bank_name;
-						$ifsc_code = $row->ifsc_code;
-						$pf_account_number = $row->pf_account_number;
-						$un_number = $row->un_number;
-						$pf_status = $row->pf_status;
-						$esic_number = $row->esic_number;
-						$int=intval($mob_number);
-						$gettype=gettype($mob_number);
-							// \Log::info($gettype);
-						if ($emp_email != "") {
-							$user = User::where('id', $id)->first();
-							$user->email = $emp_email;
-							$user->name = $emp_name;
-							$user->save();
-						}
-						//$edit = Employee::findOrFail($id);
-						$edit = Employee::where('code', $emp_code)->first();
-							if (!empty($mob_number)) {
-							if($gettype == "double"){
-								$edit->number = $mob_number;
-								// \Log::info($int);
-							}else {
-							// \Log::info($int);
-								\Session::flash('success', 'Please enter only Numberic value in mobile number');
-								return redirect()->back();
-							}
-						}
-						// if (!empty($photo)) {
-						// 	$edit->photo = $photo;
-						// }
-						if (!empty($emp_name)) {
-							$edit->name = $emp_name;
-						}
-						if (!empty($personal_email)) {
-							$edit->personal_email = $personal_email;
-						}
-						if (!empty($emp_code)) {
-							$edit->code = $emp_code;
-						}
-						if (isset($emp_status)) {
-							$edit->status = $emp_status;
-						}
-						if (isset($emp_role)) {
-							$userRole = UserRole::firstOrNew(['user_id' => $edit->user_id]);
-							$userRole->role_id = $emp_role;
-							$userRole->save();
-						}
-						if (isset($gender)) {
-							$edit->gender = $gender;
-						}
-						if (!empty($dob)) {
-							$edit->date_of_birth = $dob;
-						}
-						if (!empty($doj)) {
-							$edit->date_of_joining = $doj;
-						}
-						if (!empty($mob_number)) {
-							$edit->number = $mob_number;
-						}
-						if (!empty($qualification)) {
-							$edit->qualification = $qualification;
-						}
-						if (!empty($emer_number)) {
-							$edit->emergency_number = $emer_number;
-						}
-						if (!empty($pan_number)) {
-							$edit->pan_number = $pan_number;
-						}
-						if (!empty($aadhar_number)) {
-							$edit->aadhar_number = $aadhar_number;
-						}
-						if (!empty($father_name)) {
-							$edit->father_name = $father_name;
-						}
-						if (!empty($address)) {
-							$edit->current_address = $address;
-						}
-						if (!empty($permanent_address)) {
-							$edit->permanent_address = $permanent_address;
-						}
+			// 			$emp_status = $row->status;
+			// 			$emp_role = $row->role;
+			// 			$gender = $row->gender;
+			// 			$dob = date_format(date_create($row->date_of_birth), 'Y-m-d');
+			// 			$doj = date_format(date_create($row->date_of_joining), 'Y-m-d');
+			// 			$mob_number = $row->mobile_number;
+			// 			$alt_mobile_number = $row->alt_mobile_number;
+			// 			$qualification = $row->qualification;
+			// 			$emerg_name = $row->emerg_name;
+			// 			$emerg_rel = $row->emerg_rel;
+			// 			$emer_number = $row->emergency_number;
+			// 			$pan_number = $row->pan_number;
+			// 			$aadhar_number = $row->aadhar_number;
+			// 			$father_name = $row->father_name;
+			// 			$address = $row->current_address;
+			// 			$permanent_address = $row->permanent_address;
+			// 			$formalities = $row->formalities;
+			// 			$offer_acceptance = $row->offer_acceptance;
+			// 			$prob_period = $row->probation_period;
+			// 			$doc = date_format(date_create($row->date_of_confirmation), 'Y-m-d');
+			// 			$department = $row->department;
+			// 			$salary = $row->salary;
+			// 			$account_number = $row->account_number;
+			// 			$bank_name = $row->bank_name;
+			// 			$ifsc_code = $row->ifsc_code;
+			// 			$pf_account_number = $row->pf_account_number;
+			// 			$un_number = $row->un_number;
+			// 			$pf_status = $row->pf_status;
+			// 			$esic_number = $row->esic_number;
+			// 			$int=intval($mob_number);
+			// 			$gettype=gettype($mob_number);
+			// 				// \Log::info($gettype);
+			// 			if ($emp_email != "") {
+			// 				$user = User::where('id', $id)->first();
+			// 				$user->email = $emp_email;
+			// 				$user->name = $emp_name;
+			// 				$user->save();
+			// 			}
+			// 			//$edit = Employee::findOrFail($id);
+			// 			$edit = Employee::where('code', $emp_code)->first();
+			// 				if (!empty($mob_number)) {
+			// 				if($gettype == "double"){
+			// 					$edit->number = $mob_number;
+			// 					// \Log::info($int);
+			// 				}else {
+			// 				// \Log::info($int);
+			// 					\Session::flash('success', 'Please enter only Numberic value in mobile number');
+			// 					return redirect()->back();
+			// 				}
+			// 			}
+			// 			// if (!empty($photo)) {
+			// 			// 	$edit->photo = $photo;
+			// 			// }
+			// 			if (!empty($emp_name)) {
+			// 				$edit->name = $emp_name;
+			// 			}
+			// 			if (!empty($middle_name)) {
+			// 				$edit->mname = $middle_name;
+			// 			}if (!empty($last_name)) {
+			// 				$edit->lname = $last_name;
+			// 			}
+			// 			if (!empty($personal_email)) {
+			// 				$edit->personal_email = $personal_email;
+			// 			}
+			// 			if (!empty($emp_code)) {
+			// 				$edit->code = $emp_code;
+			// 			}
+			// 			if (isset($emp_status)) {
+			// 				$edit->status = $emp_status;
+			// 			}
+			// 			if (isset($emp_role)) {
+			// 				$userRole = UserRole::firstOrNew(['user_id' => $edit->user_id]);
+			// 				$userRole->role_id = $emp_role;
+			// 				$userRole->save();
+			// 			}
+			// 			if (isset($gender)) {
+			// 				$edit->gender = $gender;
+			// 			}
+			// 			if (!empty($dob)) {
+			// 				$edit->date_of_birth = $dob;
+			// 			}
+			// 			if (!empty($doj)) {
+			// 				$edit->date_of_joining = $doj;
+			// 			}
+			// 			if (!empty($mob_number)) {
+			// 				$edit->number = $mob_number;
+			// 			}
+			// 			if (!empty($alt_mobile_number)) {
+			// 				$edit->mnumber_two = $alt_mobile_number;
+			// 			}
+			// 			if (!empty($qualification)) {
+			// 				$edit->qualification = $qualification;
+			// 			}
+			// 			if (!empty($emerg_name)) {
+			// 				$edit->emerg_name = $emerg_name;
+			// 			}	if (!empty($emerg_rel)) {
+			// 				$edit->emerg_rel = $emerg_rel;
+			// 			}
+			// 			if (!empty($emer_number)) {
+			// 				$edit->emergency_number = $emer_number;
+			// 			}
+			// 			if (!empty($pan_number)) {
+			// 				$edit->pan_number = $pan_number;
+			// 			}
+			// 			if (!empty($aadhar_number)) {
+			// 				$edit->aadhar_number = $aadhar_number;
+			// 			}
+			// 			if (!empty($father_name)) {
+			// 				$edit->father_name = $father_name;
+			// 			}
+			// 			if (!empty($address)) {
+			// 				$edit->current_address = $address;
+			// 			}
+			// 			if (!empty($permanent_address)) {
+			// 				$edit->permanent_address = $permanent_address;
+			// 			}
 				
-						if (isset($formalities)) {
-							$edit->formalities = $formalities;
-						}
-						if (isset($offer_acceptance)) {
-							$edit->offer_acceptance = $offer_acceptance;
-						}
-						if (!empty($prob_period)) {
-							$edit->probation_period = $prob_period;
-						}
-						if (!empty($doc)) {
-							$edit->date_of_confirmation = $doc;
-						}
-						if (!empty($department)) {
-							$edit->department = $department;
-						}
-						if (!empty($salary)) {
-							$edit->salary = $salary;
-						}
-						if (!empty($account_number)) {
-							$edit->account_number = $account_number;
-						}
-						if (!empty($bank_name)) {
-							$edit->bank_name = $bank_name;
-						}
-						if (!empty($ifsc_code)) {
-							$edit->ifsc_code = $ifsc_code;
-						}
-						if (!empty($pf_account_number)) {
-							$edit->pf_account_number = $pf_account_number;
-						}
-						if (!empty($un_number)) {
-							$edit->un_number = $un_number;
-						}
-						if (!empty($esic_number)) {
-							$edit->esic_number = $esic_number;
-						}
-						if (isset($pf_status)) {
-							$edit->pf_status = $pf_status;
-						}
-						$edit->save();
-						\Session::flash('success', ' Employee details updated successfully.');
-					}else{
-						$user = new User;
-						$user->name = $row->name;
-						$user->email = str_replace(' ', '_', $row->email);
-						$user->password = bcrypt('123456');
-						$user->save();
-						$emp = new Employee;
-						// $emp->photo = $filename;
-						$emp->name = $row->name;
-						$emp->personal_email = $row->personal_email;
-						$emp->code = $row->code;
-						$emp->status = $row->status;
-						$emp->gender = $row->gender;
-						$emp->date_of_birth = date_format(date_create($row->dob), 'Y-m-d');
-						$emp->date_of_joining = date_format(date_create($row->doj), 'Y-m-d');
-						$emp->number = $row->mobile_number;
-						$emp->qualification = $row->qualification;
-						$emp->emergency_number = $row->emergency_number;
-						$emp->pan_number = $row->pan_number;
-						$emp->aadhar_number = $row->aadhar_number;
-						$emp->esic_number = $row->esic_number;
-						$emp->father_name = $row->father_name;
-						$emp->current_address = $row->current_address;
-						$emp->permanent_address = $row->permanent_address;
-						$emp->formalities = $row->formalities;
-						$emp->offer_acceptance = $row->offer_acceptance;
-						$emp->probation_period = $row->probation_period;
-						$emp->date_of_confirmation = date_format(date_create($row->date_of_confirmation), 'Y-m-d');
-						$emp->department = $row->department;
-						$emp->salary = $row->salary;
-						$emp->account_number = $row->account_number;
-						$emp->bank_name = $row->bank_name;
-						$emp->ifsc_code = $row->ifsc_code;
-						$emp->pf_account_number = $row->pf_account_number;
-						$emp->un_number = $row->un_number;
-						$emp->pf_status = $row->pf_status;
-						$emp->user_id = $user->id;
-						$emp->save();
-						$userRole = new UserRole();
-						$userRole->role_id = $row->role;
-						$userRole->user_id = $user->id;
-						$userRole->save();
-						\Session::flash('success', ' Employee details uploaded successfully.');
-					}
-				}
+			// 			if (isset($formalities)) {
+			// 				$edit->formalities = $formalities;
+			// 			}
+			// 			if (isset($offer_acceptance)) {
+			// 				$edit->offer_acceptance = $offer_acceptance;
+			// 			}
+			// 			if (!empty($prob_period)) {
+			// 				$edit->probation_period = $prob_period;
+			// 			}
+			// 			if (!empty($doc)) {
+			// 				$edit->date_of_confirmation = $doc;
+			// 			}
+			// 			if (!empty($department)) {
+			// 				$edit->department = $department;
+			// 			}
+			// 			if (!empty($salary)) {
+			// 				$edit->salary = $salary;
+			// 			}
+			// 			if (!empty($account_number)) {
+			// 				$edit->account_number = $account_number;
+			// 			}
+			// 			if (!empty($bank_name)) {
+			// 				$edit->bank_name = $bank_name;
+			// 			}
+			// 			if (!empty($ifsc_code)) {
+			// 				$edit->ifsc_code = $ifsc_code;
+			// 			}
+			// 			if (!empty($pf_account_number)) {
+			// 				$edit->pf_account_number = $pf_account_number;
+			// 			}
+			// 			if (!empty($un_number)) {
+			// 				$edit->un_number = $un_number;
+			// 			}
+			// 			if (!empty($esic_number)) {
+			// 				$edit->esic_number = $esic_number;
+			// 			}
+			// 			if (isset($pf_status)) {
+			// 				$edit->pf_status = $pf_status;
+			// 			}
+			// 			$edit->save();
+			// 			\Session::flash('success', ' Employee details updated successfully.');
+			// 		}else{
+			// 			$user = new User;
+			// 			$user->name = $row->name;
+			// 			$user->email = str_replace(' ', '_', $row->email);
+			// 			$user->password = bcrypt('123456');
+			// 			$user->save();
+			// 			$emp = new Employee;
+			// 			// $emp->photo = $filename;
+			// 			$emp->name = $row->first_name;
+			// 			$emp->mname = $row->middle_name;
+			// 			$emp->lname = $row->last_name;
 
-				return 1;
-				//return redirect('upload_form');*/
-			}
+			// 			$emp->personal_email = $row->personal_email;
+			// 			$emp->code = $row->code;
+			// 			$emp->status = $row->status;
+			// 			$emp->gender = $row->gender;
+			// 			$emp->date_of_birth = date_format(date_create($row->dob), 'Y-m-d');
+			// 			$emp->date_of_joining = date_format(date_create($row->doj), 'Y-m-d');
+			// 			$emp->number = $row->mobile_number;
+			// 			$emp->mnumber_two = $row->alt_mobile_number;
+			// 			$emp->qualification = $row->qualification;
+			// 			$emp->emerg_name = $row->emerg_name;
+			// 			$emp->emerg_rel = $row->emerg_rel;
+			// 			$emp->emergency_number = $row->emergency_number;
+			// 			$emp->pan_number = $row->pan_number;
+			// 			$emp->aadhar_number = $row->aadhar_number;
+			// 			$emp->esic_number = $row->esic_number;
+			// 			$emp->father_name = $row->father_name;
+			// 			$emp->current_address = $row->current_address;
+			// 			$emp->permanent_address = $row->permanent_address;
+			// 			$emp->formalities = $row->formalities;
+			// 			$emp->offer_acceptance = $row->offer_acceptance;
+			// 			$emp->probation_period = $row->probation_period;
+			// 			$emp->date_of_confirmation = date_format(date_create($row->date_of_confirmation), 'Y-m-d');
+			// 			$emp->department = $row->department;
+			// 			$emp->salary = $row->salary;
+			// 			$emp->account_number = $row->account_number;
+			// 			$emp->bank_name = $row->bank_name;
+			// 			$emp->ifsc_code = $row->ifsc_code;
+			// 			$emp->pf_account_number = $row->pf_account_number;
+			// 			$emp->un_number = $row->un_number;
+			// 			$emp->pf_status = $row->pf_status;
+			// 			$emp->user_id = $user->id;
+			// 			$emp->save();
+			// 			$userRole = new UserRole();
+			// 			$userRole->role_id = $row->role;
+			// 			$userRole->user_id = $user->id;
+			// 			$userRole->save();
+			// 			\Session::flash('success', ' Employee details uploaded successfully.');
+			// 		}
+			// 	}
+
+			// 	return 1;
+			// 	//return redirect('upload_form');*/
+			// }
 			);
+		
 
 		}
 		/*catch (\Exception $e) {
@@ -556,7 +617,7 @@ class EmpController extends Controller {
 
 		// \Session::flash('success', ' Employee details uploaded successfully.');
 
-		return redirect()->back();
+		return back()->with('success', 'Excel Data Imported successfully.');
 	}
 
 	public function searchEmployee(Request $request) {
@@ -597,8 +658,8 @@ class EmpController extends Controller {
 			$file = new \SplFileObject($filePath, "a");
 			// Add header to csv file.
 			// $headers = ['id','email','photo', 'code', 'name', 'status', 'gender', 'date_of_birth', 'date_of_joining', 'number', 'qualification', 'emergency_number', 'pan_number', 'father_name', 'current_address', 'permanent_address', 'formalities', 'offer_acceptance', 'probation_period', 'date_of_confirmation', 'department', 'salary', 'account_number', 'bank_name', 'ifsc_code', 'pf_account_number', 'un_number', 'pf_status', 'user_id', 'created_at', 'updated_at'];
-			$headers = ['User id',' Employee id','role','photo','email','personal_email','code','name','status','gender','date_of_birth','date_of_joining','number','qualification',
-			'pan_number','aadhar_number','father_name','emergency_number','current_address','permanent_address','formalities','offer_acceptance',
+			$headers = ['User id',' Employee id','role','photo','email','personal_email','code','first_name','middle_name','last_name','status','gender','date_of_birth','date_of_joining','number','alt_mobile_number','qualification',
+			'pan_number','aadhar_number','father_name','emerg_name','emerg_rel','emergency_number','current_address','permanent_address','formalities','offer_acceptance',
 			'probation_period','date_of_confirmation','department',
 			'salary','account_number', 'bank_name','ifsc_code','pf_account_number','un_number','esic_number',
 			'pf_status','created_at','updated_at'];
@@ -618,15 +679,20 @@ class EmpController extends Controller {
 					$emp->employee->personal_email,
 					$emp->employee->code,
 					$emp->employee->name,
+					$emp->employee->mname,
+					$emp->employee->lname,
 					getSatus($emp->employee->status),
 					getGender($emp->employee->gender),
 					$emp->employee->date_of_birth,
 					$emp->employee->date_of_joining,
 					$emp->employee->number,
+					$emp->employee->mnumber_two,
 					$emp->employee->qualification,
 					$emp->employee->pan_number,
 					$emp->employee->aadhar_number,
 					$emp->employee->father_name,
+					$emp->employee->emerg_name,
+					$emp->employee->emerg_rel,
 					$emp->employee->emergency_number,
 					$emp->employee->current_address,
 					$emp->employee->permanent_address,
@@ -708,7 +774,7 @@ class EmpController extends Controller {
 		$promotion->new_designation = $newDesignation->name;
 		$promotion->old_salary = $request->old_salary;
 		$promotion->new_salary = $request->new_salary;
-		$promotion->date_of_promotion = date_format(date_create($request->date_of_promotion), 'Y-m-d');
+		$promotion->date_of_promotion =date('Y-m-d', strtotime($request->date_of_promotion));
 		$promotion->save();
 
 		\Session::flash('flash_message', 'Employee successfully Promoted!');

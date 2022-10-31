@@ -69,6 +69,32 @@
                                         {!! Form::open(['class' => 'form-horizontal']) !!}
 
 
+                                        <div class="form-group">
+                                        <label class="col-md-3 control-label"> Asset Owner</label>
+                                            <div class="col-md-6">
+                                                <label class="field option mb5">
+                                                    <input type="radio" value="1" name="owner"
+                                                        id="owner" checked
+                                                       >
+                                                    Compony</label>
+                                                <label class="field option mb5">
+                                                    <input type="radio" value="0" name="owner" id="owner"
+                                                        >
+                                                    Personal</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label"> Select Employee </label>
+                                            <div class="col-md-6">
+                                                <select class="select2-multiple form-control select-primary"
+                                                        name="emp_id" required>
+                                                    <option value="" selected>Select One</option>
+                                                    @foreach($emps as $emp)
+                                                        <option value="{{$emp->id}}">{{$emp->name}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
 
                                         <div class="form-group">
                                             <label class="col-md-3 control-label"> Asset </label>
@@ -118,3 +144,16 @@
 
 </div>
 @endsection
+<!-- -------------- Scripts -------------- -->
+
+<!-- -------------- jQuery -------------- -->
+{!! Html::script('/assets/js/jquery/jquery-1.11.3.min.js') !!}
+{!! Html::script('/assets/js/jquery/jquery_ui/jquery-ui.min.js') !!}
+<script>
+    $(document).ready(function() {
+        $("#owner").change({
+          
+               
+        });
+    });
+</script>

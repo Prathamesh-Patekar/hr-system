@@ -200,11 +200,15 @@ Route::group(['middleware' => ['auth']], function ()
 
     Route::post('disapprove-leave', 'LeaveController@disapproveLeave');
 
-    Route::get('add-holidays', 'LeaveController@showHolidays');
+    Route::get('upload-holidays', 'LeaveController@showHolidays');
+    Route::post('upload-holidays', 'LeaveController@processHolidays'); //upload via sheet
 
-    Route::post('add-holidays', 'LeaveController@processHolidays');
+    Route::get('add-holiday', 'LeaveController@addHolidays');
+    Route::post('add-holiday', 'LeaveController@addHoliday');  //manually
 
     Route::get('holiday-listing', 'LeaveController@showHoliday');
+    Route::post('holiday-listing', 'LeaveController@searchHoliday');
+
 
     Route::get('edit-holiday/{id}', 'LeaveController@showEditHoliday');
 

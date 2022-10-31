@@ -44,7 +44,31 @@
                                         {{ Session::get('flash_message') }}
                                     </div>
                                 @endif
-                                {!! Form::open(['class' => 'form-horizontal']) !!}
+                                <!-- {!! Form::open(['class' => 'form-horizontal']) !!}
+                                <div class="panel-menu allcp-form theme-primary mtn">
+                        <div class="row">
+                            {!! Form::open() !!}
+                            <div class="col-md-3">
+                                <input type="text" class="field form-control" placeholder="query string" style="height:40px" value="{{$string}}" name="string">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="field select">
+                                    {!! Form::select('column', getHolidayDropDown(),$column) !!}
+                                    <i class="arrow double"></i>
+                                </label>
+                            </div>
+                            <div class="col-md-2">
+                                <input type="submit" value="Search" name="button" class="btn btn-primary">
+                            </div>
+
+                       
+                            {!! Form::close() !!}
+                            <div class="col-md-2">
+                                <a href="/employee-manager" >
+                                    <input type="submit" value="Reset" class="btn btn-warning"></a>
+                            </div>
+                        </div>
+                            </div> -->
                                 <div class="table-responsive">
                                     @if(count($holidays))
                                     <table class="table allcp-form theme-warning tc-checkbox-1 fs13">
@@ -52,8 +76,7 @@
                                         <tr class="bg-light">
                                             <th class="text-center">Id</th>
                                             <th class="text-center">Occasion</th>
-                                            <th class="text-center">Date From</th>
-                                            <th class="text-center">Date To</th>
+                                            <th class="text-center">Date </th>
                                             <th class="text-center">Actions</th>
                                         </tr>
                                         </thead>
@@ -65,7 +88,6 @@
                                                 <td class="text-center">{{$i+=1}}</td>
                                                 <td class="text-center">{{$holiday->occasion}}</td>
                                                 <td class="text-center">{{getFormattedDate($holiday->date_from)}}</td>
-                                                <td class="text-center">{{getFormattedDate($holiday->date_to)}}</td>
                                                 <td class="text-center">
                                                     <div class="btn-group text-right">
                                                         <button type="button"

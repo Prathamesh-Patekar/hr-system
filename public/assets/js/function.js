@@ -465,7 +465,7 @@ $('#update-bank-account-details').click(function () {
                     title: "Error!",
                     text: "Sorry, details not update!",
                     type: "error",
-                    confirmButtonText: "OK",
+                    confirmButtonText: "",
                     allowEscapeKey: true,
                     allowOutsideClick: true
                 },

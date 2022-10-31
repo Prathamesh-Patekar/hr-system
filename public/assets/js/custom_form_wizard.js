@@ -66,6 +66,9 @@
             onFinished: function (event, currentIndex) {
                 event.preventDefault();
                 var emp_name = $('#emp_name').val();
+         
+
+
                 //alert(emp_name)
                 var emp_code = $('#emp_code').val();
                 var emp_email = $('#emp_email').val();
@@ -116,6 +119,11 @@
                 }
                 var pf_status = $("input[name='pf_status']:checked").val();
                 var token = $('#token').val();
+                var mname = $('#mname').val();
+                var lname = $('#lname').val();
+                var mnumber_two = $('#mnumber_two').val();
+                var emerg_name = $('#emerg_name').val();
+                var emerg_rel = $('#emerg_rel').val();
 
                 var photo = document.getElementById('photo_upload');
                 var formData = new FormData();
@@ -123,6 +131,13 @@
                 if (photo.value != '') {
                     formData.append('photo', photo.files[0], photo.value);
                 }
+                formData.append('mname', mname);
+                formData.append('lname', lname);
+                formData.append('mnumber_two', mnumber_two);
+                formData.append('emerg_name', emerg_name);
+                formData.append('emerg_rel', emerg_rel);
+
+
                 formData.append('emp_name', emp_name);
                 formData.append('personal_email', personal_email);
                 formData.append('aadhar_number', aadhar_number);
@@ -216,7 +231,7 @@
         
         
       
-        $('#mobile_phone,#emergency_number,#salary,#aadhar_number').keypress(function(event) {
+        $('#mobile_phone,#emergency_number,#salary,#aadhar_number,#salary,#mnumber_two').keypress(function(event) {
             var keycode = event.which;
             console.log(keycode);
             if (!(keycode >= 48 && keycode <= 57)) {
@@ -224,7 +239,7 @@
             
             }
         });
-        $('#emp_name').keypress(function(event) {
+        $('#emp_name,#mname,#lname').keypress(function(event) {
             var keycode = event.which;
             if ((keycode >= 48 && keycode <= 57)) {
                 event.preventDefault();
@@ -294,6 +309,12 @@
         // });
     
     
+       
+            $('#datepicker1,#datepicker4,#datepicker5').datepicker({
+                changeMonth: true,
+                changeYear: true,
+            });
+        
         $("#datepicker4").on("change",function(){
             var selected = $(this).val();
             
