@@ -6,7 +6,7 @@ use App\TrainingInvite;
 use App\TrainingProgram;
 use App\User;
 use Illuminate\Http\Request;
-
+use Session;
 use App\Http\Requests;
 use App\Mail\Invite_mail;
 use Mail;
@@ -42,7 +42,6 @@ class TrainingController extends Controller
         $endDate = new Carbon($date2);
         $all_dates = array();
         while ($startDate->lte($endDate)){
-//   return  date('l',strtotime($startDate->toDateString()));
             $all_dates[] = $startDate->toDateString();
             $startDate->addDay();
         }
@@ -341,5 +340,36 @@ class TrainingController extends Controller
         }
               return ;  
     }
+
+
+
+    function showDetails($id)
+    {
+      $data = TrainingProgram::where('id', $id)->get();     
+     
+      return view('hrms.training.show_program_view', ['data'=>$data,]);
+
+    }
+
+    function viewProgram()
+    {
+
+        $var = Session::get('user');
+
+
+        $data = \DB::table('users')->select(
+            'training_programs.*',)
+           ->join('training_invites', 'users.id', '=', 'training_invites.user_id')
+           ->join('training_programs', 'training_invites.program_id', '=', 'training_programs.id')
+           ->where('users.id','=',$var)
+           ->get(); 
+
+
+    //   $data = TrainingProgram::where('id', $id)->get();     
+     
+      return view('hrms.training.show_your_program',['data' => $data]);
+
+    }
+
     
 }

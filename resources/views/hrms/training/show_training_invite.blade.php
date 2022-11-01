@@ -95,8 +95,8 @@
                                                 <td class="text-center">{{$invite->name}}</td>
                                                 <td class="text-center">{{$invite->program_name}}</td>
                                                 <td class="text-center">{{$invite->description}}</td>
-                                                <td class="text-center">{{$invite->date_from}}</td>
-                                                <td class="text-center">{{$invite->date_to}}</td>
+                                                <td class="text-center">{{date('d-m-Y',strtotime($invite->date_from))}}</td>
+                                                <td class="text-center">{{date('d-m-Y',strtotime($invite->date_to))}}</td>
 
                                                 <td class="text-center">
                                                     <div class="btn-group text-right">

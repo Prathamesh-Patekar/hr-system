@@ -77,7 +77,7 @@
                                                 </div>
                                             </div>
 
-                                        <div class="form-group">
+                                        <div class="form-group" style="display:none">
                                             <label for="datepicker1" class="col-md-3 control-label"> Date From </label>
                                             <div class="col-md-6">
                                                 <div class="input-group">
@@ -89,7 +89,7 @@
                                             </div>
                                         </div>
 
-                                            <div class="form-group">
+                                            <div class="form-group" style="display:none">
                                                 <label for="datepicker4" class="col-md-3 control-label"> Date To </label>
                                                 <div class="col-md-6">
                                                     <div class="input-group">

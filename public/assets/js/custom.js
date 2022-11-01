@@ -118,6 +118,7 @@
             $("#datepicker1").datepicker({
                 prevText: '<i class="fa fa-chevron-left"></i>',
                 nextText: '<i class="fa fa-chevron-right"></i>',
+                dateFormat : 'd-m-Y',
                 showButtonPanel: false,
                 beforeShow: function (input, inst) {
                     var newclass = 'allcp-form';
