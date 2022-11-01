@@ -30,6 +30,7 @@ class TrainingController extends Controller
         $programs->date_to = date('Y-m-d', strtotime($request->date_to));
         $programs->lecture = $request->lecture;
         $programs->days = json_encode($request->day_ids);
+        $programs->time = $request->time;
 
         $date1 = date('Y-m-d', strtotime($request->date_from));
         $date2 = date('Y-m-d', strtotime($request->date_to));
@@ -89,8 +90,10 @@ class TrainingController extends Controller
     public function processEditTrainingProgram($id,Request $request){
         $name = $request->name;
         $description = $request->description;
-        $date_from = $request->date_from;
-        $date_to = $request->date_to;
+        $date_from = date('Y-m-d', strtotime($request->date_from));
+        $date_to = date('Y-m-d', strtotime($request->date_to));
+        $days = json_encode($request->day_ids);
+        $time = $request->time;
 
         $edit = TrainingProgram::findOrFail($id);
         if (!empty($name)) {
@@ -99,13 +102,31 @@ class TrainingController extends Controller
         if (!empty($description)) {
             $edit->description = $description;
         }
-        if (!empty($description)) {
+        if (!empty($date_from)) {
             $edit->date_from = $date_from;
         }
-        if (!empty($description)) {
+        if (!empty($date_to)) {
             $edit->date_to = $date_to;
         }
+        if (!empty($days)) {
+            $edit->days = $days;
+        }
+        if (!empty($time)) {
+            $edit->time = $time;
+        }
         $edit->save();
+
+        $lecture =  ScheduleLecture::where('program_id','=', $id)->delete();
+
+        $startDate = new Carbon($date_from);
+        $endDate = new Carbon($date_to);
+        $all_dates = array();
+        while ($startDate->lte($endDate)){
+            $all_dates[] = $startDate->toDateString();
+            $startDate->addDay();
+        }
+       
+        $this->schedulelecture($id, $all_dates);
 
         \Session::flash('flash_message', 'Training Program successfully updated!');
         return redirect('show-training-program');

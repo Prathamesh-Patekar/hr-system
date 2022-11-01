@@ -110,6 +110,13 @@
                                                 </div>
                                         </div>
 
+                                        <div class="form-group">
+                                            <label for="timepicker1" class="col-md-3 control-label"> Time </label>
+                                            <div class="col-md-6">
+                                                <input type="text" id="timepicker1" value="{{$programs->time}}" class="select2-single form-control" name="time" required>
+                                            </div>
+                                        </div>
+
 
                                         <div class="form-group">
                                             <label class="col-md-3 control-label"></label>
