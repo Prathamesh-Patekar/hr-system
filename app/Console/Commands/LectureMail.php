@@ -47,7 +47,7 @@ class LectureMail extends Command
  
         $today= Carbon::now()->toDateString();
        
-                $schedule = \DB::table('users')->select('users.name', 'users.email', 'schedule_lectures.date_on', 'training_programs.name as program_name')
+                $schedule = \DB::table('users')->select('users.name', 'users.email', 'schedule_lectures.date_on', 'training_programs.name as program_name','training_programs.time')
                 ->JOIN('training_invites','users.id', '=', 'training_invites.user_id')
                 ->JOIN('schedule_lectures','training_invites.program_id','=','schedule_lectures.program_id')
                 ->JOIN('training_programs', 'training_invites.program_id','=','training_programs.id')
@@ -59,8 +59,9 @@ class LectureMail extends Command
                 foreach($schedule as $items){
                     $email = $items->email;
                     $program = $items->program_name;
+                    $time = $items->time;
 
-                    Mail::to($email)->send(new ReminderMail($program));
+                    Mail::to($email)->send(new ReminderMail($program,$time));
             
             }
 

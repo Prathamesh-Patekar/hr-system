@@ -127,6 +127,7 @@ class TrainingController extends Controller
         }
        
         $this->schedulelecture($id, $all_dates);
+        return;
 
         \Session::flash('flash_message', 'Training Program successfully updated!');
         return redirect('show-training-program');
@@ -311,15 +312,16 @@ class TrainingController extends Controller
      
         $program = TrainingProgram::where('id', '=', $program_id)->first();
         $program_name = $program->name;
+        $program_time = $program->time;
 
         foreach($email as $id){
  
             $result = \DB::table('users')->where('id','=' ,$id)->first(); 
              
-            $data  = ['message' => 'You are invited for training program.\n Program name '.$program_name.' \n Schedule on given dates '.$date_from.' to '.$date_to];
+            $data  = ['program_name' => $program_name, 'date_from'=> $date_from, 'date_to'=>$date_to, 'program_time'=>$program_time];
             Mail::to($result->email)->send(new Invite_mail($data));
         }
-              return redirect('dashboard');  
+              return ;  
     }
     
 }

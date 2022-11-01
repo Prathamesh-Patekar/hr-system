@@ -31,7 +31,7 @@ class Invite_mail extends Mailable
     public function build()
     {
         $address  = 'prathamesh.patekar@techsevin.com';
-        $subject  = 'test mail';
+        $subject  = 'Invite Mail';
         $name  = 'Prathamesh';
         return  $this->view('emails.invite')
         ->from($address, $name)
@@ -39,7 +39,8 @@ class Invite_mail extends Mailable
         // ->bcc($address, $name)
         // ->replyTo($address, $name)
         ->subject($subject)
-        ->with([ 'test_message' =>  $this->data['message'] ]);
+        ->with([ 'test_message' =>  $this->data ]);
+        \Log::info($test_message);
 
     }
 }
