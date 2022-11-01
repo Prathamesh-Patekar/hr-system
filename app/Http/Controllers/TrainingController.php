@@ -88,6 +88,9 @@ class TrainingController extends Controller
     }
 
     public function processEditTrainingProgram($id,Request $request){
+
+        $post = 1;
+        $program_id = $id;
         $name = $request->name;
         $description = $request->description;
         $date_from = date('Y-m-d', strtotime($request->date_from));
@@ -116,7 +119,7 @@ class TrainingController extends Controller
         }
         $edit->save();
 
-        $lecture =  ScheduleLecture::where('program_id','=', $id)->delete();
+        $lecture =  ScheduleLecture::where('program_id','=', $program_id)->delete();
 
         $startDate = new Carbon($date_from);
         $endDate = new Carbon($date_to);
@@ -127,7 +130,21 @@ class TrainingController extends Controller
         }
        
         $this->schedulelecture($id, $all_dates);
-        return;
+
+        $invites = TrainingInvite::where('program_id', $program_id)->get();
+        $email = [];
+
+        if(count($invites) > 0){
+            foreach($invites as $invite){
+                $email[] .= $invite->user_id;
+           }
+
+            $this->invite_mail($email, $program_id, $date_from, $date_to,$post);
+
+        }
+
+       
+       
 
         \Session::flash('flash_message', 'Training Program successfully updated!');
         return redirect('show-training-program');
@@ -151,6 +168,7 @@ class TrainingController extends Controller
     public function processTrainingInvite(Request $request)
     {
 
+        $post = "";
         $email = [];
         $program_id = $request->program_id;
         $date_from = $request->date_from;
@@ -183,7 +201,7 @@ class TrainingController extends Controller
         }
 
         \Session::flash('flash_message', $i . ' out of '. $totalMembers. ' members have been invited for the training!');
-        $this->invite_mail($email, $program_id, $date_from, $date_to);
+        $this->invite_mail($email, $program_id, $date_from, $date_to, $post);
         return redirect('dashboard');  
 
     }
@@ -308,7 +326,7 @@ class TrainingController extends Controller
 		
 	}
 
-    function invite_mail($email, $program_id, $date_from, $date_to){
+    function invite_mail($email, $program_id, $date_from, $date_to, $post){
      
         $program = TrainingProgram::where('id', '=', $program_id)->first();
         $program_name = $program->name;
@@ -318,7 +336,7 @@ class TrainingController extends Controller
  
             $result = \DB::table('users')->where('id','=' ,$id)->first(); 
              
-            $data  = ['program_name' => $program_name, 'date_from'=> $date_from, 'date_to'=>$date_to, 'program_time'=>$program_time];
+            $data  = ['program_name' => $program_name, 'date_from'=> $date_from, 'date_to'=>$date_to, 'program_time'=>$program_time,'post'=>$post];
             Mail::to($result->email)->send(new Invite_mail($data));
         }
               return ;  
