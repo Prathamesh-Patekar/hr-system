@@ -60,6 +60,7 @@
                                         </thead>
                                         <tbody>
                                         <?php $i =0;?>
+                                       
                                         @foreach($programs as $program)
                                             <tr>
                                                 <td class="text-center">{{$i+=1}}</td>
@@ -67,7 +68,11 @@
                                                 <td class="text-center">{{$program->name}}</td>
                                                 <td class="text-center">{{$program->description}}</td>
                                                 <td class="text-center">{{date('d-m-Y',strtotime($program->date_from))}}</td>
+                                                @if($program->date_to == '0000-00-00')
+                                                <td class="text-center">{{date('d-m-Y',strtotime($program->date_from))}}</td>
+                                                @else
                                                 <td class="text-center">{{date('d-m-Y',strtotime($program->date_to))}}</td>
+                                                @endif
                                                 <td class="text-center">
                                                     <div class="btn-group text-right">
                                                         <button type="button"

@@ -53,6 +53,7 @@
                                             <th class="text-center">Id</th>
                                             <th class="text-center">Training Program</th>
                                             <th class="text-center">Description</th>
+                                            <th class="text-center">Days</th>
                                             <th class="text-center">Date From</th>
                                             <th class="text-center">Date To</th>
                                             <th class="text-center">Time</th>
@@ -65,8 +66,25 @@
                                                 <td class="text-center">{{$i+=1}}</td>
                                                 <td class="text-center">{{$value->name}}</td>
                                                 <td class="text-center">{{$value->description}}</td>
+                                                <td class="text-center">
+                                                @if($value->days != 'null')
+                                                <?php 
+                                                $name = "";
+                                                $days =json_decode($value->days) ;
+                                                foreach($days as $day){
+                                                    $name .= " ".$day.",";
+                                                }
+                                                $data = rtrim ($name , ","); 
+                                                ?>{{$data}}</td>
+                                                @else
+                                                --
+                                                @endif
                                                 <td class="text-center">{{date('d-m-Y',strtotime($value->date_from))}}</td>
+                                                @if($value->date_to == '0000-00-00')
+                                                <td class="text-center">{{date('d-m-Y',strtotime($value->date_from))}}</td>
+                                                @else
                                                 <td class="text-center">{{date('d-m-Y',strtotime($value->date_to))}}</td>
+                                                @endif
                                                 <td class="text-center">{{$value->time}}</td>
                                             </tr>
                                         @endforeach    

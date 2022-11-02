@@ -581,3 +581,23 @@ $('#program').on('click',function(){
     
 });
 
+
+$(document).on('change', '#lecture', function () {
+
+    var value  = $('#lecture').val();
+    console.log(value);
+        if(value == 'daily'){
+            $("#days").css({"display":"none"});
+            $("#date_to").css({"display":"none"});
+            $("#done").removeAttr('required');
+            $("#datepicker4").removeAttr('required');
+            
+        }
+        if(value == 'weekly'){
+            $("#days").css({"display":"block"});
+            $("#date_to").css({"display":"block"});
+            $("#done").attr('required',true);
+            $("#datepicker4").attr('required',true);
+            
+        }
+});

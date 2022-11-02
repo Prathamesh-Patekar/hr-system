@@ -73,7 +73,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="form-group">
+                                        <div class="form-group" id = 'date_to'>
                                             <label for="datepicker4" class="col-md-3 control-label"> Date To </label>
                                             <div class="col-md-6">
                                                 <div class="input-group">
@@ -97,7 +97,7 @@
                                             </div>
                                         </div>
                                            
-                                        <div class="form-group">
+                                        <div class="form-group" id = 'days'>
                                                 <label for="multiselect2" class="col-md-3 control-label"> Select Days </label>
                                                 <div class="col-md-6">
                                                     <select id="done" class="selectpicker form-control" multiple data-done-button="true"

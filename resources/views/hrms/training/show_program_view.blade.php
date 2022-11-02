@@ -44,7 +44,9 @@
                                     {{ Session::get('flash_message') }}
                                 </div>
                             @endif
+                      
                             @foreach($data as $value)
+
                             <div>
                                 <label>Training Name : </label>
                                     {{ $value->name }}
@@ -58,18 +60,20 @@
                                     {{ $value->lecture }}
                             </div>
                 
-                            <?php 
-                            $name = "";
-                            $days =json_decode($value->days) ;
-                            foreach($days as $day){
-                                $name .= " ".$day.",";
-                            }
-                            $data = rtrim ($name , ","); 
-                            ?>
-                          <div>
-                                <label>Days : </label>
-                                    {{ $data }}
-                            </div>
+                            @if($value->days != NULL)
+                                <?php 
+                                $name = "";
+                                $days =json_decode($value->days) ;
+                                foreach($days as $day){
+                                    $name .= " ".$day.",";
+                                }
+                                $result = rtrim ($name , ","); 
+                                ?>
+                                <div>
+                                    <label>Days : </label>
+                                        {{ $result }}
+                                </div>
+                            @endif
                            
                             <div>
                                 <label>Timing : </label>
@@ -79,14 +83,18 @@
                                 <label>Date From : </label>
                                     {{ date('d-m-Y', strtotime($value->date_from)) }}
                             </div>
-                            <div>
+                            @if($value->date_to == '0000-00-00')
+                            <div>          
                                 <label>Date To : </label>
-                                    {{ date('d-m-Y', strtotime($value->date_to)) }}
+                                {{ date('d-m-Y', strtotime($value->date_from)) }}
                             </div>
-
-
-
-                             
+                            @else
+                            <div>           
+                                <label>Date To : </label>
+                                {{ date('d-m-Y', strtotime($value->date_to)) }}
+                            </div>
+                            @endif
+                                                         
                             @endforeach
                         </div>
                     </div>

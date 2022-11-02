@@ -73,6 +73,7 @@
                                                 </div>
                                             </div>
 
+                                           @if($programs->date_from != $programs->date_to)
                                             <div class="form-group">
                                                 <label for="datepicker4" class="col-md-3 control-label"> Date To </label>
                                                 <div class="col-md-6">
@@ -84,7 +85,10 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        
+                                            @endif
+                                           
+
+                                            @if($programs->days != NULL)
                                             <?php 
                                             $name = "";
                                             $days =json_decode($programs->days) ;
@@ -109,6 +113,7 @@
                                                     </select>
                                                 </div>
                                         </div>
+                                        @endif
 
                                         <div class="form-group">
                                             <label for="timepicker1" class="col-md-3 control-label"> Time </label>

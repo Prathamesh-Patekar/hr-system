@@ -26,26 +26,41 @@ class TrainingController extends Controller
         $programs = new TrainingProgram();
         $programs->name = $request->name;
         $programs->description = $request->description;
-        $programs->date_from = date('Y-m-d', strtotime($request->date_from));
-        $programs->date_to = date('Y-m-d', strtotime($request->date_to));
         $programs->lecture = $request->lecture;
-        $programs->days = json_encode($request->day_ids);
+        $programs->date_from = date('Y-m-d', strtotime($request->date_from));
+        if($request->lecture == 'daily'){
+            $programs->date_to = date('Y-m-d', strtotime($request->date_from));
+        }else{
+            $programs->date_to = date('Y-m-d', strtotime($request->date_to));
+            $programs->days = json_encode($request->day_ids);
+        }
+        
+        
         $programs->time = $request->time;
 
-        $date1 = date('Y-m-d', strtotime($request->date_from));
-        $date2 = date('Y-m-d', strtotime($request->date_to));
+        $date1 = date('Y-m-d', strtotime($programs->date_from));
+        $date2 = date('Y-m-d', strtotime($programs->date_to));
 
+        echo $request->lecture;
+        echo $programs->date_to ;
         $programs->save();
+
         $id =  $programs->id;
 
-        $startDate = new Carbon($date1);
-        $endDate = new Carbon($date2);
-        $all_dates = array();
-        while ($startDate->lte($endDate)){
-            $all_dates[] = $startDate->toDateString();
-            $startDate->addDay();
+        if($request->date_to != "" ){
+            $startDate = new Carbon($date1);
+            $endDate = new Carbon($date2);
+            $all_dates = array();
+            while ($startDate->lte($endDate)){
+                $all_dates[] = $startDate->toDateString();
+                $startDate->addDay();
+            }
+        }else{
+            $startDate = new Carbon($date1);
+            $all_dates[] =  $startDate->toDateString();
+            
         }
-       
+
         $this->schedulelecture($id, $all_dates);
 
         \Session::flash('flash_message', 'Training Program successfully added!');
@@ -58,21 +73,32 @@ class TrainingController extends Controller
 
         $program = TrainingProgram::where('id', '=',$id)->first();
         $days = json_decode($program->days);
-    
-        foreach($all_dates as $date){
+        if($days != ""){
+            foreach($all_dates as $date){
 
-            foreach($days as $day){
-                $data = date('l',strtotime($date));
-               
-                if($day == $data){
-                    $lecture =  new ScheduleLecture();
-                    $lecture->program_id = $id;
-                    $lecture->date_on = $date;
-                    $lecture->save();
+                foreach($days as $day){
+                    $data = date('l',strtotime($date));
+                   
+                    if($day == $data){
+                        $lecture =  new ScheduleLecture();
+                        $lecture->program_id = $id;
+                        $lecture->date_on = $date;
+                        $lecture->save();
+                    }
+                    
                 }
+            }
+        }else{
+            foreach($all_dates as $date){
+                $lecture =  new ScheduleLecture();
+                $lecture->program_id = $id;
+                $lecture->date_on = $date;
+                $lecture->save();
+                      
                 
             }
         }
+    
     }
 
     public function showTrainingProgram(){
@@ -89,15 +115,22 @@ class TrainingController extends Controller
     public function processEditTrainingProgram($id,Request $request){
 
         $post = 1;
+        $value = 0;
         $program_id = $id;
         $name = $request->name;
         $description = $request->description;
         $date_from = date('Y-m-d', strtotime($request->date_from));
         $date_to = date('Y-m-d', strtotime($request->date_to));
-        $days = json_encode($request->day_ids);
+        if($request->day_ids != ""){
+            $days = json_encode($request->day_ids);
+        }
         $time = $request->time;
 
         $edit = TrainingProgram::findOrFail($id);
+        if($date_from > $date_to) {
+            $date_to = $date_from;
+            $value = 1;
+        }
         if (!empty($name)) {
             $edit->name = $name;
         }
@@ -116,16 +149,27 @@ class TrainingController extends Controller
         if (!empty($time)) {
             $edit->time = $time;
         }
+
         $edit->save();
+       
 
         $lecture =  ScheduleLecture::where('program_id','=', $program_id)->delete();
 
         $startDate = new Carbon($date_from);
         $endDate = new Carbon($date_to);
         $all_dates = array();
-        while ($startDate->lte($endDate)){
-            $all_dates[] = $startDate->toDateString();
-            $startDate->addDay();
+
+
+        if($value != 1 ){
+            while ($startDate->lte($endDate)){
+                $all_dates[] = $startDate->toDateString();
+                $startDate->addDay();
+            }
+        }
+        else{
+            $startDate = new Carbon($date_from);
+            $all_dates[] =  $startDate->toDateString();
+            
         }
        
         $this->schedulelecture($id, $all_dates);

@@ -16,7 +16,7 @@ class AddColumnDate extends Migration
         //
         Schema::table('training_programs', function($table) {
             $table->date('date_from')->after('description');
-            $table->date('date_to')->after('date_from')->nullable();
+            $table->date('date_to')->after('date_from');
         });
     }
 
