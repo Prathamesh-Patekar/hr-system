@@ -67,7 +67,7 @@
                                                 <td class="text-center">{{$value->name}}</td>
                                                 <td class="text-center">{{$value->description}}</td>
                                                 <td class="text-center">
-                                                @if($value->days != 'null')
+                                                @if($value->days != NULL)
                                                 <?php 
                                                 $name = "";
                                                 $days =json_decode($value->days) ;
