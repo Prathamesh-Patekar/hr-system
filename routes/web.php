@@ -264,6 +264,10 @@ Route::group(['middleware' => ['auth']], function ()
 
     //Routes for Training.
 
+    Route::group(['middleware' => ['adminview']], function ()
+    {
+
+
     Route::get('add-training-program', ['uses'=>'TrainingController@addTrainingProgram']);
 
     Route::post('add-training-program', ['uses'=>'TrainingController@processTrainingProgram']);
@@ -282,9 +286,9 @@ Route::group(['middleware' => ['auth']], function ()
 
     Route::get('show-training-invite', ['uses'=>'TrainingController@showTrainingInvite']);
 
-    Route::get('edit-training-invite/{id}', ['uses'=>'TrainingController@doEditTrainingInvite']);
+    // Route::get('edit-training-invite/{id}', ['uses'=>'TrainingController@doEditTrainingInvite']);
 
-    Route::post('edit-training-invite/{id}', ['uses'=>'TrainingController@processEditTrainingInvite']);
+    // Route::post('edit-training-invite/{id}', ['uses'=>'TrainingController@processEditTrainingInvite']);
 
     Route::get('delete-training-invite/{id}',['uses'=>'TrainingController@deleteTrainingInvite']);
 
@@ -293,6 +297,16 @@ Route::group(['middleware' => ['auth']], function ()
     Route::post('post-reply', 'UpdateController@reply');
 
     Route::get('post/{id}', 'UpdateController@post');
+    // edit
+    Route::get('/search_program',['uses'=>'TrainingController@search_program'])->name('search');
+
+    Route::post('/show-training-invite',['uses'=>'TrainingController@filter_program']);
+
+    Route::get('/show_program_details/{id}',['uses'=>'TrainingController@showDetails']);
+
+    });
+
+    Route::get('/view_program',['uses'=>'TrainingController@viewProgram']);
 
     /** Routes for clients **/
     Route::get('add-client', 'ClientController@addClient')->name('add-client');

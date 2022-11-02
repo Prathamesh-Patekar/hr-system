@@ -53,51 +53,41 @@
                                             <th class="text-center">Id</th>
                                             <th class="text-center">Training Program</th>
                                             <th class="text-center">Description</th>
+                                            <th class="text-center">Days</th>
                                             <th class="text-center">Date From</th>
                                             <th class="text-center">Date To</th>
-                                            <th class="text-center">Actions</th>
+                                            <th class="text-center">Time</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <?php $i =0;?>
-                                       
-                                        @foreach($programs as $program)
+                                        @foreach($data as $value)
                                             <tr>
                                                 <td class="text-center">{{$i+=1}}</td>
-
-                                                <td class="text-center">{{$program->name}}</td>
-                                                <td class="text-center">{{$program->description}}</td>
-                                                <td class="text-center">{{date('d-m-Y',strtotime($program->date_from))}}</td>
-                                                @if($program->date_to == '0000-00-00')
-                                                <td class="text-center">{{date('d-m-Y',strtotime($program->date_from))}}</td>
-                                                @else
-                                                <td class="text-center">{{date('d-m-Y',strtotime($program->date_to))}}</td>
-                                                @endif
+                                                <td class="text-center">{{$value->name}}</td>
+                                                <td class="text-center">{{$value->description}}</td>
                                                 <td class="text-center">
-                                                    <div class="btn-group text-right">
-                                                        <button type="button"
-                                                                class="btn btn-success br2 btn-xs fs12 dropdown-toggle"
-                                                                data-toggle="dropdown" aria-expanded="false"> Action
-                                                            <span class="caret ml5"></span>
-                                                        </button>
-                                                        <ul class="dropdown-menu" role="menu">
-                                                            <li>
-                                                                <a href="/show_program_details/{{$program->id}}">View</a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="/edit-training-program/{{$program->id}}">Edit</a>
-                                                            </li>
-                                                            <!-- <li>
-                                                                <a href="/delete-training-program/{{$program->id}}">Delete</a>
-                                                            </li> -->
-                                                        </ul>
-                                                    </div>
-                                                </td>
+                                                @if($value->days != 'null')
+                                                <?php 
+                                                $name = "";
+                                                $days =json_decode($value->days) ;
+                                                foreach($days as $day){
+                                                    $name .= " ".$day.",";
+                                                }
+                                                $data = rtrim ($name , ","); 
+                                                ?>{{$data}}</td>
+                                                @else
+                                                --
+                                                @endif
+                                                <td class="text-center">{{date('d-m-Y',strtotime($value->date_from))}}</td>
+                                                @if($value->date_to == '0000-00-00')
+                                                <td class="text-center">{{date('d-m-Y',strtotime($value->date_from))}}</td>
+                                                @else
+                                                <td class="text-center">{{date('d-m-Y',strtotime($value->date_to))}}</td>
+                                                @endif
+                                                <td class="text-center">{{$value->time}}</td>
                                             </tr>
-                                        @endforeach
-                                        <tr>
-                                            {!! $programs->render() !!}
-                                        </tr>
+                                        @endforeach    
                                         </tbody>
                                     </table>
                                 </div>

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\User;
+use App\TrainingInvite;
 use Illuminate\Database\Eloquent\Model;
 
 class Employee extends Model
@@ -60,4 +61,9 @@ class Employee extends Model
         'pf_status'    ,
         'user_id',
     ];
+    public function TrainingInvite()
+    {
+        return $this->hasMany(TrainingInvite::class, 'user_id', 'user_id');
+    }
+
 }

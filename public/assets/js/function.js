@@ -561,6 +561,7 @@ $('#code').blur(function(){
 });
 
 
+<<<<<<< HEAD
 
 $(document).ready(function () 
 {
@@ -677,3 +678,45 @@ $(document).change(function ()
 
     });
 });
+=======
+$('#program').on('click',function(){
+    var value  = $(this).val();
+    console.log(value);
+    $.ajax({
+        url:"/search_program",
+        type:"GET",
+        data:{'name':value},
+        success: function(data){
+            console.log(data);
+            var obj = jQuery.parseJSON(data);
+            console.log(obj.date_from);
+            $("#description").val(obj.description);
+            $("#datepicker1").val(obj.date_from);
+            $("#datepicker4").val(obj.date_to);
+
+        }
+    });
+    
+});
+
+
+$(document).on('change', '#lecture', function () {
+
+    var value  = $('#lecture').val();
+    console.log(value);
+        if(value == 'daily'){
+            $("#days").css({"display":"none"});
+            $("#date_to").css({"display":"none"});
+            $("#done").removeAttr('required');
+            $("#datepicker4").removeAttr('required');
+            
+        }
+        if(value == 'weekly'){
+            $("#days").css({"display":"block"});
+            $("#date_to").css({"display":"block"});
+            $("#done").attr('required',true);
+            $("#datepicker4").attr('required',true);
+            
+        }
+});
+>>>>>>> 7862f40ef99be8b8ada7c8ff839bd1dfe99070ee

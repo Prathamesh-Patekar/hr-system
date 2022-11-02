@@ -297,26 +297,31 @@
             <span class="caret"></span>
         </a>
         <ul class="nav sub-nav">
-            @if(\Auth::user()->notAnalyst())
+        @if(\Auth::user()->isAdmin || \Auth::user()->isHR())
                 <li>
                     <a href="/add-training-program">
                         <span class="fa fa-adn"></span> Add Training Program </a>
                 </li>
-            @endif
             <li>
                 <a href="/show-training-program">
                     <span class="glyphicon glyphicon-calendar"></span> Program Listings </a>
             </li>
-            @if(\Auth::user()->notAnalyst())
                 <li>
                     <a href="/add-training-invite">
                         <span class="fa fa-desktop"></span> Training Invite </a>
                 </li>
-            @endif
             <li>
                 <a href="/show-training-invite">
                     <span class="fa fa-clipboard"></span> Invitation Listings </a>
             </li>
+            @else
+            <li>
+                <a href="/view_program">
+                    <span class="fa fa-clipboard"></span>View Training</a>
+            </li>
+            @endif
+
+
         </ul>
     </li>
 

@@ -45,7 +45,6 @@
                                         @endif
                                         {!! Form::open(['class' => 'form-horizontal']) !!}
 
-
                                         <div class="form-group">
                                             <label class="col-md-3 control-label"> Training Program </label>
                                             <div class="col-md-6">
@@ -63,6 +62,66 @@
 
 
                                         <div class="form-group">
+                                            <label for="datepicker1" class="col-md-3 control-label"> Date From </label>
+                                            <div class="col-md-6">
+                                                <div class="input-group">
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-calendar text-alert pr11"></i>
+                                                    </div>
+                                                    <input type="text" id="datepicker1" value="" class="select2-single form-control" name="date_from" required>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" id = 'date_to'>
+                                            <label for="datepicker4" class="col-md-3 control-label"> Date To </label>
+                                            <div class="col-md-6">
+                                                <div class="input-group">
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-calendar text-alert pr11"></i>
+                                                    </div>
+                                                    <input type="text" id="datepicker4" value="" class="select2-single form-control" name="date_to" required>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label"> Select Weekly/Daily </label>
+                                            <div class="col-md-6">
+                                                <select class="select2-multiple form-control select-primary"
+                                                        name="lecture" id= "lecture" required>
+                                                    <option value="" selected>Select One</option>
+                                                    <option value="weekly">Weekly</option>
+                                                    <option value="daily">Daily</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                           
+                                        <div class="form-group" id = 'days'>
+                                                <label for="multiselect2" class="col-md-3 control-label"> Select Days </label>
+                                                <div class="col-md-6">
+                                                    <select id="done" class="selectpicker form-control" multiple data-done-button="true"
+                                                            name="day_ids[]" required>
+                                                       
+                                                        <option value="Monday">Monday</option>
+                                                        <option value="Tuesday">Tuesday</option>
+                                                        <option value="Wednesday">Wednesday</option>
+                                                        <option value="Thursday">Thursday</option>
+                                                        <option value="Friday">Friday</option>
+                                                        
+                                                    </select>
+                                                </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="timepicker1" class="col-md-3 control-label"> Time </label>
+                                            <div class="col-md-6">
+                                                <input type="text" id="timepicker1" value="" class="select2-single form-control" name="time" required>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group">
                                             <label class="col-md-3 control-label"></label>
                                             <div class="col-md-2">
 
@@ -72,6 +131,8 @@
                                             <div class="col-md-2"><a href="/add-training-program" >
                                                     <input type="button" class="btn btn-bordered btn-success btn-block" value="Reset"></a></div>
                                         </div>
+
+                                        
                                     </div>
                                     {!! Form::close() !!}
                                 </div>
@@ -85,4 +146,13 @@
     </section>
 
     </div>
+    @push('styles')
+        <link rel="stylesheet" type="text/css" href="/assets/allcp/forms/css/bootstrap-select.css">
+    @endpush
 @endsection
+@push('scripts')
+    <script src="/assets/js/pages/forms-widgets.js"></script>
+    <script src="/assets/js/custom.js"></script>
+    <script src="/assets/allcp/forms/js/bootstrap-select.js"></script>
+    <script src="/assets/js/function.js"></script>
+@endpush

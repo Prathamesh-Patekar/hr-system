@@ -36,8 +36,37 @@
                         <div class="box box-success">
                         <div class="panel">
                             <div class="panel-heading">
-                                <span class="panel-title hidden-xs"> Training Invites Listings </span>
+                                <span class="panel-title hidden-xs"> Training Invites Listings </span><br />
+                            </div><br />
+                            
+
+                            <div class="panel-menu allcp-form theme-primary mtn">
+                                <div class="row">
+                                    {!! Form::open() !!}
+                                    <div class="col-md-3">
+                                        <input type="text" class="field form-control" placeholder="query string" style="height:40px" value="{{$string}}" name="string">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="field select">
+                                            {!! Form::select('column', getTrainingDropDown(),$column) !!}
+                                            <i class="arrow double"></i>
+                                        </label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="submit" value="Search" name="button" class="btn btn-primary">
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <input type="submit" value="Export" name="button" class="btn btn-success">
+                                    </div>
+                                    {!! Form::close() !!}
+                                    <div class="col-md-2">
+                                        <a href="/show-training-invite" >
+                                            <input type="submit" value="Reset" class="btn btn-warning"></a>
+                                    </div>
+                                </div>
                             </div>
+
                             <div class="panel-body pn">
                                 @if(Session::has('flash_message'))
                                     <div class="alert alert-success">
@@ -63,11 +92,11 @@
                                         @foreach($invites as $invite)
                                             <tr>
                                                 <td class="text-center">{{$i+=1}}</td>
-                                                <td class="text-center">{{$invite->employee->name}}</td>
-                                                <td class="text-center">{{$invite->program->name}}</td>
+                                                <td class="text-center">{{$invite->name}}</td>
+                                                <td class="text-center">{{$invite->program_name}}</td>
                                                 <td class="text-center">{{$invite->description}}</td>
-                                                <td class="text-center">{{$invite->date_from}}</td>
-                                                <td class="text-center">{{$invite->date_to}}</td>
+                                                <td class="text-center">{{date('d-m-Y',strtotime($invite->date_from))}}</td>
+                                                <td class="text-center">{{date('d-m-Y',strtotime($invite->date_to))}}</td>
 
                                                 <td class="text-center">
                                                     <div class="btn-group text-right">
@@ -77,9 +106,7 @@
                                                             <span class="caret ml5"></span>
                                                         </button>
                                                         <ul class="dropdown-menu" role="menu">
-                                                            <li>
-                                                                <a href="/edit-training-invite/{{$invite->id}}">Edit</a>
-                                                            </li>
+                                                           
                                                             <li>
                                                                 <a href="/delete-training-invite/{{$invite->id}}">Delete</a>
                                                             </li>
@@ -89,7 +116,7 @@
                                             </tr>
                                         @endforeach
                                         <tr>
-                                            {!! $invites->render() !!}
+                                          
                                         </tr>
                                         </tbody>
                                     </table>
