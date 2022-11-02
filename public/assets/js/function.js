@@ -561,7 +561,6 @@ $('#code').blur(function(){
 });
 
 
-<<<<<<< HEAD
 
 $(document).ready(function () 
 {
@@ -678,7 +677,6 @@ $(document).change(function ()
 
     });
 });
-=======
 $('#program').on('click',function(){
     var value  = $(this).val();
     console.log(value);
@@ -719,4 +717,3 @@ $(document).on('change', '#lecture', function () {
             
         }
 });
->>>>>>> 7862f40ef99be8b8ada7c8ff839bd1dfe99070ee
