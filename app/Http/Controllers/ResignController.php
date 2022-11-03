@@ -142,7 +142,7 @@ class ResignController extends Controller
 
     }else{
       \Session::flash('flash_message', 'Already added in resignation table');
-   
+      
     return redirect('/resignation');
     }
   }
