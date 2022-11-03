@@ -111,6 +111,7 @@ class ResignController extends Controller
   function processresign(Request $request)
   {
 
+    $id = "";
     $result = DB::table('employees')
     // ->select('*')
     ->where('name', '=', $request->get_emp)
@@ -141,7 +142,7 @@ class ResignController extends Controller
       return redirect('/resignation');
 
     }else{
-      \Session::flash('flash_message', 'Already added in resignation table');
+      \Session::flash('flash_message', 'Already added in resignation table or invalid');
    
     return redirect('/resignation');
     }
