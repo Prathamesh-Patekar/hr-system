@@ -288,7 +288,7 @@
            */          
 
           $list = \DB::table('users')->select(
-             'users.name', 'attendance_managements.*','employees.*')
+             'users.name', 'attendance_managements.*','employees.department')
             ->join('attendance_managements', 'users.id', '=', 'attendance_managements.user_id')
             ->join('employees', 'users.id', '=', 'employees.user_id');
           if (!empty($column) && !empty($string) && empty($dateFrom) && empty($dateTo)) {
