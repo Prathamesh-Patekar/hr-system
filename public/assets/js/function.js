@@ -619,19 +619,20 @@ $(document).ready(function ()
     $("#datepicker9").on("change",function()
     {
         var selected = $(this).val();
+        var second_date = moment(selected).format('DD/MM/YYYY');  
 
             let days = $('#notice_date').val();
             var myInt = parseInt(days);                   
-            var newdate = new Date(selected);
+            var newdate = new Date(second_date);
             newdate.setDate(newdate.getDate() + myInt);
 
             var dd = newdate.getDate();
             var mm = newdate.getMonth() + 1 ;
             var y = newdate.getFullYear();
-            var someFormattedDate = mm + '/' + dd + '/' + y;
-            // console.log(someFormattedDate);
+            var someFormattedDate = dd + '-' + mm + '-' + y;
+            console.log(someFormattedDate);
 
-            $("#datepicker10").val(someFormattedDate);
+            $("#date1").val(someFormattedDate);
     });   
 
 });
@@ -682,7 +683,6 @@ $(document).change(function ()
 $("#datepicker9").on("change",function()
 {
     var selected = $(this).val();
-    console.log(selected);
     var second_date = moment(selected).format('DD/MM/YYYY');  
    
   
@@ -692,7 +692,7 @@ $("#datepicker9").on("change",function()
         var myInt = parseInt(days); 
       
         var newdate = new Date(second_date);
-        console.log(newdate);
+        // console.log(newdate);
 
         newdate.setDate(newdate.getDate() + myInt);
         
@@ -700,7 +700,7 @@ $("#datepicker9").on("change",function()
         var mm = newdate.getMonth() + 1 ;
         var y = newdate.getFullYear();
         var someFormattedDate = dd + '-' + mm + '-' + y;
-        console.log(someFormattedDate);
+        // console.log(someFormattedDate);
 
         $("#date1").val(someFormattedDate);
 

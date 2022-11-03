@@ -128,15 +128,23 @@ class ResignController extends Controller
       'full_final' => 'required',
     ]);
 
-    $resign = new Resignation();
-		$resign->employee_id = $id;
-		$resign->date_of_resignation = date_format(date_create($request->dor), 'Y-m-d');
-    $resign->notice_period = $request->notice_date;
-		$resign->last_working_day = date_format(date_create($request->doj), 'Y-m-d');
-    $resign->full_final = $request->full_final;
-		$resign->save();
-    return redirect('dashboard');
+    if($id != ""){
 
+      $resign = new Resignation();
+      $resign->employee_id = $id;
+      $resign->date_of_resignation = date_format(date_create($request->dor), 'Y-m-d');
+      $resign->notice_period = $request->notice_date;
+      $resign->last_working_day = date_format(date_create($request->doj), 'Y-m-d');
+      $resign->full_final = $request->full_final;
+      $resign->save();
+      \Session::flash('flash_message', 'successfully added!');
+      return redirect('/resignation');
+
+    }else{
+      \Session::flash('flash_message', 'Already added in resignation table');
+   
+    return redirect('/resignation');
+    }
   }
 
 

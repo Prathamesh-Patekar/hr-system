@@ -69,9 +69,9 @@
                                     <tr>
                                         <td class="text-center">{{$i+=1}}</td>
                                         <td class="text-center">{{$emp->employee['name']}}</td>
-                                        <td class="text-center">{{date('Y-m-d', strtotime($emp->date_of_resignation))}}</td>
+                                        <td class="text-center">{{date('d-m-Y', strtotime($emp->date_of_resignation))}}</td>
                                         <td class="text-center">{{$emp->notice_period}} days</td>
-                                        <td class="text-center">{{date('Y-m-d', strtotime($emp->last_working_day))}}</td>
+                                        <td class="text-center">{{date('d-m-Y', strtotime($emp->last_working_day))}}</td>
                                         <td class="text-center"> <?php $data = $emp->employee_form ?>
                                             @if( $data != "" )
                                             Yes
