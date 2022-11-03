@@ -22,21 +22,28 @@ class MailController extends Controller
       //get current full url
       $url = url('');
 
-    
-
-
       $request->validate([
         'get_emp1' =>'required',
         'emp_design' => 'required',
     ]);
 
         $email = $request->emp_email;
-        $id = md5($request->emp_id);
+        if($email != ""){
+          $id = md5($request->emp_id);
 
-        $data  = ['message' => 'Please  fill the form given below '. $url.'/form/'.$id ];
-        Mail::to($email)->send(new Testmail($data));
+          $data  = ['message' => 'Please  fill the form given below '. $url.'/form/'.$id ];
+          Mail::to($email)->send(new Testmail($data));
+  
+          \Session::flash('flash_message', 'successfully send!');
+          return redirect('/exit-formalities');
 
-        return redirect('dashboard');
+        }
+        else{
+          \Session::flash('flash_message', 'already send or incorrect data!');
+          return redirect('/exit-formalities');
+        }
+
+       
 
       }
     

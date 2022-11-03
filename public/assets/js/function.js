@@ -619,19 +619,20 @@ $(document).ready(function ()
     $("#datepicker9").on("change",function()
     {
         var selected = $(this).val();
+        var second_date = moment(selected).format('DD/MM/YYYY');  
 
             let days = $('#notice_date').val();
             var myInt = parseInt(days);                   
-            var newdate = new Date(selected);
+            var newdate = new Date(second_date);
             newdate.setDate(newdate.getDate() + myInt);
 
             var dd = newdate.getDate();
             var mm = newdate.getMonth() + 1 ;
             var y = newdate.getFullYear();
-            var someFormattedDate = mm + '/' + dd + '/' + y;
-            // console.log(someFormattedDate);
+            var someFormattedDate = dd + '-' + mm + '-' + y;
+            console.log(someFormattedDate);
 
-            $("#datepicker10").val(someFormattedDate);
+            $("#date1").val(someFormattedDate);
     });   
 
 });
@@ -677,6 +678,70 @@ $(document).change(function ()
 
     });
 });
+
+
+$("#datepicker9").on("change",function()
+{
+    var selected = $(this).val();
+    var second_date = moment(selected).format('DD/MM/YYYY');  
+   
+  
+    $("#notice_date").change(function()
+    {
+        let days = $(this).val();
+        var myInt = parseInt(days); 
+      
+        var newdate = new Date(second_date);
+        // console.log(newdate);
+
+        newdate.setDate(newdate.getDate() + myInt);
+        
+        var dd = newdate.getDate();
+        var mm = newdate.getMonth() + 1 ;
+        var y = newdate.getFullYear();
+        var someFormattedDate = dd + '-' + mm + '-' + y;
+        // console.log(someFormattedDate);
+
+        $("#date1").val(someFormattedDate);
+
+
+    });
+});    
+
+
+$("#datepicker9").datepicker({
+    prevText: '<i class="fa fa-chevron-left"></i>',
+    nextText: '<i class="fa fa-chevron-right"></i>',
+    showButtonPanel: false,
+    dateFormat: 'dd-mm-yy',
+    beforeShow: function(input, inst) {
+        var newclass = 'allcp-form';
+        var themeClass = $(this).parents('.allcp-form').attr('class');
+        var smartpikr = inst.dpDiv.parent();
+        if (!smartpikr.hasClass(themeClass)) {
+            inst.dpDiv.wrap('<div class="' + themeClass + '"></div>');
+        }
+    }
+});
+
+$("#date1").datepicker({
+    prevText: '<i class="fa fa-chevron-left"></i>',
+    nextText: '<i class="fa fa-chevron-right"></i>',
+    showButtonPanel: false,
+    dateFormat: 'dd-mm-yy',
+    beforeShow: function(input, inst) {
+        var newclass = 'allcp-form';
+        var themeClass = $(this).parents('.allcp-form').attr('class');
+        var smartpikr = inst.dpDiv.parent();
+        if (!smartpikr.hasClass(themeClass)) {
+            inst.dpDiv.wrap('<div class="' + themeClass + '"></div>');
+        }
+    }
+});
+
+
+
+
 $('#program').on('click',function(){
     var value  = $(this).val();
     console.log(value);

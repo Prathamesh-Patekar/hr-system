@@ -350,7 +350,7 @@
                                         <label for="datepicker10" class="field prepend-icon mb5"><h6 class="mb20 mt40">
                                         Last working day </h6></label>
                                         <div class="field prepend-icon">  
-                                                <input type="text" id="datepicker10" class="gui-input fs13" name="doj">
+                                                <input type="text" id="date1" class="gui-input fs13" name="doj" value ="" >
                                                 <label class="field-icon">
                                                     <i class="fa fa-calendar"></i>
                                                 </label>
@@ -546,6 +546,7 @@
         <!-- -------------- Select2 JS -------------- -->
 <script src="/assets/js/plugins/select2/select2.min.js"></script>
 <script src="/assets/js/function.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
 
 
 
