@@ -37,7 +37,7 @@ class ResignController extends Controller
       $output = "";
 
       if(count($data) > 0){
-        $output = '<ul class="list-group" style="display:block;position: relative, z-index: 1;"> ';
+        $output = '<ul class="list-group suggestion" style="display:block;position: relative, z-index: 1;"> ';
 
         foreach($data as $row){
 
@@ -80,7 +80,7 @@ class ResignController extends Controller
         
           $output = "";
             if(count($data1) > 0){
-              $output = '<ul class="list-group" style="display:block;position: relative, z-index: 1;"> ';
+              $output = '<ul class="list-group suggestion" style="display:block;position: relative, z-index: 1;"> ';
       
               foreach($data as $row){
 

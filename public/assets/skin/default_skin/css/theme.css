@@ -25112,3 +25112,9 @@ body.basic-timeline .panel-clone {
     width: 100%;
   }
 }
+
+
+.suggestion:hover{
+  color: #63d3e0;
+
+}
