@@ -51,9 +51,25 @@
                                     <thead>
                                     <tr class="bg-light">
                                         <th class="text-center">Id</th>
-                                        <th class="text-center">Asset</th>
-                                        <th class="text-center">Description</th>
-                                        <th class="text-center">Actions</th>
+                                        <th class="text-center">Asset Owner</th>
+                                        <th class="text-center">Device Type</th>
+                                        <th class="text-center">Brand Name</th>
+                                        <th class="text-center">Serial No.</th>  
+                                        <th class="text-center">Model Name</th>
+                                        <th class="text-center">Processor</th>  
+                                        <th class="text-center">Ram</th>
+                                        <th class="text-center">Disk Type</th>  
+                                        <th class="text-center">Disk Size</th>
+                                        <th class="text-center">Description</th>  
+                                        <th class="text-center">Mouse Name</th>  
+                                        <th class="text-center">Mouse Sr.No</th>
+                                        <th class="text-center">Keyboard Name</th>  
+                                        <th class="text-center">Keyboard Sr.No</th>
+                                        <th class="text-center">CPU Name</th>  
+                                        <th class="text-center">CPU Sr.No</th>
+                                        <th class="text-center">Adapter Sr.No</th>
+                                        <th class="text-center">Phone</th>
+
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -62,7 +78,7 @@
                                     <tr>
                                         <td class="text-center">{{$i+=1}}</td>
 
-                                        <td class="text-center">{{$asset->name}}</td>
+                                        <td class="text-center">{{$asset->owner}}</td>
                                         <td class="text-center">{{$asset->description}}</td>
                                         <td class="text-center">
                                             <div class="btn-group text-right">

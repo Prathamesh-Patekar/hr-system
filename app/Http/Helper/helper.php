@@ -300,3 +300,15 @@ function qualification()
 
         return $user;
     }
+    function getDevice($status)
+    {
+        $data = [
+            '0' => 'Desktop',
+            '1' => 'Laptop',
+            '2' => 'Phone',
+            '3' => 'Tablet',
+
+        ];
+
+        return $data[$status];
+    }
