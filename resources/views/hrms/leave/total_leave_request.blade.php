@@ -106,8 +106,8 @@
                                             <td class="text-center">{{(isset($post))? $leave->name : $leave->user->name}}</td>
                                             <td class="text-center">{{(isset($post))? $leave->code : $leave->user->employee->code}}</td>
                                             <td class="text-center">{{(isset($post))? $leave->leave_type : getLeaveType($leave->leave_type_id)}}</td>
-                                            <td class="text-center">{{getFormattedDate($leave->date_from)}}</td>
-                                            <td class="text-center">{{getFormattedDate($leave->date_to)}}</td>
+                                            <td class="text-center">{{date('d-m-Y', strtotime($leave->date_from))}}</td>
+                                            <td class="text-center">{{date('d-m-Y', strtotime($leave->date_to))}}</td>
                                             <td class="text-center">{{$leave->days}}</td>
                                             <td class="text-center" id="remark-{{$leave->id}}">{{(isset($leave->remarks)) ? $leave->remarks : 'N/A'}}</td>
                                             <input type="hidden" value="{!! csrf_token() !!}" id="token">

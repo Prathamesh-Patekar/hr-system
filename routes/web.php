@@ -146,6 +146,10 @@ Route::group(['middleware' => ['auth']], function ()
 
     Route::post('leave-drafting', ['as' => 'leave-drafting', 'uses' => 'LeaveController@createLeaveDraft']);
 
+
+    Route::get('add-leaves', ['uses' => 'LeaveController@addLeaves']);
+    Route::get('add-employees-leaves', ['uses' => 'LeaveController@processLeaves']);
+
     //Routes for Attendance.
 
     Route::get('attendance-upload', ['as' => 'attendance-upload', 'uses' => 'AttendanceController@importAttendanceFile']);

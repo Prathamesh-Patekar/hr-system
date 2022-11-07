@@ -221,6 +221,10 @@
                     <a href="{{route('total-leave-list')}}">
                         <span class="fa fa-clipboard"></span> Total Leave Listings </a>
                 </li>
+                <li>
+                    <a href="/add-leaves">
+                        <span class="fa fa-clipboard"></span> Add Leaves </a>
+                </li>
             @endif
         </ul>
     </li>

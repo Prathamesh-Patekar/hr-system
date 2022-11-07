@@ -4,22 +4,31 @@
 var datepicker1 = $('#datepicker1');
 var datepicker4 = $('#datepicker4');
 
+function get_date($date){
+    var date = $date;
+    var d = new Date(date.split("-").reverse().join("-"));
+    var dd = d.getDate();
+    var mm = d.getMonth()+1;
+    var yy = d.getFullYear();
+    var newdate = yy+"/"+mm+"/"+dd;
+    return newdate;
+}
+
 datepicker4.on('change', function () {
     var date_from = datepicker1.val();
-    var new_date_from = new Date(date_from);
+    var one_date = get_date(date_from);
+    var new_date_from = new Date(one_date);
     var date_to = datepicker4.val();
-    var new_date_to = new Date(date_to);
+    var second_date = get_date(date_to);
+    var new_date_to = new Date(second_date);
+
     if (date_from > date_to) {
         alert('To Date cannot be smaller than From Date');
         datepicker4.val('');
     }
     else {
         var timeDiff = Math.abs(new_date_to.getTime() - new_date_from.getTime());
-        var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-
-        if (diffDays == 1) {
-            diffDays = 2;
-        }
+        var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));        
 
         if (diffDays == 0) {
             var time_from = date_from + ' ' + $('#timepicker1').val() + ':00';
@@ -35,10 +44,13 @@ datepicker4.on('change', function () {
             }
         }
         else {
-            if (diffDays > 1) {
+            if (diffDays > 0) {
+                diffDays = diffDays + 1;
+                console.log(toWords(diffDays));
                 $('#total_days').val(toWords(diffDays) + 'days leave');
             }
             else {
+                console.log(toWords(diffDays));
                 $('#total_days').val(toWords(diffDays) + 'day leave');
             }
         }
@@ -47,15 +59,20 @@ datepicker4.on('change', function () {
 
 datepicker1.on('change', function () {
     var date_from = datepicker1.val();
-    var new_date_from = new Date(date_from);
+    var one_date = get_date(date_from);
+    var new_date_from = new Date(one_date);
     var date_to = datepicker4.val();
-    var new_date_to = new Date(date_to);
+    var second_date = get_date(date_to);
+    var new_date_to = new Date(second_date);
     var timeDiff = Math.abs(new_date_to.getTime() - new_date_from.getTime());
     var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
-    if (diffDays == 1) {
-        diffDays = 2;
-    }
+    // if (diffDays == 1) {
+    //     diffDays = 2;
+    // }
+
+    console.log(new_date_from);
+    console.log(new_date_to);
 
     if (diffDays == 0) {
         var time_from = date_from + ' ' + $('#timepicker1').val() + ':00';
@@ -71,7 +88,8 @@ datepicker1.on('change', function () {
         }
     }
     else {
-        if (diffDays > 1) {
+        if (diffDays > 0) {
+            diffDays = diffDays + 1;
             $('#total_days').val(toWords(diffDays) + 'days leave');
         }
         else {
@@ -105,7 +123,7 @@ $('#timepicker4').on('change', function () {
             $('#total_days').val('Second half leave');
         }
         else if (diff > 5) {
-            $('#total_days').val('Full day leave');
+            $('#total_days').val(toWords(diffDays) + 'days leave');
         }
     }
     else {
@@ -227,6 +245,7 @@ $('#proceed-button').click(function () {
 
     $.post(url, {'leaveId': leave_id, 'remarks': remarks, '_token': token}, function (data) {
         var parsed = JSON.parse(data);
+        console.log(data);
         if (parsed === 'success') {
             $('#loader').addClass('hidden');
             var statusmessage = $('#status-message');
@@ -244,6 +263,7 @@ $('#proceed-button').click(function () {
 
         }
     });
+    
 });
 
 $('.disapproveClick').click(function () {
@@ -781,4 +801,27 @@ $(document).on('change', '#lecture', function () {
             $("#datepicker4").attr('required',true);
             
         }
+});
+
+
+
+$('.addvalue').on('click',function(){
+    // var value  = $('.number').val();
+    // var name  = $('#name').text();
+    var item = $(this).closest("tr")   // Finds the closest row <tr> 
+    .find("#name") // Gets a descendent with class="nr"
+    .text();
+    var value = $(this).closest("tr")   // Finds the closest row <tr> 
+    .find(".number") // Gets a descendent with class="nr"
+    .val();   
+    $.ajax({
+        url:"/add-employees-leaves",
+        type:"GET",
+        data:{'name':item,'value':value},
+        success: function(data){
+            console.log(data);
+            
+        }
+    });
+    
 });
