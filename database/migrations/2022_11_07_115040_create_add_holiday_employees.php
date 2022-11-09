@@ -17,7 +17,8 @@ class CreateAddHolidayEmployees extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->integer('allow_leaves');
-            $table->integer('taken_leaves');
+            // $table->integer('taken_leaves');
+            $table->decimal('taken_leaves', 5, 1)->default(0);
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });

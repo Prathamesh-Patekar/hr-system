@@ -51,13 +51,24 @@
                                     </label>
                                 </div>
 
+                                <?php 
+                                if(!empty($dateFrom) && !empty($dateTo) ) {
+                                    $date_from =date('d-m-Y', strtotime($dateFrom));
+                                    $date_to = date('d-m-Y', strtotime($dateTo)); 
+                                } else{
+                                    $date_from = "";
+                                    $date_to = "";
+                                }
+                                ?>
+
+
                                 <div class="col-md-3">
                                     <input type="text" id="datepicker1" class="select2-single form-control"
-                                           name="dateFrom" value="{{$dateFrom}}" placeholder="date from"/>
+                                           name="dateFrom" value="{{$date_from}}" placeholder="date from"/>
                                 </div>
                                 <div class="col-md-3">
                                     <input type="text" id="datepicker4" class="select2-single form-control"
-                                           name="dateTo" value="{{$dateTo}}" placeholder="date to"/>
+                                           name="dateTo" value="{{$date_to}}" placeholder="date to"/>
                                 </div>
 
                                 <div class="col-md-2"><br />

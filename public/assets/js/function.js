@@ -806,21 +806,35 @@ $(document).on('change', '#lecture', function () {
 
 
 $('.addvalue').on('click',function(){
-    // var value  = $('.number').val();
-    // var name  = $('#name').text();
     var item = $(this).closest("tr")   // Finds the closest row <tr> 
     .find("#name") // Gets a descendent with class="nr"
     .text();
     var value = $(this).closest("tr")   // Finds the closest row <tr> 
     .find(".number") // Gets a descendent with class="nr"
-    .val();   
+    .val();     
     $.ajax({
         url:"/add-employees-leaves",
         type:"GET",
-        data:{'name':item,'value':value},
+        data:{'name':item,'value':value,'button':'add'},
         success: function(data){
             console.log(data);
-            
+            window.location.reload();
+        }
+    });
+    
+});
+
+$('.reset').on('click',function(){
+    var item = $(this).closest("tr")   // Finds the closest row <tr> 
+    .find("#name") // Gets a descendent with class="nr"
+    .text();   
+    $.ajax({
+        url:"/add-employees-leaves",
+        type:"GET",
+        data:{'name':item},
+        success: function(data){
+            console.log(data);
+            window.location.reload();
         }
     });
     

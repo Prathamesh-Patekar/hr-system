@@ -182,7 +182,8 @@ class LeaveController extends Controller {
 	public function showMyLeave() {
 
 		$leaves = EmployeeLeaves::where('user_id', \Auth::user()->id)->paginate(15);
-		return view('hrms.leave.show_my_leaves', compact('leaves'));
+		$showleaves = Holiday_employee::where('user_id', \Auth::user()->id)->get();
+		return view('hrms.leave.show_my_leaves', compact('leaves', 'showleaves'));
 	}
 
 	/**
@@ -327,6 +328,7 @@ class LeaveController extends Controller {
 			$column = $request->column;
 			$dateTo = $request->dateTo;
 			$dateFrom = $request->dateFrom;
+			
 
 			$data = ['name' => 'users.name', 'code' => 'employees.code', 'days' => 'employee_leaves.days', 'leave_type' => 'leave_types.leave_type', 'status' => 'employee_leaves.status'];
 			
@@ -382,7 +384,7 @@ class LeaveController extends Controller {
 				$filePath = storage_path('export/') . $fileName;
 				$file = new \SplFileObject($filePath, "a");
 				// Add header to csv file.
-				$headers = ['id', 'name', 'code', 'leave_type', 'date_from', 'date_to', 'days', 'status', 'remarks', 'created_at', 'updated_at'];
+				$headers = ['id', 'name', 'code', 'leave_type', 'date_from', 'date_to', 'days', 'status', 'remarks'];
 				$file->fputcsv($headers);
 				$status = '';
 				foreach ($leaves as $leave) {
@@ -427,7 +429,7 @@ class LeaveController extends Controller {
 	 *
 	 * @return string
 	 */
-	public function approveLeave(Request $request) {
+	public function approveLeave(Request $request) {	
 		$leaveId = $request->leaveId;
 		$remarks = $request->remarks;
 		$employeeLeave = EmployeeLeaves::where('id', $leaveId)->first();
@@ -436,27 +438,58 @@ class LeaveController extends Controller {
 			$message->from('no-reply@techsevin.com', 'Techsevin Solution LLP');
 			$message->to($user->email, $user->name)->subject('Your leave has been approved');
 		});
-
+		
 		\DB::table('employee_leaves')->where('id', $leaveId)->update(['status' => '1', 'remarks' => $remarks]);
+
+		$check = Holiday_employee::where('user_id', "=", $user->id)->first();
+		if(!$check)
+		{
+			$insert = new Holiday_employee();
+			$insert->user_id = $user->id;
+			$insert->allow_leaves = 0;
+
+			if($employeeLeave->days == '0')
+			{
+				$t1 = Carbon::createFromFormat('H:i:s',$employeeLeave->from_time);
+				$t2 = Carbon::createFromFormat('H:i:s',$employeeLeave->to_time);
+				$diff = $t1->diff($t2);
+				$hours = $diff->h;
+
+				// $diff = date('H:i:s', strtotime($employeeLeave->from_time)) - date('H:i:s', strtotime($employeeLeave->to_time));
+				if ($hours <= 4){
+					$taken = 0.5;
+					\DB::table('holiday_employees')->where('user_id', $user->id)->update(['taken_leaves' => $taken]);
+				}else{
+					$taken = 1;
+					\DB::table('holiday_employees')->where('user_id', $user->id)->update(['taken_leaves' => $taken]);
+				}
+					
+			}else{
+				\DB::table('holiday_employees')->where('user_id', $user->id)->update(['taken_leaves' => $employeeLeave->days]);
+			}	
+				$insert->save();
+		}
 
 		if($employeeLeave->days == '0')
 		{
+			$insert = Holiday_employee::where('user_id', "=", $user->id)->first();
+			$all_taken = $insert->taken_leaves;
 			$t1 = Carbon::createFromFormat('H:i:s',$employeeLeave->from_time);
             $t2 = Carbon::createFromFormat('H:i:s',$employeeLeave->to_time);
             $diff = $t1->diff($t2);
             $hours = $diff->h;
 
 			// $diff = date('H:i:s', strtotime($employeeLeave->from_time)) - date('H:i:s', strtotime($employeeLeave->to_time));
-			if ($hours < 4){
-				$taken = 7;
+			if ($hours <= 4){
+				$taken = 0.5 + $all_taken;
 				\DB::table('holiday_employees')->where('user_id', $user->id)->update(['taken_leaves' => $taken]);
 			}else{
-				$taken = 1;
+				$taken = 1 + $all_taken;
 				\DB::table('holiday_employees')->where('user_id', $user->id)->update(['taken_leaves' => $taken]);
 			}
 				
 		}else{
-			\DB::table('holiday_employees')->where('user_id', $user->id)->update(['taken_leaves' => $employeeLeave->days]);
+			\DB::table('holiday_employees')->where('user_id', $user->id)->update(['taken_leaves' => $employeeLeave->days + $all_taken]);
 		}		
 
 		return json_encode($diff);
@@ -686,7 +719,8 @@ class LeaveController extends Controller {
 	public function processLeaves(Request $request){
 
 		$data = User::where('name', '=', $request->name)->first();
-
+		if($request->button == 'add'){
+			
 		$check = Holiday_employee::where('user_id', "=", $data->id)->first();
 		if(!$check)
 		{
@@ -700,6 +734,21 @@ class LeaveController extends Controller {
 		} 		
 
 		return redirect ('dashboard');
+
+		}else{
+			$check = Holiday_employee::where('user_id', "=", $data->id)->first();
+			if($check)
+			{
+				$check->user_id = $data->id;
+				$check->allow_leaves = 0;
+				$check->taken_leaves = 0;
+				$check->save();
+				\Session::flash('flash_message', 'Leave data reseted');
+			}else{
+				\Session::flash('flash_message', "employee Don't  have leaves!");
+			} 
+		}
+
 
 	}
 }

@@ -54,7 +54,10 @@
                                         <th class="text-center">sr. no</th>
                                         <th class="text-center">Employee</th>
                                         <th class="text-center">Balance leaves</th>
+                                        <th class="text-center">Allow_leaves</th>
+                                        <th class="text-center">Taken_leaves</th>
                                         <th class="text-center">Add leaves</th>
+                                        <th class="text-center">Reset</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -65,13 +68,20 @@
                                             <td class="text-center" id = "name">{{$value->name}}</td>
                                             @if($value->holiday_employee != null)
                                             <td class="text-center">{{$value->holiday_employee['allow_leaves'] - $value->holiday_employee['taken_leaves'] }}</td>
+                                            <td class="text-center">{{$value->holiday_employee['allow_leaves']}}</td>
+                                            <td class="text-center">{{$value->holiday_employee['taken_leaves']}}</td>
                                             @else
+                                            <td class="text-center">--</td>
+                                            <td class="text-center">--</td>
                                             <td class="text-center">--</td>
                                             @endif
                                             <input type="hidden" value="{!! csrf_token() !!}" id="token">
                                             <td class="text-center">
                                                 <input type = 'number' class = "number" style="width: 10%;" value = "">
-                                                <button class = 'addvalue'>Add</button>
+                                                <input type="submit" class = 'addvalue  btn btn-xs btn-success' value = 'Add' name="button">
+                                            </td>
+                                            <td class="text-center">
+                                                <input type="submit" class = 'reset btn btn-xs btn-warning' value = 'Reset'>
                                             </td>
                                         </tr>
                                     @endforeach  
