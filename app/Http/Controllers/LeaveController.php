@@ -180,7 +180,7 @@ class LeaveController extends Controller {
 				\Log::info($find);
 				
 				if($find){
-					$leave->date_from = date('Y-m-d', strtotime($diff_to->subDays(1)->toDateString()));
+					$leave->date_from = date('Y-m-d', strtotime($diff_to->addDays(1)->toDateString()));
 					$leave->date_to = date('Y-m-d', strtotime($request->dateTo));
 					if($request->dateFrom == $request->dateTo){
 						$leave->days = $number_of_days + 2;
