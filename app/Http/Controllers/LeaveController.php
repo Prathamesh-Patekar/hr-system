@@ -140,15 +140,81 @@ class LeaveController extends Controller {
 		}
 
 		$leave->user_id = \Auth::user()->id;
-		$leave->date_from = date('Y-m-d', strtotime($request->dateFrom));
-		$leave->date_to = date('Y-m-d', strtotime($request->dateTo));
-		$leave->from_time = $request->time_from;
-		$leave->to_time = $request->time_to;
-		$leave->reason = $request->reason;
-		$leave->days = $number_of_days;
-		$leave->status = '0';
-		$leave->leave_type_id = $request->leave_type;
-		$leave->save();
+
+		$id = \Auth::user()->id;
+		// if ($request->dateFrom == $request->dateTo){
+
+			$data = date('l',strtotime($request->dateFrom));
+			if($data == "Monday"){
+
+				$date = new Carbon($request->dateFrom);
+				$diff = $date->subDays(3)->toDateString();
+				$diff_to =  new Carbon($diff);
+
+				$find = EmployeeLeaves::where(['user_id'=> $id,'date_to' => $diff,'status' => 1])->first();
+				\Log::info($find);
+				
+				if($find){
+					$leave->date_from = date('Y-m-d', strtotime($diff_to->addDays(1)->toDateString()));
+					$leave->date_to = date('Y-m-d', strtotime($request->dateTo));
+					// $leave->days = $number_of_days + 3;
+					if($request->dateFrom == $request->dateTo){
+						$leave->days = $number_of_days + 3;
+					}else{
+						$leave->days = $number_of_days + 2;
+					}
+				}else{
+					$leave->date_from = date('Y-m-d', strtotime($request->dateFrom));
+					$leave->date_to = date('Y-m-d', strtotime($request->dateTo));
+					$leave->days = $number_of_days;
+				}
+			}else{
+				$date = new Carbon($request->dateFrom);
+				$diff = $date->subDays(1)->toDateString();
+				$diff_to =  new Carbon($diff);
+
+				$holiday = Holiday::where('date_from' , '=', $diff_to)->first();
+				if(!empty($holiday)){
+
+					$find = EmployeeLeaves::where(['user_id'=> $id,'date_to' => $diff_to->subDays(1)->toDateString(),'status' => 1])->first();
+				\Log::info($find);
+				
+				if($find){
+					$leave->date_from = date('Y-m-d', strtotime($diff_to->subDays(1)->toDateString()));
+					$leave->date_to = date('Y-m-d', strtotime($request->dateTo));
+					if($request->dateFrom == $request->dateTo){
+						$leave->days = $number_of_days + 2;
+					}else{
+						$leave->days = $number_of_days;
+					}
+				}
+
+				}else{
+					$leave->date_from = date('Y-m-d', strtotime($request->dateFrom));
+					$leave->date_to = date('Y-m-d', strtotime($request->dateTo));
+					$leave->days = $number_of_days;
+				}
+			}
+				$leave->from_time = $request->time_from;
+				$leave->to_time = $request->time_to;
+				$leave->reason = $request->reason;
+				$leave->status = '0';
+				$leave->leave_type_id = $request->leave_type;
+				$leave->save();
+		
+		// }
+		// else{
+		// $leave->date_from = date('Y-m-d', strtotime($request->dateFrom));
+		// $leave->date_to = date('Y-m-d', strtotime($request->dateTo));
+
+		// $leave->from_time = $request->time_from;
+		// $leave->to_time = $request->time_to;
+		// $leave->reason = $request->reason;
+		// $leave->days = $number_of_days;
+		// $leave->status = '0';
+		// $leave->leave_type_id = $request->leave_type;
+		// $leave->save();
+		// }
 
 		$leaveType = LeaveType::where('id', $request->leave_type)->first();
 
@@ -442,7 +508,8 @@ class LeaveController extends Controller {
 		\DB::table('employee_leaves')->where('id', $leaveId)->update(['status' => '1', 'remarks' => $remarks]);
 
 		$check = Holiday_employee::where('user_id', "=", $user->id)->first();
-		if(!$check)
+	
+		if(empty($check))
 		{
 			$insert = new Holiday_employee();
 			$insert->user_id = $user->id;
@@ -458,17 +525,22 @@ class LeaveController extends Controller {
 				// $diff = date('H:i:s', strtotime($employeeLeave->from_time)) - date('H:i:s', strtotime($employeeLeave->to_time));
 				if ($hours <= 4){
 					$taken = 0.5;
-					\DB::table('holiday_employees')->where('user_id', $user->id)->update(['taken_leaves' => $taken]);
+					$insert->taken_leaves = $taken;
 				}else{
 					$taken = 1;
-					\DB::table('holiday_employees')->where('user_id', $user->id)->update(['taken_leaves' => $taken]);
+					$insert->taken_leaves = $taken;
 				}
 					
-			}else{
-				\DB::table('holiday_employees')->where('user_id', $user->id)->update(['taken_leaves' => $employeeLeave->days]);
+			}
+			else
+			{
+				$insert->taken_leaves = $employeeLeave->days;
 			}	
+
 				$insert->save();
 		}
+		else{
+			$all_taken = $check->taken_leaves;
 
 		if($employeeLeave->days == '0')
 		{
@@ -490,7 +562,8 @@ class LeaveController extends Controller {
 				
 		}else{
 			\DB::table('holiday_employees')->where('user_id', $user->id)->update(['taken_leaves' => $employeeLeave->days + $all_taken]);
-		}		
+		}
+	}		
 
 		return json_encode($diff);
 	}
@@ -604,7 +677,6 @@ class LeaveController extends Controller {
 					Excel::import(new HolidaysImport,storage_path('holidays/' . $filename)
 				
 			);
-
 		    
 		}
 
@@ -748,7 +820,5 @@ class LeaveController extends Controller {
 				\Session::flash('flash_message', "employee Don't  have leaves!");
 			} 
 		}
-
-
 	}
 }

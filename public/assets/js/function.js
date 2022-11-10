@@ -782,7 +782,6 @@ $('#program').on('click',function(){
     
 });
 
-
 $(document).on('change', '#lecture', function () {
 
     var value  = $('#lecture').val();

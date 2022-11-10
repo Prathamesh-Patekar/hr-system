@@ -271,7 +271,6 @@ Route::group(['middleware' => ['auth']], function ()
     Route::group(['middleware' => ['adminview']], function ()
     {
 
-
     Route::get('add-training-program', ['uses'=>'TrainingController@addTrainingProgram']);
 
     Route::post('add-training-program', ['uses'=>'TrainingController@processTrainingProgram']);
