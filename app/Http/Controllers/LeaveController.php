@@ -177,8 +177,7 @@ class LeaveController extends Controller {
 				if(!empty($holiday)){
 
 					$find = EmployeeLeaves::where(['user_id'=> $id,'date_to' => $diff_to->subDays(1)->toDateString(),'status' => 1])->first();
-				\Log::info($find);
-				
+			
 				if($find){
 					$leave->date_from = date('Y-m-d', strtotime($diff_to->addDays(1)->toDateString()));
 					$leave->date_to = date('Y-m-d', strtotime($request->dateTo));
