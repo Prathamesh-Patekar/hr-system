@@ -169,24 +169,49 @@ class LeaveController extends Controller {
 					$leave->days = $number_of_days;
 				}
 			}else{
+								
 				$date = new Carbon($request->dateFrom);
 				$diff = $date->subDays(1)->toDateString();
 				$diff_to =  new Carbon($diff);
 
-				$holiday = Holiday::where('date_from' , '=', $diff_to)->first();
-				if(!empty($holiday)){
-
-					$find = EmployeeLeaves::where(['user_id'=> $id,'date_to' => $diff_to->subDays(1)->toDateString(),'status' => 1])->first();
-			
-				if($find){
-					$leave->date_from = date('Y-m-d', strtotime($diff_to->addDays(1)->toDateString()));
-					$leave->date_to = date('Y-m-d', strtotime($request->dateTo));
-					if($request->dateFrom == $request->dateTo){
-						$leave->days = $number_of_days + 2;
+				for($i=0;$i>=0;$i++){
+					$holiday = Holiday::where('date_from' , '=', $diff_to)->first();
+					
+					if($holiday){
+						$diff_to = $date->subDays(1)->toDateString();
+						$diff_to =  new Carbon($diff_to);
+						
 					}else{
-						$leave->days = $number_of_days;
+						$diff_to =  new Carbon($diff_to);
+						echo $diff_to;
+
+						$data = date('l',strtotime($diff_to));
+						if($data == 'Sunday'){
+							$diff_to = $diff_to->subDays(3)->toDateString();
+							continue;
+						}else{
+							$diff_to;
+						}
+						break;
 					}
 				}
+				$date_to =  new Carbon($diff_to);
+				
+				$find = EmployeeLeaves::where(['user_id'=> $id,'date_to' => $date_to ,'status' => 1])->first();
+			
+				if($find){
+					$leave->date_from = date('Y-m-d', strtotime($date_to->addDays(1)->toDateString()));
+					$leave->date_to = date('Y-m-d', strtotime($request->dateTo));
+					$all_dates = array();
+					$startDate = new Carbon($leave->date_from);
+					$endDate = new Carbon($request->dateTo);
+
+					while (($startDate)->lte($endDate)){
+						$all_dates[] =$startDate->toDateString();
+						$startDate->addDay();
+					}
+						$count = count($all_dates);
+						$leave->days = $number_of_days + $count;
 
 				}else{
 					$leave->date_from = date('Y-m-d', strtotime($request->dateFrom));
