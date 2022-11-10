@@ -142,7 +142,8 @@ class LeaveController extends Controller {
 		$leave->user_id = \Auth::user()->id;
 
 		$id = \Auth::user()->id;
-		// if ($request->dateFrom == $request->dateTo){
+		$employee = EmployeeLeaves::where(['leave_type_id'=> 2])->first();
+		if ($employee){
 
 			$data = date('l',strtotime($request->dateFrom));
 			if($data == "Monday"){
@@ -157,7 +158,6 @@ class LeaveController extends Controller {
 				if($find){
 					$leave->date_from = date('Y-m-d', strtotime($diff_to->addDays(1)->toDateString()));
 					$leave->date_to = date('Y-m-d', strtotime($request->dateTo));
-					// $leave->days = $number_of_days + 3;
 					if($request->dateFrom == $request->dateTo){
 						$leave->days = $number_of_days + 3;
 					}else{
@@ -202,7 +202,7 @@ class LeaveController extends Controller {
 				$leave->leave_type_id = $request->leave_type;
 				$leave->save();
 		
-		// }
+		}
 		// else{
 		// $leave->date_from = date('Y-m-d', strtotime($request->dateFrom));
 		// $leave->date_to = date('Y-m-d', strtotime($request->dateTo));
