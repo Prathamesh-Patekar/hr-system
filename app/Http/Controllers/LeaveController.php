@@ -137,7 +137,7 @@ class LeaveController extends Controller {
 
 			$emails[] = ['email' => $manager->user->email, 'name' => $manager->user->name];
 			$emails[] = ['email' => $teamLead->user->email, 'name' => $teamLead->user->name];
-		}
+		}																													
 
 		$leave->user_id = \Auth::user()->id;
 
@@ -145,56 +145,72 @@ class LeaveController extends Controller {
 		$employee = EmployeeLeaves::where(['leave_type_id'=> 2])->first();
 		if ($employee){
 
-			$data = date('l',strtotime($request->dateFrom));
-			if($data == "Monday"){
+			// $data = date('l',strtotime($request->dateFrom));
+			// if($data == "Monday"){
 
-				$date = new Carbon($request->dateFrom);
-				$diff = $date->subDays(3)->toDateString();
-				$diff_to =  new Carbon($diff);
+			// 	$date = new Carbon($request->dateFrom);
+			// 	$diff = $date->subDays(3)->toDateString();
+			// 	$diff_to =  new Carbon($diff);
 
-				$find = EmployeeLeaves::where(['user_id'=> $id,'date_to' => $diff,'status' => 1])->first();
-				\Log::info($find);
+			// 	$find = EmployeeLeaves::where(['user_id'=> $id,'date_to' => $diff,'status' => 1])->first();
+			// 	\Log::info($find);
 				
-				if($find){
-					$leave->date_from = date('Y-m-d', strtotime($diff_to->addDays(1)->toDateString()));
-					$leave->date_to = date('Y-m-d', strtotime($request->dateTo));
-					if($request->dateFrom == $request->dateTo){
-						$leave->days = $number_of_days + 3;
-					}else{
-						$leave->days = $number_of_days + 2;
-					}
-				}else{
-					$leave->date_from = date('Y-m-d', strtotime($request->dateFrom));
-					$leave->date_to = date('Y-m-d', strtotime($request->dateTo));
-					$leave->days = $number_of_days;
-				}
-			}else{
+			// 	if($find){
+			// 		$leave->date_from = date('Y-m-d', strtotime($diff_to->addDays(1)->toDateString()));
+			// 		$leave->date_to = date('Y-m-d', strtotime($request->dateTo));
+			// 		if($request->dateFrom == $request->dateTo){
+			// 			$leave->days = $number_of_days + 3;
+			// 		}else{
+			// 			$leave->days = $number_of_days + 2;
+			// 		}
+			// 	}else{
+			// 		$leave->date_from = date('Y-m-d', strtotime($request->dateFrom));
+			// 		$leave->date_to = date('Y-m-d', strtotime($request->dateTo));
+			// 		$leave->days = $number_of_days;
+			// 	}
+			// }else{
 								
 				$date = new Carbon($request->dateFrom);
 				$diff = $date->subDays(1)->toDateString();
 				$diff_to =  new Carbon($diff);
 
 				for($i=0;$i>=0;$i++){
+					// echo $diff_to ."abc<br>";
 					$holiday = Holiday::where('date_from' , '=', $diff_to)->first();
+					// echo "<pre>";
+					// var_dump($holiday);
+
+					// echo "<br>";
+					
 					
 					if($holiday){
-						$diff_to = $date->subDays(1)->toDateString();
 						$diff_to =  new Carbon($diff_to);
+						$diff_to = $diff_to->subDays(1)->toDateString();
+						$pre_date =  new Carbon($diff_to);
+						break;
 						
 					}else{
-						$diff_to =  new Carbon($diff_to);
-						echo $diff_to;
-
-						$data = date('l',strtotime($diff_to));
+						$pre_date =  new Carbon($diff_to);
+						
+						$data = date('l',strtotime($pre_date));
+						// echo $diff_to;
+						
 						if($data == 'Sunday'){
-							$diff_to = $diff_to->subDays(3)->toDateString();
+							$diff_to = $pre_date->subDays(2)->toDateString();
+							// echo $diff_to."<br>";
+							$i++;
 							continue;
 						}else{
-							$diff_to;
+							$pre_date;
+							// echo $pre_date;
 						}
 						break;
 					}
+					
 				}
+
+			// echo $pre_date ."dsafs";
+			// 	return ;
 				$date_to =  new Carbon($diff_to);
 				
 				$find = EmployeeLeaves::where(['user_id'=> $id,'date_to' => $date_to ,'status' => 1])->first();
@@ -218,7 +234,7 @@ class LeaveController extends Controller {
 					$leave->date_to = date('Y-m-d', strtotime($request->dateTo));
 					$leave->days = $number_of_days;
 				}
-			}
+			// }
 				$leave->from_time = $request->time_from;
 				$leave->to_time = $request->time_to;
 				$leave->reason = $request->reason;
@@ -227,18 +243,6 @@ class LeaveController extends Controller {
 				$leave->save();
 		
 		}
-		// else{
-		// $leave->date_from = date('Y-m-d', strtotime($request->dateFrom));
-		// $leave->date_to = date('Y-m-d', strtotime($request->dateTo));
-
-		// $leave->from_time = $request->time_from;
-		// $leave->to_time = $request->time_to;
-		// $leave->reason = $request->reason;
-		// $leave->days = $number_of_days;
-		// $leave->status = '0';
-		// $leave->leave_type_id = $request->leave_type;
-		// $leave->save();
-		// }
 
 		$leaveType = LeaveType::where('id', $request->leave_type)->first();
 
