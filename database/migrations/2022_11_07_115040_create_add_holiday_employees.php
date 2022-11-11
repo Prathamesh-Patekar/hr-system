@@ -16,8 +16,7 @@ class CreateAddHolidayEmployees extends Migration
         Schema::create('holiday_employees', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
-            $table->integer('allow_leaves');
-            // $table->integer('taken_leaves');
+            $table->decimal('allow_leaves',5, 1)->default(0);
             $table->decimal('taken_leaves', 5, 1)->default(0);
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();

@@ -53,7 +53,7 @@
                                             <input type="hidden" value="{!! csrf_token() !!}" id="token">
                                             <input type="hidden" value="{{\Auth::user()->id}}" id="user_id">
                                             <select class="select2-multiple form-control select-primary leave_type"
-                                                    name="leave_type" required>
+                                                    name="leave_type" id="leavetype" required>
                                                 <option value="" selected>Select One</option>
                                                 @foreach($leaves as $leave)
                                                     <option value="{{$leave->id}}">{{$leave->leave_type}}</option>

@@ -149,6 +149,7 @@ Route::group(['middleware' => ['auth']], function ()
 
     Route::get('add-leaves', ['uses' => 'LeaveController@addLeaves']);
     Route::get('add-employees-leaves', ['uses' => 'LeaveController@processLeaves']);
+    Route::get('search_leaves_type', ['uses' => 'LeaveController@leaves_type'])->name('search');
 
     //Routes for Attendance.
 

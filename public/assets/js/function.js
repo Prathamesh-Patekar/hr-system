@@ -22,6 +22,7 @@ datepicker4.on('change', function () {
     var second_date = get_date(date_to);
     var new_date_to = new Date(second_date);
 
+
     if (date_from > date_to) {
         alert('To Date cannot be smaller than From Date');
         datepicker4.val('');
@@ -31,11 +32,15 @@ datepicker4.on('change', function () {
         var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));        
 
         if (diffDays == 0) {
-            var time_from = date_from + ' ' + $('#timepicker1').val() + ':00';
-            var time_to = date_to + ' ' + $('#timepicker4').val() + ':00';
+            var time_from = one_date + ' ' + $('#timepicker1').val() + ':00';
+            var time_to = second_date + ' ' + $('#timepicker4').val() + ':00';
+            console.log(time_from);
+            console.log(time_to);
 
             var diff = moment.duration(moment(time_to).diff(moment(time_from)));
+            console.log(diff);
             diff = diff / 3600 / 1000;
+            console.log(diff);
             if (diff <= 4) {
                 $('#total_days').val('Half day leave');
             }
@@ -71,12 +76,12 @@ datepicker1.on('change', function () {
     //     diffDays = 2;
     // }
 
-    console.log(new_date_from);
-    console.log(new_date_to);
+    // console.log(new_date_from);
+    // console.log(new_date_to);
 
     if (diffDays == 0) {
-        var time_from = date_from + ' ' + $('#timepicker1').val() + ':00';
-        var time_to = date_to + ' ' + $('#timepicker4').val() + ':00';
+        var time_from = one_date + ' ' + $('#timepicker1').val() + ':00';
+        var time_to = second_date + ' ' + $('#timepicker4').val() + ':00';
 
         var diff = moment.duration(moment(time_to).diff(moment(time_from)));
         diff = diff / 3600 / 1000;
@@ -101,9 +106,11 @@ datepicker1.on('change', function () {
 
 $('#timepicker4').on('change', function () {
     var date_from = datepicker1.val();
-    var new_date_from = new Date(date_from);
+    var one_date = get_date(date_from);
+    var new_date_from = new Date(one_date);
     var date_to = datepicker4.val();
-    var new_date_to = new Date(date_to);
+    var second_date = get_date(date_to);
+    var new_date_to = new Date(second_date);
     var timeDiff = Math.abs(new_date_to.getTime() - new_date_from.getTime());
     var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
@@ -111,8 +118,8 @@ $('#timepicker4').on('change', function () {
         diffDays = 2;
     }
     if (diffDays == 0) {
-        var time_from = date_from + ' ' + $('#timepicker1').val() + ':00';
-        var time_to = date_to + ' ' + $('#timepicker4').val() + ':00';
+        var time_from = one_date + ' ' + $('#timepicker1').val() + ':00';
+        var time_to = second_date + ' ' + $('#timepicker4').val() + ':00';
 
         var diff = moment.duration(moment(time_to).diff(moment(time_from)));
         diff = diff / 3600 / 1000;
@@ -836,5 +843,29 @@ $('.reset').on('click',function(){
             window.location.reload();
         }
     });
+    
+});
+
+
+$('#leavetype').on('click',function(){
+    var value  = $(this).val();
+    // console.log(value);
+    datepicker1.on('change', function () {
+        var date  = $(this).val();
+        console.log(date);
+
+        $.ajax({
+            url:"/search_leaves_type",
+            type:"GET",
+            data:{'name':value, 'date':date},
+            success: function(data){
+                console.log(data);
+                $("#datepicker4").val(data);
+                $('#total_days').val('one hundred eighty one days leave');
+    
+            }
+        });
+    });
+    
     
 });

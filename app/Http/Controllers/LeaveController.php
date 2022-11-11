@@ -169,19 +169,19 @@ class LeaveController extends Controller {
 			// 		$leave->days = $number_of_days;
 			// 	}
 			// }else{
-								
+						
 				$date = new Carbon($request->dateFrom);
+				$t1 = Carbon::createFromFormat('H:i', $request->time_from);
+				$t2 = Carbon::createFromFormat('H:i', $request->time_to);
+				$diff = $t1->diff($t2);
+				$hours = $diff->h;
+				if($hours > 4 ){
+
 				$diff = $date->subDays(1)->toDateString();
 				$diff_to =  new Carbon($diff);
 
 				for($i=0;$i>=0;$i++){
-					// echo $diff_to ."abc<br>";
 					$holiday = Holiday::where('date_from' , '=', $diff_to)->first();
-					// echo "<pre>";
-					// var_dump($holiday);
-
-					// echo "<br>";
-					
 					
 					if($holiday){
 						$diff_to =  new Carbon($diff_to);
@@ -195,6 +195,7 @@ class LeaveController extends Controller {
 						$data = date('l',strtotime($pre_date));
 						// echo $diff_to;
 						
+						
 						if($data == 'Sunday'){
 							$diff_to = $pre_date->subDays(2)->toDateString();
 							// echo $diff_to."<br>";
@@ -206,35 +207,55 @@ class LeaveController extends Controller {
 						}
 						break;
 					}
-					
 				}
 
 			// echo $pre_date ."dsafs";
 			// 	return ;
-				$date_to =  new Carbon($diff_to);
+				$date_to =  new Carbon($pre_date);
 				
 				$find = EmployeeLeaves::where(['user_id'=> $id,'date_to' => $date_to ,'status' => 1])->first();
-			
-				if($find){
-					$leave->date_from = date('Y-m-d', strtotime($date_to->addDays(1)->toDateString()));
-					$leave->date_to = date('Y-m-d', strtotime($request->dateTo));
-					$all_dates = array();
-					$startDate = new Carbon($leave->date_from);
-					$endDate = new Carbon($request->dateTo);
 
-					while (($startDate)->lte($endDate)){
-						$all_dates[] =$startDate->toDateString();
-						$startDate->addDay();
+				if($find != ""){
+
+					$t1 = Carbon::createFromFormat('H:i:s',$find->from_time);
+					$t2 = Carbon::createFromFormat('H:i:s',$find->to_time);
+					$diff = $t1->diff($t2);
+					$hours = $diff->h;
+					
+				
+					if($hours > 4){
+						$leave->date_from = date('Y-m-d', strtotime($date_to->addDays(1)->toDateString()));
+						$leave->date_to = date('Y-m-d', strtotime($request->dateTo));
+						$all_dates = array();
+						$startDate = new Carbon($leave->date_from);
+						$endDate = new Carbon($request->dateTo);
+
+						while (($startDate)->lte($endDate)){
+							$all_dates[] =$startDate->toDateString();
+							$startDate->addDay();
+						}
+							$count = count($all_dates);
+							$leave->days = $number_of_days + $count;
+							
+
 					}
-						$count = count($all_dates);
-						$leave->days = $number_of_days + $count;
-
-				}else{
+					else{
+						$leave->date_from = date('Y-m-d', strtotime($request->dateFrom));
+						$leave->date_to = date('Y-m-d', strtotime($request->dateTo));
+						$leave->days = $number_of_days;
+					}
+				}
+				else{
 					$leave->date_from = date('Y-m-d', strtotime($request->dateFrom));
 					$leave->date_to = date('Y-m-d', strtotime($request->dateTo));
 					$leave->days = $number_of_days;
 				}
-			// }
+			}
+			else{
+				$leave->date_from = date('Y-m-d', strtotime($request->dateFrom));
+				$leave->date_to = date('Y-m-d', strtotime($request->dateTo));
+				$leave->days = $number_of_days;
+			}
 				$leave->from_time = $request->time_from;
 				$leave->to_time = $request->time_to;
 				$leave->reason = $request->reason;
@@ -535,6 +556,9 @@ class LeaveController extends Controller {
 		
 		\DB::table('employee_leaves')->where('id', $leaveId)->update(['status' => '1', 'remarks' => $remarks]);
 
+		if($$employeeLeave->leave_type_id == 3){
+		
+
 		$check = Holiday_employee::where('user_id', "=", $user->id)->first();
 	
 		if(empty($check))
@@ -570,28 +594,29 @@ class LeaveController extends Controller {
 		else{
 			$all_taken = $check->taken_leaves;
 
-		if($employeeLeave->days == '0')
-		{
-			$insert = Holiday_employee::where('user_id', "=", $user->id)->first();
-			$all_taken = $insert->taken_leaves;
-			$t1 = Carbon::createFromFormat('H:i:s',$employeeLeave->from_time);
-            $t2 = Carbon::createFromFormat('H:i:s',$employeeLeave->to_time);
-            $diff = $t1->diff($t2);
-            $hours = $diff->h;
+			if($employeeLeave->days == '0')
+			{
+				$insert = Holiday_employee::where('user_id', "=", $user->id)->first();
+				$all_taken = $insert->taken_leaves;
+				$t1 = Carbon::createFromFormat('H:i:s',$employeeLeave->from_time);
+				$t2 = Carbon::createFromFormat('H:i:s',$employeeLeave->to_time);
+				$diff = $t1->diff($t2);
+				$hours = $diff->h;
 
-			// $diff = date('H:i:s', strtotime($employeeLeave->from_time)) - date('H:i:s', strtotime($employeeLeave->to_time));
-			if ($hours <= 4){
-				$taken = 0.5 + $all_taken;
-				\DB::table('holiday_employees')->where('user_id', $user->id)->update(['taken_leaves' => $taken]);
+				// $diff = date('H:i:s', strtotime($employeeLeave->from_time)) - date('H:i:s', strtotime($employeeLeave->to_time));
+				if ($hours <= 4){
+					$taken = 0.5 + $all_taken;
+					\DB::table('holiday_employees')->where('user_id', $user->id)->update(['taken_leaves' => $taken]);
+				}else{
+					$taken = 1 + $all_taken;
+					\DB::table('holiday_employees')->where('user_id', $user->id)->update(['taken_leaves' => $taken]);
+				}
+					
 			}else{
-				$taken = 1 + $all_taken;
-				\DB::table('holiday_employees')->where('user_id', $user->id)->update(['taken_leaves' => $taken]);
+				\DB::table('holiday_employees')->where('user_id', $user->id)->update(['taken_leaves' => $employeeLeave->days + $all_taken]);
 			}
-				
-		}else{
-			\DB::table('holiday_employees')->where('user_id', $user->id)->update(['taken_leaves' => $employeeLeave->days + $all_taken]);
-		}
-	}		
+		}	
+	}	
 
 		return json_encode($diff);
 	}
@@ -840,13 +865,31 @@ class LeaveController extends Controller {
 			if($check)
 			{
 				$check->user_id = $data->id;
-				$check->allow_leaves = 0;
-				$check->taken_leaves = 0;
+				// $check->allow_leaves = 0;
+				if($check->taken_leaves > $check->allow_leaves){
+					$check->taken_leaves = $check->allow_leaves;
+				}
 				$check->save();
 				\Session::flash('flash_message', 'Leave data reseted');
 			}else{
 				\Session::flash('flash_message', "employee Don't  have leaves!");
 			} 
 		}
+	}
+
+	public function leaves_type(Request $request){
+		
+		$leave = $request->name;
+		$date = $request->date;
+		$date_to = new Carbon($date);
+
+		if($leave == '3'){
+			$data = $date_to->addMonth(6)->toDateString();
+		}
+		elseif($leave == '4'){
+			$data = $date_to->addDays(4)->toDateString();
+		}
+		return date('d-m-Y', strtotime($data));
+		return json_encode(array("description" => $data->description ,"date_from" => $data->date_from, "date_to" => $data->date_to,));
 	}
 }
