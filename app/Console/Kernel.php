@@ -31,7 +31,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('command:ReminderMail')->everyMinute();
-        $schedule->command('command:LeaveCalculate')->everyMinute();
+        $schedule->command('command:LeaveCalculate')->yearlyOn(4, 1, '07:00');;
 
         $dateInDatabases=Holiday::select('date_from')->get();
 
