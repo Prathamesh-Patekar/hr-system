@@ -258,7 +258,7 @@
                                         <label for="input002" name="Label1" value="Employee Name"><h6 class="mb20 mt40">Employee Name </h6></label>
                                         <label for="input002" class="field prepend-icon">
                                                 <input type="text" name="get_emp" id="get_emp" class="gui-input form-control"
-                                                       placeholder="employee name..." value="{{$data['user']}}"  >
+                                                       placeholder="employee name..." value="{{$data['user']}}"  autocomplete="off">
                                                 <label for="input002" class="field-icon">
                                                     <i class="fa fa-user"></i>
                                                 </label>

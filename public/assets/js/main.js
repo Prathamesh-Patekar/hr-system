@@ -729,3 +729,9 @@ var bgPrimary = '#67D3E0',
    bgBlackD = '#1a2620',
    bgBlackDr = '#0e151a';
 
+
+
+
+   $(document).ready(function(){
+      $('input').attr('autocomplete','off');
+   });
