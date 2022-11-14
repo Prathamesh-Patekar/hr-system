@@ -108,6 +108,7 @@ function getEmployeeDropDown()
     ];
     return $data;
 }
+
 function getHolidayDropDown()
 {
     $data = [
@@ -307,7 +308,64 @@ function qualification()
             '1' => 'Laptop',
             '2' => 'Phone',
             '3' => 'Tablet',
+            '4' => 'Mouse',
+            '5' => 'Keyboard',
+            '6' => 'Monitor',
+            '7' => '',
 
+        ];
+
+        return $data[$status];
+    }
+    function getDeviceDropDown()
+    {
+        $data = [
+            "" => "Select",
+            '0' => 'Desktop',
+            '1' => 'Laptop',
+            '2' => 'Phone',
+            '3' => 'Tablet',
+            '4' => 'Mouse',
+            '5' => 'Keyboard',
+            '6' => 'Monitor',
+        ];
+        return $data;
+    }
+    function getAssignDropDown()
+    {
+        $data = [
+            "" => "Select",
+            'name' => 'Employee Name',
+            // 'owner' => 'Asset Owner',
+            
+        ];
+        return $data;
+    }
+    function getStorageType($status)
+    {
+        $data = [
+            '5' => 'SSD',
+            '6' => 'HDD',
+            '7' => 'SSD+HDD',
+            '0' => 'NA',
+        ];
+
+        return $data[$status];
+    }
+    function getStatus($status)
+    {
+        $data = [
+            '0' => 'Free',
+            '1' => 'In use',
+        ];
+
+        return $data[$status];
+    }
+    function getOwner($status)
+    {
+        $data = [
+            '0' => 'Compony',
+            '1' => 'Personal',
         ];
 
         return $data[$status];

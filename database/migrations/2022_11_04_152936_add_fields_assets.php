@@ -47,14 +47,19 @@ class AddFieldsAssets extends Migration
                 $table->tinyInteger('storage_type')->after('ram');
 
             }
-            if(!\Schema::hasColumn('storage_size','assets'))
+            if(!\Schema::hasColumn('ssd','assets'))
             {
-                $table->string('storage_size')->after('storage_type');
+                $table->string('ssd')->after('storage_type');
+
+            } 
+            if(!\Schema::hasColumn('hdd','assets'))
+            {
+                $table->string('hdd')->after('ssd');
 
             } 
             if(!\Schema::hasColumn('os','assets'))
             {
-                $table->string('os')->after('storage_size');
+                $table->string('os')->after('hdd');
 
             }
             if(!\Schema::hasColumn('imei','assets'))
@@ -110,9 +115,14 @@ class AddFieldsAssets extends Migration
                 $table->dropColumn('storage_type');
         
             }
-            if(!\Schema::hasColumn('storage_size','assets'))
+            if(!\Schema::hasColumn('ssd','assets'))
             {
-                $table->dropColumn('storage_size');
+                $table->dropColumn('ssd');
+        
+            }
+            if(!\Schema::hasColumn('hdd','assets'))
+            {
+                $table->dropColumn('hdd');
         
             }
             if(!\Schema::hasColumn('imei','assets'))

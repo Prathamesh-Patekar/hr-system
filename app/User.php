@@ -4,6 +4,7 @@ namespace App;
 use App\Models\Employee;
 use App\Models\Project;
 use App\Models\UserRole;
+use App\Models\AssignAsset;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
@@ -36,7 +37,11 @@ class User extends Authenticatable
     {
         return $this->hasOne(Employee::class, 'user_id', 'id');
     }
-
+    public function assignAsset()
+    {
+        return $this->hasOne(AssignAsset::class, 'user_id', 'id');
+    }
+    
     public function role()
     {
         return $this->hasOne('App\Models\UserRole', 'user_id', 'id');

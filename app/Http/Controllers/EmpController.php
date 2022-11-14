@@ -673,8 +673,7 @@ class EmpController extends Controller {
 					$emp->role->role->name,
 
 
-					(
-						$emp->employee->photo) ? $emp->employee->photo : 'Not available',
+					empty($emp->employee->photo) ?'Not available' :$emp->employee->photo ,
 					$emp->email,
 					$emp->employee->personal_email,
 					$emp->employee->code,

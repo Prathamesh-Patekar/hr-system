@@ -31,7 +31,7 @@ Route::group(['middleware' => ['guest']], function ()
 
 Route::group(['middleware' => ['auth']], function ()
 {
-
+   
     Route::get('home', 'HomeController@index');
 
     Route::get('change-password', 'AuthController@changePassword');
@@ -159,14 +159,33 @@ Route::group(['middleware' => ['auth']], function ()
     Route::get('delete-file/{id}', ['as' => 'delete-file', 'uses' => 'AttendanceController@doDelete']);
 
     //Routes for Assets.
+    Route::get('export-asset', ['as' => 'export-asset', 'uses' => 'AssetController@exportAsset']);
+    Route::get('upload-asset', ['as' => 'upload-asset', 'uses' => 'AssetController@uploadAssetView']);
+    Route::post('upload-asset', ['as' => 'upload-asset', 'uses' => 'AssetController@uploadAsset']);
+
+    Route::get('upload-accessory', ['as' => 'upload-accessory', 'uses' => 'AssetController@uploadAccessoryView']);
+    Route::post('upload-accessory', ['as' => 'upload-accessory', 'uses' => 'AssetController@uploadAsset']);
+
 
     Route::get('add-asset', ['as' => 'add-asset', 'uses' => 'AssetController@addAsset']);
 
     Route::post('add-asset', ['as' => 'add-asset', 'uses' => 'AssetController@processAsset']);
 
+    Route::get('add-accessory', ['as' => 'add-accessory', 'uses' => 'AssetController@addAccessory']);
+    Route::post('add-accessory', ['as' => 'add-accessory', 'uses' => 'AssetController@processAccessory']);
+
     Route::get('asset-listing', ['as' => 'asset-listing', 'uses' => 'AssetController@showAsset']);
+    Route::post('asset-listing', 'AssetController@showAsset');
+
+    Route::get('asset-show/{id}', ['as' => 'asset-show', 'uses' => 'AssetController@showAssetInfo']);
+    Route::get('assignment-show/{id}', ['as' => 'assignment-show', 'uses' => 'AssetController@showAssignmentInfo']);
+
+
 
     Route::get('edit-asset/{id}', ['as' => 'edit-asset', 'uses' => 'AssetController@showEdit']);
+
+    Route::post('edit-accessory/{id}', ['as' => 'edit-asset', 'uses' => 'AssetController@doAccessoryEdit']);
+    Route::get('edit-accessory/{id}', ['as' => 'edit-asset', 'uses' => 'AssetController@showAccessoryEdit']);
 
     Route::post('edit-asset/{id}', ['as' => 'edit-asset', 'uses' => 'AssetController@doEdit']);
 
@@ -177,6 +196,8 @@ Route::group(['middleware' => ['auth']], function ()
     Route::post('assign-asset', ['as' => 'assign-asset', 'uses' => 'AssetController@processAssign']);
 
     Route::get('assignment-listing', ['as' => 'assignment-listing', 'uses' => 'AssetController@showAssignment']);
+    Route::post('assignment-listing', ['as' => 'assignment-listing', 'uses' => 'AssetController@showAssignment']);
+
 
     Route::get('edit-asset-assignment/{id}', ['as' => 'edit-asset-assignment', 'uses' => 'AssetController@showEditAssign']);
 

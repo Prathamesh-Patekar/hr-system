@@ -176,6 +176,10 @@
                         <span class="glyphicon glyphicon-shopping-cart"></span> Add Asset </a>
                 </li>
                 <li>
+                    <a href="{{route('add-accessory')}}">
+                        <span class="glyphicon glyphicon-shopping-cart"></span> Add Accessory </a>
+                </li>
+                <li>
                     <a href="{{route('asset-listing')}}">
                         <span class="glyphicon glyphicon-calendar"></span> Asset Listings </a>
                 </li>
