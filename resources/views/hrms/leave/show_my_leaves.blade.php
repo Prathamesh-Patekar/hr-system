@@ -21,6 +21,9 @@
                 <li class="breadcrumb-current-item"> My Leave List</li>
             </ol>
         </div>
+        <div class="topbar-right">
+            <h5>April - March</h5>
+        </div>
     </header>
 
 
@@ -33,7 +36,7 @@
          <!-- -------------- Balance leaves Status Table -------------- -->
 
          <div class="row">
-            <div class="col-xs-4">
+            <div class="col-md-4">
                 <div class="box box-success">
                     <div class="panel">
                         <div class="panel-heading">

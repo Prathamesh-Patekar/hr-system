@@ -45,7 +45,7 @@
                                             {{ session::get('flash_message') }}
                                         </div>
                                     @endif
-                                    {!! Form::open(['class' => 'form-horizontal', 'method' => 'post']) !!}
+                                    {!! Form::open(['class' => 'form-horizontal', 'id' => 'apply-from', 'method' => 'post']) !!}
 
                                     <div class="form-group">
                                         <label class="col-md-2 control-label"> Leave Type </label>
@@ -61,8 +61,7 @@
                                             </select>
                                         </div>
                                     </div>
-
-
+                 
                                     <div class="form-group">
                                         <label for="date_from" class="col-md-2 control-label"> Date From </label>
                                         <div class="col-md-3">
@@ -86,7 +85,6 @@
 
                                         </div>
                                     </div>
-
 
                                     <div class="form-group">
                                         <label for="time_from" class=" col-md-2 control-label  "> Time From </label>
@@ -124,7 +122,6 @@
                                                    name="reason" required>
                                         </div>
                                     </div>
-
 
                                     <div class="form-group">
                                         <label class="col-md-2 control-label"></label>

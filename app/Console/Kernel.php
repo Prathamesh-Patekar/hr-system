@@ -18,7 +18,8 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         // Commands\Inspire::class,
         Commands\AutoHolidayNotification::class,
-        \App\Console\Commands\Wish::class
+        \App\Console\Commands\Wish::class,
+        \App\Console\Commands\LeavesCalculate::class
     ];
 
     /**
@@ -30,6 +31,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('command:ReminderMail')->everyMinute();
+        $schedule->command('command:LeaveCalculate')->everyMinute();
 
         $dateInDatabases=Holiday::select('date_from')->get();
 

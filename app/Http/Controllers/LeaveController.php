@@ -556,7 +556,7 @@ class LeaveController extends Controller {
 		
 		\DB::table('employee_leaves')->where('id', $leaveId)->update(['status' => '1', 'remarks' => $remarks]);
 
-		if($$employeeLeave->leave_type_id == 3){
+		if($employeeLeave->leave_type_id != 3){
 		
 
 		$check = Holiday_employee::where('user_id', "=", $user->id)->first();
@@ -885,11 +885,15 @@ class LeaveController extends Controller {
 
 		if($leave == '3'){
 			$data = $date_to->addMonth(6)->toDateString();
+			$description =" one hundred eighty one days leave";
 		}
 		elseif($leave == '4'){
 			$data = $date_to->addDays(4)->toDateString();
+			$description =" five days leave";
 		}
-		return date('d-m-Y', strtotime($data));
-		return json_encode(array("description" => $data->description ,"date_from" => $data->date_from, "date_to" => $data->date_to,));
+		$date = date('d-m-Y', strtotime($data));
+		return json_encode(array("description" => $description ,"data" => $date));
 	}
+
+	
 }

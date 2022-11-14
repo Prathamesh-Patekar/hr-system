@@ -860,12 +860,21 @@ $('#leavetype').on('click',function(){
             data:{'name':value, 'date':date},
             success: function(data){
                 console.log(data);
-                $("#datepicker4").val(data);
-                $('#total_days').val('one hundred eighty one days leave');
-    
+                var obj = jQuery.parseJSON(data);
+                console.log(obj.date_from);
+                $("#datepicker4").val(obj.data);
+                $("#total_days").val(obj.description);
+                // $("#datepicker4").val(data);
+                // $('#total_days').val('one hundred eighty one days leave');
             }
         });
     });
-    
-    
+});
+
+
+$("#leavetype").on("change", function(){
+    $("#datepicker1").val("");
+    $("#datepicker4").val("");
+    $("#total_days").val("");
+    $("#textarea1").val("");
 });
