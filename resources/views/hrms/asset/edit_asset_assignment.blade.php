@@ -178,11 +178,13 @@
                                                 <div class="col-md-6">
                                                     <select class="select2-multiple form-control select-primary"
                                                         name="authority_id" required>
-                                                        @foreach($emps as $emp)
-                                                        @if($emp->id == $assigns->authority_id)
-                                                        <option value="{{$emp->id}}" selected>{{$emp->name}}</option>
+                                                        <option value="" selected>Select One</option>
+                                                        @foreach($issueAuth as $emp)
+                                                        @if($emp->user->id == $assigns->authority_id)
+                                                        <option value="{{$emp->user->id}}" selected>{{$emp->user->name}}
+                                                        </option>
                                                         @else
-                                                        <option value="{{$emp->id}}">{{$emp->name}}</option>
+                                                        <option value="{{$emp->user->id}}">{{$emp->user->name}}</option>
                                                         @endif
                                                         @endforeach
                                                     </select>
@@ -246,6 +248,8 @@
                                                         @endif
                                                         @endforeach
                                                     </select>
+
+                                                    
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -254,11 +258,12 @@
                                                     <select class="select2-multiple form-control select-primary"
                                                         name="authority_id" required>
                                                         <option value="" selected>Select One</option>
-                                                        @foreach($emps as $emp)
-                                                        @if($emp->id == $assigns->authority_id)
-                                                        <option value="{{$emp->id}}" selected>{{$emp->name}}</option>
+                                                        @foreach($issueAuth as $emp)
+                                                        @if($emp->user->id == $assigns->authority_id)
+                                                        <option value="{{$emp->user->id}}" selected>{{$emp->user->name}}
+                                                        </option>
                                                         @else
-                                                        <option value="{{$emp->id}}">{{$emp->name}}</option>
+                                                        <option value="{{$emp->user->id}}">{{$emp->user->name}}</option>
                                                         @endif
                                                         @endforeach
                                                     </select>
@@ -272,10 +277,10 @@
                                                         <div class="input-group-addon">
                                                             <i class="fa fa-calendar text-alert pr11"></i>
                                                         </div>
-                                                        <input type="text" id="datepicker2" 
+                                                        <input type="text" id="datepicker2"
                                                             class=" select2-single form-control" name="doa"
                                                             value="@if($assigns){{date('d-m-Y',strtotime($assigns->date_of_assignment))}}@endif"
-                                                           autocomplete="off" required>
+                                                            autocomplete="off" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -334,14 +339,14 @@ $(document).ready(function() {
         $("div.desc").hide();
         $("#" + test).show();
 
-       
+
     });
 });
 $(document).ready(function() {
-        $("#datepicker1,#datepicker2").datepicker({
-            changeMonth:true,
-            changeYear:true,   
-            dateFormat: 'dd-mm-yy',
-        });
+    $("#datepicker1,#datepicker2").datepicker({
+        changeMonth: true,
+        changeYear: true,
+        dateFormat: 'dd-mm-yy',
     });
+});
 </script>

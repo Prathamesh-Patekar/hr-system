@@ -493,16 +493,17 @@
                                         <div class="section">
                                             <label for="input002"><h6 class="mb20 mt40"> Role </h6></label>
                                             @if(\Route::getFacadeRoot()->current()->uri() == 'edit-emp/{id}')
-                                                <select class="select2-single form-control" name="role" id="role" readonly required>
+                                            <select class="select2-single form-control" name="role" id="role" readonly required>
                                                     <option value="">Select role</option>
                                                     @foreach($roles as $role)
                                                         @if($emps->role->role->id == $role->id)
                                                             <option value="{{$role->id}}" selected>{{$role->name}}</option>
-                                                        @endif
+                                                        @else
                                                         <option value="{{$role->id}}">{{$role->name}}</option>
+                                                        @endif
                                                     @endforeach
                                                 </select>
-                                                @else
+                                            @else
                                                 <select class="select2-single form-control" name="role" id="role" required>
                                                     <option value="">Select role</option>
                                                     @foreach($roles as $role)
