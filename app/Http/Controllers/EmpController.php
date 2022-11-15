@@ -52,7 +52,7 @@ class EmpController extends Controller {
 	}
 	
 	public function addEmployee() {
-		$role=[1,7,17];
+		$role=[1,7,21];
 		$roles = Role::whereIn('id',$role)->get();
 
 		return view('hrms.employee.add', compact('roles'));
@@ -168,7 +168,7 @@ class EmpController extends Controller {
 	public function showEdit($id) {
 		//$emps = Employee::whereid($id)->with('userrole.role')->first();
 		$emps = User::where('id', $id)->with('employee', 'role.role')->first();
-		$role=[1,7,17];
+		$role=[1,7,21];
 		$roles = Role::whereIn('id',$role)->get();
 
 		return view('hrms.employee.add', compact('emps', 'roles'));

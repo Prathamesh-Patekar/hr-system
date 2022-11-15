@@ -97,26 +97,44 @@
 </div>
 @endsection
 
+
 <!-- -------------- Scripts -------------- -->
 
 <!-- -------------- jQuery -------------- -->
+
 {!! Html::script('/assets/js/jquery/jquery-1.11.3.min.js') !!}
 {!! Html::script('/assets/js/jquery/jquery_ui/jquery-ui.min.js') !!}
-<script>
-    $(document).ready(function() {
-        $("#datepicker1").datepicker({
-            changeMonth:true,
-            changeYear:true,    
-            dateFormat: 'dd-mm-yy', 
-        });
-        
-        $('#description').keypress(function(event) {
-            var keycode = event.which;
-            if ((keycode >= 48 && keycode <= 57)) {
-                event.preventDefault();
-               
-            }
-            
-        });
-    });
-</script>
+
+        <!-- -------------- HighCharts Plugin -------------- -->
+{!! Html::script('/assets/js/plugins/highcharts/highcharts.js') !!}
+
+        <!-- -------------- MonthPicker JS -------------- -->
+{!! Html::script('/assets/allcp/forms/js/jquery-ui-monthpicker.min.js') !!}
+{!! Html::script('/assets/allcp/forms/js/jquery-ui-datepicker.min.js') !!}
+{!! Html::script('/assets/allcp/forms/js/jquery.spectrum.min.js') !!}
+{!! Html::script('/assets/allcp/forms/js/jquery.stepper.min.js') !!}
+
+
+        <!-- -------------- Plugins -------------- -->
+{!! Html::script('/assets/allcp/forms/js/jquery.validate.min.js') !!}
+{!! Html::script('/assets/allcp/forms/js/jquery.steps.min.js') !!}
+
+        <!-- -------------- Theme Scripts -------------- -->
+{!! Html::script('/assets/js/utility/utility.js') !!}
+{!! Html::script('/assets/js/demo/demo.js') !!}
+{!! Html::script('/assets/js/main.js') !!}
+{!! Html::script('/assets/js/demo/widgets_sidebar.js') !!}
+{!! Html::script('/assets/js/custom_form_wizard.js') !!}
+{!! Html::script('/assets/js/custom.js') !!}
+
+{!!  Html::script ('/assets/js/pages/forms-widgets.js')!!}
+@push('scripts')
+<script src="/assets/js/custom_form_wizard.js"></script>
+@endpush
+
+        <!-- -------------- Select2 JS -------------- -->
+<script src="/assets/js/plugins/select2/select2.min.js"></script>
+<script src="/assets/js/function.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+<!-- -------------- /Scripts -------------- -->

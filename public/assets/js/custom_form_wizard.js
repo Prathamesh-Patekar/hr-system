@@ -239,7 +239,7 @@
             
             }
         });
-        $('#emp_name,#mname,#lname,#emerg_name,#emerg_rel,#bank_name,#father_name').keypress(function(event) {
+        $('#emp_name,#mname,#lname,#emerg_name,#emerg_rel,#bank_name,#father_name,#description').keypress(function(event) {
             var keycode = event.which;
             if ((keycode >= 48 && keycode <= 57)) {
                 event.preventDefault();
@@ -319,7 +319,7 @@
             $('#datepicker1,#datepicker4,#datepicker5').datepicker({
                 changeMonth: true,
                 changeYear: true,
-                yearRange: "-100:+0",
+                yearRange: "-100:+100",
                 dateFormat: 'dd-mm-yy',
             });
         
@@ -364,5 +364,6 @@
             $("#datepicker5").val(someFormattedDate);
         }); 
     });
+    
 
 })(jQuery);

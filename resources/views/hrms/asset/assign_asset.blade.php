@@ -224,12 +224,12 @@
                                                     </div>
                                                     @if(\Route::getFacadeRoot()->current()->uri() ==
                                                     'edit-assignment/{id}')
-                                                    <input type="text" id="datepicker"
+                                                    <input type="text" id="datepicker2"
                                                         class="select2-single form-control" name="doa"
                                                         value="@if($emps && $emps->date_of_assignment){{$emps->date_of_assignment}}@endif"
                                                         required>
                                                     @else
-                                                    <input type="text" id="datepicker"
+                                                    <input type="text" id="datepicker2"
                                                         class="select2-single form-control" name="doa"
                                                         autocomplete="off" required>
                                                     @endif
@@ -286,17 +286,16 @@ $(document).ready(function() {
         if (testing == 1) {
             $('#owner_id').val(testing);
         }
-
-
         $('#set_device').val(testing);
         var test = $(this).val();
         $("div.desc").hide();
         $("#" + test).show();
     });
-    $("#datepicker,#datepicker1").datepicker({
+    $("#datepicker2,#datepicker1").datepicker({
         changeMonth: true,
         changeYear: true,
         dateFormat: 'dd-mm-yy',
+        yearRange: "-100:+100",
     });
 });
 </script>

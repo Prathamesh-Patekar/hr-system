@@ -98,17 +98,3 @@
 </div>
 @endsection
 
-<!-- -------------- Scripts -------------- -->
-
-<!-- -------------- jQuery -------------- -->
-{!! Html::script('/assets/js/jquery/jquery-1.11.3.min.js') !!}
-{!! Html::script('/assets/js/jquery/jquery_ui/jquery-ui.min.js') !!}
-<script>
-    $(document).ready(function() {
-        $("#datepicker1").datepicker({
-            changeMonth:true,
-            changeYear:true,
-               
-        });
-    });
-</script>

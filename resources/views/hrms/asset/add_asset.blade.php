@@ -986,14 +986,5 @@ $(document).ready(function() {
     });
     
 });
-// $(document).click(function() {
-//     device = $('input[name="device"]:checked').val();
-//     console.log(device);
-//     if (device == 0) {
-//         $("#mouse_name,#mouse_sr,#keyboard_name,#keyboard_sr,#cpu_name,#cpu_sr").prop('required', true);
 
-// }   else if (device == 1) {
-//     $("#mouse_name,#mouse_sr,#adapter_name,#adapter_sr").prop('required', true);
-// }
-// });
 </script>

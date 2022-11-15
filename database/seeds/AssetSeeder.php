@@ -15,7 +15,6 @@ class AssetSeeder extends Seeder
             'name' => 'personal',
             'status' => 1,
             'device' => 7,
-
         ]);
     }
 }
