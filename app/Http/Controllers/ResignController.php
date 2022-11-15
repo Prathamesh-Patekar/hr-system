@@ -113,9 +113,10 @@ class ResignController extends Controller
 
     $id = "";
     $result = DB::table('employees')
-    // ->select('*')
     ->where('name', '=', $request->get_emp)
     ->get();
+
+
 
     foreach($result as $item){
       $id = $item->id;
@@ -128,8 +129,9 @@ class ResignController extends Controller
       'notice_date' => 'required',
       'full_final' => 'required',
     ]);
-
-    if($id != ""){
+  
+   $data = Resignation::where('employee_id', '=', $id)->first() ;
+    if($data == ""){
 
       $resign = new Resignation();
       $resign->employee_id = $id;

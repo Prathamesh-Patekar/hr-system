@@ -118,7 +118,7 @@
             $("#datepicker1").datepicker({
                 prevText: '<i class="fa fa-chevron-left"></i>',
                 nextText: '<i class="fa fa-chevron-right"></i>',
-                dateFormat : 'd-m-Y',
+                dateFormat : 'dd-mm-yy',
                 showButtonPanel: false,
                 beforeShow: function (input, inst) {
                     var newclass = 'allcp-form';
@@ -134,6 +134,7 @@
                 prevText: '<i class="fa fa-chevron-left"></i>',
                 nextText: '<i class="fa fa-chevron-right"></i>',
                 showButtonPanel: false,
+                dateFormat : 'dd-mm-yy',
                 beforeShow: function (input, inst) {
                     var newclass = 'allcp-form';
                     var themeClass = $(this).parents('.allcp-form').attr('class');
@@ -148,6 +149,7 @@
                 prevText: '<i class="fa fa-chevron-left"></i>',
                 nextText: '<i class="fa fa-chevron-right"></i>',
                 showButtonPanel: false,
+                dateFormat : 'dd-mm-yy',
                 beforeShow: function (input, inst) {
                     var newclass = 'allcp-form';
                     var themeClass = $(this).parents('.allcp-form').attr('class');
@@ -162,6 +164,7 @@
                 prevText: '<i class="fa fa-chevron-left"></i>',
                 nextText: '<i class="fa fa-chevron-right"></i>',
                 showButtonPanel: false,
+                dateFormat : 'dd-mm-yy',
                 beforeShow: function (input, inst) {
                     var newclass = 'allcp-form';
                     var themeClass = $(this).parents('.allcp-form').attr('class');
@@ -176,6 +179,7 @@
                 prevText: '<i class="fa fa-chevron-left"></i>',
                 nextText: '<i class="fa fa-chevron-right"></i>',
                 showButtonPanel: false,
+                dateFormat : 'dd-mm-yy',
                 beforeShow: function (input, inst) {
                     var newclass = 'allcp-form';
                     var themeClass = $(this).parents('.allcp-form').attr('class');
@@ -192,6 +196,7 @@
                 buttonText: '<i class="fa fa-calendar-o"></i>',
                 prevText: '<i class="fa fa-chevron-left"></i>',
                 nextText: '<i class="fa fa-chevron-right"></i>',
+                dateFormat : 'dd-mm-yy',
                 beforeShow: function (input, inst) {
                     var newclass = 'allcp-form';
                     var themeClass = $(this).parents('.allcp-form').attr('class');
@@ -208,6 +213,7 @@
                 buttonText: '<i class="fa fa-calendar-o"></i>',
                 prevText: '<i class="fa fa-chevron-left"></i>',
                 nextText: '<i class="fa fa-chevron-right"></i>',
+                dateFormat : 'dd-mm-yy',
                 beforeShow: function (input, inst) {
                     var newclass = 'allcp-form';
                     var themeClass = $(this).parents('.allcp-form').attr('class');
@@ -221,6 +227,7 @@
                 prevText: '<i class="fa fa-chevron-left"></i>',
                 nextText: '<i class="fa fa-chevron-right"></i>',
                 showButtonPanel: false,
+                dateFormat : 'dd-mm-yy',
                 beforeShow: function (input, inst) {
                     var newclass = 'allcp-form';
                     var themeClass = $(this).parents('.allcp-form').attr('class');
@@ -235,6 +242,7 @@
                 prevText: '<i class="fa fa-chevron-left"></i>',
                 nextText: '<i class="fa fa-chevron-right"></i>',
                 showButtonPanel: false,
+                dateFormat : 'dd-mm-yy',
                 beforeShow: function (input, inst) {
                     var newclass = 'allcp-form';
                     var themeClass = $(this).parents('.allcp-form').attr('class');

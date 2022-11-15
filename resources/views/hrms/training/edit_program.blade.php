@@ -45,7 +45,7 @@
                                         @endif
                                         {!! Form::open(['class' => 'form-horizontal']) !!}
 
-
+                                       
                                         <div class="form-group">
                                             <label class="col-md-3 control-label"> Training Program </label>
                                             <div class="col-md-6">
@@ -130,7 +130,7 @@
                                                 <input type="submit" class="btn btn-bordered btn-info btn-block" value="Submit">
 
                                             </div>
-                                            <div class="col-md-2"><a href="/edit-training-program/{id}" >
+                                            <div class="col-md-2"><a href="/edit-training-program/{{$programs->id}}" >
                                                     <input type="button" class="btn btn-bordered btn-success btn-block" value="Reset"></a></div>
                                         </div>
 

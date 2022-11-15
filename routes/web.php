@@ -146,6 +146,15 @@ Route::group(['middleware' => ['auth']], function ()
 
     Route::post('leave-drafting', ['as' => 'leave-drafting', 'uses' => 'LeaveController@createLeaveDraft']);
 
+
+    Route::get('add-leaves', ['uses' => 'LeaveController@addLeaves']);
+    Route::get('add-employees-leaves', ['uses' => 'LeaveController@processLeaves']);
+    Route::get('search_leaves_type', ['uses' => 'LeaveController@leaves_type'])->name('search');
+
+    Route::get('resetleaves', ['uses' => 'LeaveController@resetleaves']);
+
+    
+
     //Routes for Attendance.
 
     Route::get('attendance-upload', ['as' => 'attendance-upload', 'uses' => 'AttendanceController@importAttendanceFile']);
@@ -287,7 +296,6 @@ Route::group(['middleware' => ['auth']], function ()
 
     Route::group(['middleware' => ['adminview']], function ()
     {
-
 
     Route::get('add-training-program', ['uses'=>'TrainingController@addTrainingProgram']);
 

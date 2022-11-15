@@ -45,7 +45,7 @@
                                             {{ session::get('flash_message') }}
                                         </div>
                                     @endif
-                                    {!! Form::open(['class' => 'form-horizontal', 'method' => 'post']) !!}
+                                    {!! Form::open(['class' => 'form-horizontal', 'id' => 'apply-from', 'method' => 'post']) !!}
 
                                     <div class="form-group">
                                         <label class="col-md-2 control-label"> Leave Type </label>
@@ -53,7 +53,7 @@
                                             <input type="hidden" value="{!! csrf_token() !!}" id="token">
                                             <input type="hidden" value="{{\Auth::user()->id}}" id="user_id">
                                             <select class="select2-multiple form-control select-primary leave_type"
-                                                    name="leave_type" required>
+                                                    name="leave_type" id="leavetype" required>
                                                 <option value="" selected>Select One</option>
                                                 @foreach($leaves as $leave)
                                                     <option value="{{$leave->id}}">{{$leave->leave_type}}</option>
@@ -61,8 +61,7 @@
                                             </select>
                                         </div>
                                     </div>
-
-
+                 
                                     <div class="form-group">
                                         <label for="date_from" class="col-md-2 control-label"> Date From </label>
                                         <div class="col-md-3">
@@ -87,7 +86,6 @@
                                         </div>
                                     </div>
 
-
                                     <div class="form-group">
                                         <label for="time_from" class=" col-md-2 control-label  "> Time From </label>
                                         <div class="col-md-3">
@@ -95,7 +93,7 @@
                                                 <div class="input-group-addon">
                                                     <i class="imoon imoon-clock text-alert pr10"></i>
                                                 </div>
-                                                <input type="text" id="timepicker1" class="select2-single form-control" value="9:30"
+                                                <input type="text" id="timepicker1" class="select2-single form-control" value="10:00"
                                                        name="time_from" required>
                                             </div>
                                         </div>
@@ -105,7 +103,7 @@
                                                 <div class="input-group-addon">
                                                     <i class="imoon imoon-clock text-alert pr10"></i>
                                                 </div>
-                                                <input type="text" id="timepicker4" class="select2-single form-control" value="18:00"
+                                                <input type="text" id="timepicker4" class="select2-single form-control" value="17:00"
                                                        name="time_to" required>
                                             </div>
                                         </div>
@@ -124,7 +122,6 @@
                                                    name="reason" required>
                                         </div>
                                     </div>
-
 
                                     <div class="form-group">
                                         <label class="col-md-2 control-label"></label>

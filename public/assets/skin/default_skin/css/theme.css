@@ -25114,7 +25114,7 @@ body.basic-timeline .panel-clone {
 }
 
 
-.suggestion:hover{
+.suggestion li:hover{
   color: #63d3e0;
 
 }

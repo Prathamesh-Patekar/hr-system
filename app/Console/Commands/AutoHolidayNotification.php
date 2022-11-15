@@ -71,8 +71,7 @@ class AutoHolidayNotification extends Command
                 $holidays=Holiday::select('date_from','occasion')->where('date_from',$todayAddTwo)->get();
                
                 Mail::send(new DemoMail($users,$holidays));
-           
-  
+        
         return 0;
        
     }

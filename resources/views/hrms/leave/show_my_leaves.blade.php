@@ -21,6 +21,9 @@
                 <li class="breadcrumb-current-item"> My Leave List</li>
             </ol>
         </div>
+        <div class="topbar-right">
+            <h5>April - March</h5>
+        </div>
     </header>
 
 
@@ -29,6 +32,47 @@
 
         <!-- -------------- Column Center -------------- -->
         <div class="chute chute-center">
+            
+         <!-- -------------- Balance leaves Status Table -------------- -->
+
+         <div class="row">
+            <div class="col-md-4">
+                <div class="box box-success">
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <span class="panel-title hidden-xs">  Leave Table </span>
+                        </div>
+                        <div class="panel-body pn">
+                            @if(Session::has('flash_message'))
+                                <div class="alert alert-success">
+                                    {{ Session::get('flash_message') }}
+                                </div>
+                            @endif
+                            {!! Form::open(['class' => 'form-horizontal']) !!}
+                            <div class="table-responsive">
+                                <table class="table allcp-form theme-warning tc-checkbox-1 fs13">
+                                    <thead>
+                                    <tr class="bg-light">
+                                        <th class="text-center">Allow leaves</th>
+                                        <th class="text-center">Taken leaves</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach($showleaves as $value)
+                                        <tr>
+                                            <td class="text-center">{{$value->allow_leaves}}</td>
+                                            <td class="text-center">{{$value->taken_leaves}}</td>
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                            {!! Form::close() !!}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
             <!-- -------------- Products Status Table -------------- -->
             <div class="row">

@@ -546,7 +546,8 @@
         <!-- -------------- Select2 JS -------------- -->
 <script src="/assets/js/plugins/select2/select2.min.js"></script>
 <script src="/assets/js/function.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+<script src="/assets/js/jquery/moment.min.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script> -->
 
 
 
