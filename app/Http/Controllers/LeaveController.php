@@ -529,11 +529,7 @@ class LeaveController extends Controller {
 
 					//move this file to storage path
 					$file->move(storage_path('holidays/'), $filename);
-					$holiday = new HolidayFilenames();
-					$holiday->name = $filename;
-					$holiday->description = $request->description;
-					$holiday->date =date('Y-m-d', strtotime($request->date));
-					$holiday->save();
+				
 					
 
 				} else {

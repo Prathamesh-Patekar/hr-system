@@ -231,7 +231,7 @@
         
         
       
-        $('#mobile_phone,#emergency_number,#salary,#aadhar_number,#salary,#mnumber_two').keypress(function(event) {
+        $('#mobile_phone,#emergency_number,#salary,#aadhar_number,#salary,#mnumber_two,#bank_account_number').keypress(function(event) {
             var keycode = event.which;
             console.log(keycode);
             if (!(keycode >= 48 && keycode <= 57)) {
@@ -239,7 +239,7 @@
             
             }
         });
-        $('#emp_name,#mname,#lname').keypress(function(event) {
+        $('#emp_name,#mname,#lname,#emerg_name,#emerg_rel,#bank_name,#father_name').keypress(function(event) {
             var keycode = event.which;
             if ((keycode >= 48 && keycode <= 57)) {
                 event.preventDefault();
@@ -253,12 +253,18 @@
             if(val.indexOf('@techsevin.com') == -1)
                 $(this).val(val+'@techsevin.com');
         }); 
+        // $('#datepicker1,#datepicker4,#datepicker5').change(function() {
+        //     var val = $(this).val();
+        //     console.log(val);
+         
+        // }); 
     
         $('#full_final').change(function() {
             if($("#full_final").prop('checked') == false){
                
             }
         }); 
+        
         $('#photo_upload').on("change", function(){
             var ext = $('#photo_upload').val().split('.').pop().toLowerCase();
             if($.inArray(ext, ['png','jpg','jpeg']) == -1) {
@@ -313,45 +319,46 @@
             $('#datepicker1,#datepicker4,#datepicker5').datepicker({
                 changeMonth: true,
                 changeYear: true,
+                yearRange: "-100:+0",
+                dateFormat: 'dd-mm-yy',
             });
         
         $("#datepicker4").on("change",function(){
             var selected = $(this).val();
-            
+            var second_date = moment(selected).format('DD/MM/YYYY');  
             $("#probation_period").change(function()
             {
                 let days = $(this).val();
                 var myInt = parseInt(days);                   
-                var newdate = new Date(selected);
+                var newdate = new Date(second_date);
                 newdate.setDate(newdate.getDate() + myInt);
     
                 var dd = newdate.getDate();
                 var mm = newdate.getMonth() + 1 ;
-                var y = newdate.getFullYear();
-                var someFormattedDate = mm + '/' + dd + '/' + y;
-                // console.log(someFormattedDate);
-    
+                var yy = newdate.getFullYear();
+                var someFormattedDate = dd + '-' + mm + '-' + yy;
+                console.log(someFormattedDate);
                 $("#datepicker5").val(someFormattedDate);
-    
-    
             });
         });    
     
         $("#datepicker4").on("change",function(){
         var selected = $(this).val();
+        var second_date = moment(selected).format('DD/MM/YYYY');  
+
         
             // console.log(selected);
             let days = $('#probation_period').val();
             // console.log(days);
     
             var myInt = parseInt(days);                   
-            var newdate = new Date(selected);
+            var newdate = new Date(second_date);
             newdate.setDate(newdate.getDate() + myInt);
     
             var dd = newdate.getDate();
             var mm = newdate.getMonth() + 1 ;
-            var y = newdate.getFullYear();
-            var someFormattedDate = mm + '/' + dd + '/' + y;
+            var yy = newdate.getFullYear();
+            var someFormattedDate = dd + '-' + mm + '/' + yy;
             // console.log(someFormattedDate);
     
             $("#datepicker5").val(someFormattedDate);

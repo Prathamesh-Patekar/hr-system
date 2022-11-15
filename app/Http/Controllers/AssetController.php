@@ -524,11 +524,18 @@ class AssetController extends Controller
      */
     public function doAssign()
     {
-        $emps = User::get();
+        $emps = User::where('status',0)->get();
         $role=[1,7];
-        $issueAuth = UserRole::with('user')
+        // $issueAuth = UserRole::with('user')
+        // ->whereIn('role_id',$role)
+        // ->get();
+        $issueAuth = UserRole::whereHas('user', function ($q)  {
+            $q->where('status',0);
+        })
+        ->with('user')
         ->whereIn('role_id',$role)
         ->get();
+
         // return $issueAuth;
         $device=[0,1,2,3];
         $accessory=[4,5,6];

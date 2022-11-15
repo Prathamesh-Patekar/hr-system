@@ -214,8 +214,7 @@ function convertAttendanceFrom($status)
 function qualification()
 {
     $data = [
-        '' => 'Select one',
-        'B.Com' => 'B.Com',
+        'Engineering(B.E)' => 'Engineering(B.E)',
         'B.Sc' => 'B.Sc',
         'BCA' => 'BCA',
         'MCA' => 'MCA',
@@ -223,8 +222,8 @@ function qualification()
         'BBA' => 'BBA',
         'MBA' => 'MBA',
         'BBA+MBA' => 'BBA+MBA',
-        'Engineering(B.Tech)' => 'Engineering(B.Tech)',
         'Engineering(B.Tech+M.Tech)' => 'Engineering(B.Tech+M.Tech)',
+        'B.Com' => 'B.Com',
         'Other' => 'Other'
     ];
 

@@ -25,6 +25,7 @@ class UsersImport implements ToCollection, WithHeadingRow
                 \Log::info($code);
                 $emp = Employee::where('code', '=', $row['code'])->first();
                 $id=  $emp->user_id;
+				$name=$row['first_name']." ".$row['last_name'];
                 $emp_name=  $row['first_name'];
                 $emp_email= $row['email'];
                 $middle_name=$row['middle_name'];
@@ -40,7 +41,7 @@ class UsersImport implements ToCollection, WithHeadingRow
                 $qualification=  $row['qualification'];
                 $emerg_name=  $row['emerg_name'];
                 $emerg_rel= $row['emerg_rel'];
-                $emer_number=$row['emerg_rel'];
+                $emer_number=$row['emergency_number'];
                 $pan_number=  $row['pan_number'];
                 $aadhar_number=  $row['aadhar_number'];
                 $esic_number=$row['esic_number'];
@@ -66,7 +67,7 @@ class UsersImport implements ToCollection, WithHeadingRow
                 if ($emp_email != "") {
                     $user = User::where('id', $id)->first();
                     $user->email = $emp_email;
-                    $user->name = $emp_name;
+                    $user->name = $name;
                     $user->save();
                 }
                 $edit = Employee::where('code', $emp_code)->first();
@@ -149,7 +150,6 @@ class UsersImport implements ToCollection, WithHeadingRow
                 			if (!empty($permanent_address)) {
                 				$edit->permanent_address = $permanent_address;
                 			}
-                    
                 			if (isset($formalities)) {
                 				$edit->formalities = $formalities;
                 			}
@@ -192,8 +192,9 @@ class UsersImport implements ToCollection, WithHeadingRow
                 			$edit->save();
                 			\Session::flash('success', ' Employee details updated successfully.');
             }else{
+				$name=$row['first_name']." ".$row['last_name'];
                 $user = User::create([
-                    'name' => $row['first_name'],
+                    'name' =>$name ,
                     'email'    => $row['email'],
                     'password' =>  bcrypt('123456'),
                 ]);
@@ -212,7 +213,7 @@ class UsersImport implements ToCollection, WithHeadingRow
                     'qualification'  => $row['qualification']   ,
                     'emerg_name'  => $row['emerg_name']   ,
                     'emerg_rel' => $row['emerg_rel']  ,
-                    'emergency_number'=>  $row['emerg_rel']  ,
+                    'emergency_number'=>  $row['emergency_number']  ,
                     'pan_number' => $row['pan_number']    ,
                     'aadhar_number'  => $row['aadhar_number']   ,
                     'father_name' => $row['father_name']   ,
@@ -231,7 +232,6 @@ class UsersImport implements ToCollection, WithHeadingRow
                     'esic_number' => $row['esic_number']    ,
                     'pf_status'   => $row['pf_status']  ,
                     'formalities' => $row['formalities']  ,
-
                     'user_id'=>  $user->id, 
 
                 ]);

@@ -54,14 +54,14 @@
 
                                 <div class="section">
                                     <label for="username" class="field prepend-icon"> <h6 > Occasion </h6> </label>
-                                    <input type="text" class="gui-input" name="description"
+                                    <input type="text" class="gui-input" name="description" id="description"
                                            placeholder="Description" required>
                                 </div>
 
                                 <div class="section">
                                     <div class="input-group">
                                         <label for="date" class="field prepend-icon"> <h6> Select Date </h6></label>
-                                        <input type="text" id="datepicker1" class="gui-input fs13 select2-single form-control" name="date" readonly="readonly" required>
+                                        <input type="text" id="datepicker1" class="gui-input fs13 select2-single form-control" name="date" autocomplete="off" required>
                                     </div>
                                 </div>
 
@@ -106,7 +106,17 @@
     $(document).ready(function() {
         $("#datepicker1").datepicker({
             changeMonth:true,
-            changeYear:true,     
+            changeYear:true,    
+            dateFormat: 'dd-mm-yy', 
+        });
+        
+        $('#description').keypress(function(event) {
+            var keycode = event.which;
+            if ((keycode >= 48 && keycode <= 57)) {
+                event.preventDefault();
+               
+            }
+            
         });
     });
 </script>
