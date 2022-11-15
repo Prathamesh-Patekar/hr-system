@@ -87,7 +87,7 @@
                                             <tr>
                                                 <td class="text-center">{{$i+=1}}</td>
                                                 <td class="text-center">{{$holiday->occasion}}</td>
-                                                <td class="text-center">{{getFormattedDate($holiday->date_from)}}</td>
+                                                <td class="text-center">{{date('d-m-Y',strtotime(($holiday->date_from)))}}</td>
                                                 <td class="text-center">
                                                     <div class="btn-group text-right">
                                                         <button type="button"

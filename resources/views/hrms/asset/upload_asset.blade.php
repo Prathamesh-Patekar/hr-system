@@ -18,16 +18,36 @@
                     <a href="/dashboard"> Dashboard </a>
                 </li>
 
-                <li class="breadcrumb-current-item"> Add Holiday</li>
+                <li class="breadcrumb-current-item"> Add Assets</li>
             </ol>
         </div>
-      
+ 
+   
     </header>
     <!-- -------------- Content -------------- -->
     <section id="content" class="table-layout animated fadeIn">
 
         <!-- -------------- Column Left -------------- -->
-       
+        <aside class="chute chute-left chute290 bg-primary" data-chute-height="match">
+
+            <div class="chute-bin1 stretch1 btn-dimmer mt20">
+
+                <div class="tab-content pn br-n bg-none allcp-form-list">
+
+                    <ul class="nav list-unstyled" role="tablist">
+                        <li>
+                            <a class="link-unstyled" href="/sample_sheet/Assets_laptop_desktop_sample_sheet.xlsx" title="">
+                            <i class="fa fa-cloud-download text-purple pr10"></i> Sample Sheet(Desktop & Laptop) </a>
+                        </li>
+                        <li>
+                            <a class="link-unstyled" href="/sample_sheet/Assets_phone_tablet_sample_sheet.xlsx" title="">
+                            <i class="fa fa-cloud-download text-purple pr10"></i> Sample Sheet(Phone & Tablet)</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </aside>
+      
         <!-- -------------- /Column Left -------------- -->
 
         <!-- -------------- Column Center -------------- -->
@@ -52,17 +72,17 @@
                             <div class="panel-body pn mv12">
                                 <!-- -------------- /section -------------- -->
 
-                                <div class="section">
-                                    <label for="username" class="field prepend-icon"> <h6 > Occasion </h6> </label>
-                                    <input type="text" class="gui-input" name="description" id="description"
-                                           placeholder="Description" required>
-                                </div>
+                               
 
                                 <div class="section">
-                                    <div class="input-group">
-                                        <label for="date" class="field prepend-icon"> <h6> Select Date </h6></label>
-                                        <input type="text" id="datepicker1" class="gui-input fs13 select2-single form-control" name="date" autocomplete="off" required>
-                                    </div>
+                                    <label for="file1"><h6> Upload File </h6></label>
+                                    <label class="field prepend-icon append-button file">
+                                        <span class="button">Choose File</span>
+                                        <input type="file" class="gui-file" name="upload_file" id="file1"
+                                               onChange="document.getElementById('uploader1').value = this.value;">
+                                        <input type="text" class="gui-input" id="uploader1"
+                                               placeholder="Select File" required>
+                                    </label>
                                 </div>
 
                                 <div class="section">
@@ -83,7 +103,7 @@
 
 
                     <!-- -------------- Registration -------------- -->
-               
+                 
                     <!-- -------------- /Registration -------------- -->
 
                 </div>
@@ -97,26 +117,3 @@
 </div>
 @endsection
 
-<!-- -------------- Scripts -------------- -->
-
-<!-- -------------- jQuery -------------- -->
-{!! Html::script('/assets/js/jquery/jquery-1.11.3.min.js') !!}
-{!! Html::script('/assets/js/jquery/jquery_ui/jquery-ui.min.js') !!}
-<script>
-    $(document).ready(function() {
-        $("#datepicker1").datepicker({
-            changeMonth:true,
-            changeYear:true,    
-            dateFormat: 'dd-mm-yy', 
-        });
-        
-        $('#description').keypress(function(event) {
-            var keycode = event.which;
-            if ((keycode >= 48 && keycode <= 57)) {
-                event.preventDefault();
-               
-            }
-            
-        });
-    });
-</script>

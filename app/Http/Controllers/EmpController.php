@@ -52,7 +52,8 @@ class EmpController extends Controller {
 	}
 	
 	public function addEmployee() {
-		$roles = Role::get();
+		$role=[1,7,17];
+		$roles = Role::whereIn('id',$role)->get();
 
 		return view('hrms.employee.add', compact('roles'));
 	}
@@ -95,9 +96,10 @@ class EmpController extends Controller {
 			// 	// return redirect()->back()->with('error', 'Employee code already exists.');
 			// 	return Redirect::back()->withErrors(['msg' => 'The Message']);
 			// }
-
+		// 			\Log::info($request->dob);
+		// return $request->dob;
 		$user = new User;
-		$user->name = $request->emp_name;
+		$user->name = $request->emp_name ." ". $request->lname;
 		$user->email = str_replace(' ', '_', $request->emp_email);
 		$user->password = bcrypt('123456');
 		$user->save();
@@ -106,13 +108,15 @@ class EmpController extends Controller {
 		$emp->photo = $filename;
 		$emp->name = $request->emp_name;
 		$emp->mname = $request->mname;
-		$emp->lname = $request->mname;
+		$emp->lname = $request->lname;
 		$emp->personal_email = $request->personal_email;
 		$emp->code = $request->emp_code;
 		$emp->status = $request->emp_status;
 		$emp->gender = $request->gender;
-		$emp->date_of_birth = date('Y-m-d', strtotime($request->dob));
-		$emp->date_of_joining =date('Y-m-d', strtotime($request->doj));
+		\Log::info($request->dob);
+		\Log::info($request->dob);
+		$emp->date_of_birth = date('Y-m-d', strtotime($request->date_of_birth));
+		$emp->date_of_joining =date('Y-m-d', strtotime($request->date_of_joining));
 		$emp->number = $request->number;
 		$emp->mnumber_two = $request->mnumber_two;
 		$emp->qualification = $request->qualification;
@@ -153,7 +157,7 @@ class EmpController extends Controller {
 	}
 
 	public function showEmployee() {
-		$emps = User::with('employee', 'role.role')->paginate(15);
+		$emps = User::with('employee', 'role.role')->where('status',0)->paginate(15);
 		
 		$column = '';
 		$string = '';
@@ -164,7 +168,8 @@ class EmpController extends Controller {
 	public function showEdit($id) {
 		//$emps = Employee::whereid($id)->with('userrole.role')->first();
 		$emps = User::where('id', $id)->with('employee', 'role.role')->first();
-		$roles = Role::get();
+		$role=[1,7,17];
+		$roles = Role::whereIn('id',$role)->get();
 
 		return view('hrms.employee.add', compact('emps', 'roles'));
 	}
@@ -186,6 +191,9 @@ class EmpController extends Controller {
 			$filename = $filename . '.' . $fileExt;
 			$file->move($destinationPath, $filename);
 
+		}else{
+
+			$filename=$request->photo;
 		}
 
 		$photo = $filename;
@@ -199,9 +207,10 @@ class EmpController extends Controller {
 		if ($emp_email != "") {
 			$user = User::where('id', $id)->first();
 			$user->email = $emp_email;
+			$user->name = $emp_name. " ".$lname ;
 			$user->save();
 		}
-		$emp_status = $request->status;
+		$emp_status = $request->emp_status;
 		$emp_role = $request->role;
 		$gender = $request->gender;
 		$dob =  date('Y-m-d', strtotime($request->date_of_birth));
@@ -231,6 +240,7 @@ class EmpController extends Controller {
 		$un_number = $request->un_number;
 		$pf_status = $request->pf_status;
 		$esic_number = $request->esic_number;
+		
 
 		
 
@@ -355,7 +365,8 @@ class EmpController extends Controller {
 	public function doDelete($id) {
 
 		$emp = User::find($id);
-		$emp->delete();
+		$emp->status=1;
+		$emp->save();
 
 		\Session::flash('flash_message', 'Employee successfully Deleted!');
 
@@ -673,8 +684,7 @@ class EmpController extends Controller {
 					$emp->role->role->name,
 
 
-					(
-						$emp->employee->photo) ? $emp->employee->photo : 'Not available',
+					empty($emp->employee->photo) ?'Not available' :$emp->employee->photo ,
 					$emp->email,
 					$emp->employee->personal_email,
 					$emp->employee->code,
