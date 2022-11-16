@@ -80,6 +80,7 @@
                                     <th class="text-center">Asset Owner</th>
                                     <th class="text-center">Asset</th>
                                     <th class="text-center">Accessory</th>
+                                    <th class="text-center">Issuing Authority</th>
                                     <th class="text-center">Date of Assignment</th>
                                     <th class="text-center">Actions</th>
                                 </tr>
@@ -106,6 +107,8 @@
                                         ?>
                                         </td>
                                     
+                                      
+                                        <td class="text-center">{{$asset->authority->name}}</td>
                                         <td class="text-center">{{date('d-m-Y',strtotime($asset->date_of_assignment))}}</td>
                                         <td class="text-center">
                                             <div class="btn-group text-right">

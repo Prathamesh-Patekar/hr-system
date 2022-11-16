@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\HolidayExport;
 use App\EmployeeLeaves;
 use App\Http\Requests;
 use App\LeaveDraft;
@@ -724,7 +725,6 @@ class LeaveController extends Controller {
 					return redirect()->back();
 				}
 					Excel::import(new HolidaysImport,storage_path('holidays/' . $filename)
-				
 			);
 		    
 		}
@@ -787,43 +787,18 @@ class LeaveController extends Controller {
 		return redirect('holiday-listing');
 	}
 	public function searchHoliday(Request $request) {
-		$string = $request->string;
-		$column = $request->column;
-		\Log::info($string);
-		\Log::info($column);
-
-
-		if ($request->button == 'Search') {
-			if ($string == '' && $column == '') {
-				\Session::flash('success', ' Employee details uploaded successfully.');
-				return redirect()->to('holiday-listing');
-			} elseif ($string != '' && $column == '') {
-				\Session::flash('failed', ' Please select category.');
-				return redirect()->to('holiday-listing');
-			} elseif ($column == 'occasion') { 
-				$holidays = Holiday::where('occasion', 'like', "%$string%")->paginate(20);
-			} else {
-				$holidays = Holiday::where( function ($q) use ($column, $string) {
-					$q->whereRaw($column . " like '%" . $string . "%'");
-				}
-				)->with('employee')->paginate(20);
+		if($request->button == 'Export'){
+			try {
+			return Excel::download(new HolidayExport, 'holiday.xlsx');
+			} 
+			catch (\Exception $e) {
+				\Log::info($e->getMessage());
+				\Log::info($e->getLine());
+				return redirect()->back()->with('flash_message', $e->getMessage());
 			}
-
-			return view('hrms.leave.show_holiday', compact('holidays', 'column', 'string'));
-		} 
-		// else {
-		// 	if ($column == '') {
-		// 		$emps = User::with('employee' , 'role.role')->get();
-		// 	} elseif ($column == 'email') {
-		// 		$emps = Holiday::with('employee' , 'role.role')->where($request->column, $request->string)->paginate(20);
-		// 	} else {
-		// 		$emps = Holiday::whereHas('employee', function ($q) use ($column, $string) {
-		// 			$q->whereRaw($column . " like '%" . $string . "%'");
-		// 		}
-		// 		)->0000000with('employee','role.role')->get();
-		// 	}
-
-		// }e
+	
+		}
+			
 	}
 
 

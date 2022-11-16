@@ -336,11 +336,19 @@
 
                                                             </div>
                                                             <div class="col-md-3">
+                                                            @if(\Route::getFacadeRoot()->current()->uri() == 'edit-asset/{id}')
+                                                                <a href="/edit-asset/{{$result->id}}">
+                                                                    <input type="button"
+                                                                        class="btn btn-bordered btn-success btn-block"
+                                                                        value="Reset">
+                                                                </a>
+                                                                @else
                                                                 <a href="/add-asset">
                                                                     <input type="button"
                                                                         class="btn btn-bordered btn-success btn-block"
                                                                         value="Reset">
                                                                 </a>
+                                                                @endif
                                                             </div>
                                                         </div>
 
@@ -566,11 +574,19 @@
 
                                                             </div>
                                                             <div class="col-md-3">
+                                                            @if(\Route::getFacadeRoot()->current()->uri() == 'edit-asset/{id}')
+                                                                <a href="/edit-asset/{{$result->id}}">
+                                                                    <input type="button"
+                                                                        class="btn btn-bordered btn-success btn-block"
+                                                                        value="Reset">
+                                                                </a>
+                                                                @else
                                                                 <a href="/add-asset">
                                                                     <input type="button"
                                                                         class="btn btn-bordered btn-success btn-block"
                                                                         value="Reset">
                                                                 </a>
+                                                                @endif
                                                             </div>
                                                         </div>
                                                     </div>
@@ -727,11 +743,19 @@
 
                                                             </div>
                                                             <div class="col-md-3">
+                                                            @if(\Route::getFacadeRoot()->current()->uri() == 'edit-asset/{id}')
+                                                                <a href="/edit-asset/{{$result->id}}">
+                                                                    <input type="button"
+                                                                        class="btn btn-bordered btn-success btn-block"
+                                                                        value="Reset">
+                                                                </a>
+                                                                @else
                                                                 <a href="/add-asset">
                                                                     <input type="button"
                                                                         class="btn btn-bordered btn-success btn-block"
                                                                         value="Reset">
                                                                 </a>
+                                                                @endif
                                                             </div>
                                                         </div>
                                                     </div>
@@ -892,11 +916,19 @@
 
                                                             </div>
                                                             <div class="col-md-3">
+                                                            @if(\Route::getFacadeRoot()->current()->uri() == 'edit-asset/{id}')
+                                                                <a href="/edit-asset/{{$result->id}}">
+                                                                    <input type="button"
+                                                                        class="btn btn-bordered btn-success btn-block"
+                                                                        value="Reset">
+                                                                </a>
+                                                                @else
                                                                 <a href="/add-asset">
                                                                     <input type="button"
                                                                         class="btn btn-bordered btn-success btn-block"
                                                                         value="Reset">
                                                                 </a>
+                                                                @endif
                                                             </div>
                                                         </div>
                                                     </div>
@@ -923,68 +955,42 @@
 <!-- -------------- Scripts -------------- -->
 
 <!-- -------------- jQuery -------------- -->
+
 {!! Html::script('/assets/js/jquery/jquery-1.11.3.min.js') !!}
 {!! Html::script('/assets/js/jquery/jquery_ui/jquery-ui.min.js') !!}
 
-<script>
-$(document).ready(function() {
-    $("div.desc").hide();
-        var device = $('input[name="device"]:checked').val();
-        $("#" + device).show();
-    $("input[name$='device']").click(function() {
-        var testing = $(this).val();
-        $('#set_device').val(testing);
-        var test = $(this).val();
-        $("div.desc").hide();
-        $("#" + test).show();
-    });
+        <!-- -------------- HighCharts Plugin -------------- -->
+{!! Html::script('/assets/js/plugins/highcharts/highcharts.js') !!}
 
-    $("input[name$='d_type']").click(function() {
-        var testing = $(this).val();
-        console.log(testing);
-        if(testing == 7){
-            $("div.disk").show();
-            $("#cpu_hdd,#cpu_ssd").prop('required', true);
+        <!-- -------------- MonthPicker JS -------------- -->
+{!! Html::script('/assets/allcp/forms/js/jquery-ui-monthpicker.min.js') !!}
+{!! Html::script('/assets/allcp/forms/js/jquery-ui-datepicker.min.js') !!}
+{!! Html::script('/assets/allcp/forms/js/jquery.spectrum.min.js') !!}
+{!! Html::script('/assets/allcp/forms/js/jquery.stepper.min.js') !!}
 
-        }
-        else{
-            if(testing == 5){
-                $("#cpu_ssd").prop('required', true);
-                $("#cpu_hdd").prop('required', false);
 
-            }
-            if(testing == 6){
-                $("#cpu_ssd").prop('required', false);
-                $("#cpu_hdd").prop('required', true);
-            }
-            
-          $("div.disk").hide();
-            $("#" + testing).show(); 
-        }
-       
-    });
-    $("input[name$='disk_type']").click(function() {
-        var testing = $(this).val();
-        if(testing == 5){
-            $("#laptop_ssd").prop('required', true);
-            $("#laptop_hdd").prop('required', false);
+        <!-- -------------- Plugins -------------- -->
+{!! Html::script('/assets/allcp/forms/js/jquery.validate.min.js') !!}
+{!! Html::script('/assets/allcp/forms/js/jquery.steps.min.js') !!}
 
-            $("div.disk").hide();
-            $("#ssd").show(); 
-        }
-        if(testing == 6){
-            $("#laptop_hdd").prop('required', true);
-            $("#laptop_ssd").prop('required', false);
+        <!-- -------------- Theme Scripts -------------- -->
+{!! Html::script('/assets/js/utility/utility.js') !!}
+{!! Html::script('/assets/js/demo/demo.js') !!}
+{!! Html::script('/assets/js/main.js') !!}
+{!! Html::script('/assets/js/demo/widgets_sidebar.js') !!}
+{!! Html::script('/assets/js/custom_form_wizard.js') !!}
+{!! Html::script('/assets/js/custom.js') !!}
 
-            $("div.disk").hide();
-            $("#hdd").show(); 
-        }if(testing == 7){
-            $("#laptop_hdd,#laptop_ssd").prop('required', true);
-            $("div.disk").show();
-        }
-       
-    });
-    
-});
+{!!  Html::script ('/assets/js/pages/forms-widgets.js')!!}
+@push('scripts')
+<script src="/assets/js/custom_form_wizard.js"></script>
+@endpush
 
-</script>
+        <!-- -------------- Select2 JS -------------- -->
+<script src="/assets/js/plugins/select2/select2.min.js"></script>
+<script src="/assets/js/function.js"></script>
+
+<script src="/assets/js/asset/add_asset.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+<!-- -------------- /Scripts -------------- -->

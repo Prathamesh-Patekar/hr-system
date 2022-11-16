@@ -215,7 +215,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="datepicker1" class="col-md-3 control-label"> Date of Assignment
+                                            <label for="date" class="col-md-3 control-label"> Date of Assignment
                                             </label>
                                             <div class="col-md-6">
                                                 <div class="input-group">
@@ -224,12 +224,12 @@
                                                     </div>
                                                     @if(\Route::getFacadeRoot()->current()->uri() ==
                                                     'edit-assignment/{id}')
-                                                    <input type="text" id="datepicker2"
+                                                    <input type="text" id="date"
                                                         class="select2-single form-control" name="doa"
                                                         value="@if($emps && $emps->date_of_assignment){{$emps->date_of_assignment}}@endif"
                                                         required>
                                                     @else
-                                                    <input type="text" id="datepicker2"
+                                                    <input type="text" id="date"
                                                         class="select2-single form-control" name="doa"
                                                         autocomplete="off" required>
                                                     @endif
@@ -273,29 +273,42 @@
 <!-- -------------- Scripts -------------- -->
 
 <!-- -------------- jQuery -------------- -->
+
 {!! Html::script('/assets/js/jquery/jquery-1.11.3.min.js') !!}
 {!! Html::script('/assets/js/jquery/jquery_ui/jquery-ui.min.js') !!}
-<script>
-$(document).ready(function() {
-    $("div.desc").hide();
-    var device = $('input[name="owner"]:checked').val();
-    $("#" + device).show();
 
-    $("input[name$='owner']").click(function() {
-        var testing = $(this).val();
-        if (testing == 1) {
-            $('#owner_id').val(testing);
-        }
-        $('#set_device').val(testing);
-        var test = $(this).val();
-        $("div.desc").hide();
-        $("#" + test).show();
-    });
-    $("#datepicker2,#datepicker1").datepicker({
-        changeMonth: true,
-        changeYear: true,
-        dateFormat: 'dd-mm-yy',
-        yearRange: "-100:+100",
-    });
-});
-</script>
+        <!-- -------------- HighCharts Plugin -------------- -->
+{!! Html::script('/assets/js/plugins/highcharts/highcharts.js') !!}
+
+        <!-- -------------- MonthPicker JS -------------- -->
+{!! Html::script('/assets/allcp/forms/js/jquery-ui-monthpicker.min.js') !!}
+{!! Html::script('/assets/allcp/forms/js/jquery-ui-datepicker.min.js') !!}
+{!! Html::script('/assets/allcp/forms/js/jquery.spectrum.min.js') !!}
+{!! Html::script('/assets/allcp/forms/js/jquery.stepper.min.js') !!}
+
+
+        <!-- -------------- Plugins -------------- -->
+{!! Html::script('/assets/allcp/forms/js/jquery.validate.min.js') !!}
+{!! Html::script('/assets/allcp/forms/js/jquery.steps.min.js') !!}
+
+        <!-- -------------- Theme Scripts -------------- -->
+{!! Html::script('/assets/js/utility/utility.js') !!}
+{!! Html::script('/assets/js/demo/demo.js') !!}
+{!! Html::script('/assets/js/main.js') !!}
+{!! Html::script('/assets/js/demo/widgets_sidebar.js') !!}
+{!! Html::script('/assets/js/custom_form_wizard.js') !!}
+{!! Html::script('/assets/js/custom.js') !!}
+
+{!!  Html::script ('/assets/js/pages/forms-widgets.js')!!}
+@push('scripts')
+<script src="/assets/js/custom_form_wizard.js"></script>
+@endpush
+
+        <!-- -------------- Select2 JS -------------- -->
+<script src="/assets/js/plugins/select2/select2.min.js"></script>
+<script src="/assets/js/function.js"></script>
+
+<script src="/assets/js/asset/assign_asset.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+<!-- -------------- /Scripts -------------- -->

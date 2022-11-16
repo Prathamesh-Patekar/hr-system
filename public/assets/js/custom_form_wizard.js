@@ -325,7 +325,7 @@
         
         $("#datepicker4").on("change",function(){
             var selected = $(this).val();
-            var second_date = moment(selected).format('DD/MM/YYYY');  
+            var second_date = get_date(selected);  
             $("#probation_period").change(function()
             {
                 let days = $(this).val();
@@ -334,9 +334,16 @@
                 newdate.setDate(newdate.getDate() + myInt);
     
                 var dd = newdate.getDate();
+                console.log(dd);
                 var mm = newdate.getMonth() + 1 ;
+                console.log(mm);
+
                 var yy = newdate.getFullYear();
+                console.log(yy);
+
                 var someFormattedDate = dd + '-' + mm + '-' + yy;
+               
+
                 console.log(someFormattedDate);
                 $("#datepicker5").val(someFormattedDate);
             });
@@ -344,13 +351,12 @@
     
         $("#datepicker4").on("change",function(){
         var selected = $(this).val();
-        var second_date = moment(selected).format('DD/MM/YYYY');  
+        var second_date = get_date(selected);  
 
-        
             // console.log(selected);
             let days = $('#probation_period').val();
             // console.log(days);
-    
+            console.log("hi");
             var myInt = parseInt(days);                   
             var newdate = new Date(second_date);
             newdate.setDate(newdate.getDate() + myInt);
@@ -364,6 +370,14 @@
             $("#datepicker5").val(someFormattedDate);
         }); 
     });
-    
 
 })(jQuery);
+function get_date($date){
+    var date = $date;
+    var d = new Date(date.split("-").reverse().join("-"));
+    var dd = d.getDate();
+    var mm = d.getMonth()+1;
+    var yy = d.getFullYear();
+    var newdate = yy+"/"+mm+"/"+dd;
+    return newdate;
+}

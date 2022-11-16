@@ -210,11 +210,20 @@
 
                                                         </div>
                                                         <div class="col-md-3">
-                                                            <a href="/add-asset">
+                                                        @if(\Route::getFacadeRoot()->current()->uri() ==
+                                                            'edit-accessory/{id}')
+                                                            <a href="/edit-accessory/{{$result->id}}">
                                                                 <input type="button"
                                                                     class="btn btn-bordered btn-success btn-block"
                                                                     value="Reset">
                                                             </a>
+                                                            @else
+                                                            <a href="add-accessory">
+                                                                <input type="button"
+                                                                    class="btn btn-bordered btn-success btn-block"
+                                                                    value="Reset">
+                                                            </a>
+                                                            @endif
                                                         </div>
                                                     </div>
 

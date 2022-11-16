@@ -216,7 +216,7 @@
                                                         value="Submit">
 
                                                 </div>
-                                                <div class="col-md-2"><a href="/edit-asset-assignment/{id}">
+                                                <div class="col-md-2"><a href="/edit-asset-assignment/{{$assigns->id}}">
                                                         <input type="button"
                                                             class="btn btn-bordered btn-success btn-block"
                                                             value="Reset"></a></div>
@@ -270,14 +270,14 @@
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label for="datepicker2" class="col-md-3 control-label"> Date of
+                                                <label for="date" class="col-md-3 control-label"> Date of
                                                     Assignment </label>
                                                 <div class="col-md-6">
                                                     <div class="input-group">
                                                         <div class="input-group-addon">
                                                             <i class="fa fa-calendar text-alert pr11"></i>
                                                         </div>
-                                                        <input type="text" id="datepicker2"
+                                                        <input type="text" id="date"
                                                             class=" select2-single form-control" name="doa"
                                                             value="@if($assigns){{date('d-m-Y',strtotime($assigns->date_of_assignment))}}@endif"
                                                             autocomplete="off" required>
@@ -291,7 +291,7 @@
                                                     <input type="submit" class="btn btn-bordered btn-info btn-block"
                                                         value="Submit">
                                                 </div>
-                                                <div class="col-md-2"><a href="/assign-asset">
+                                                <div class="col-md-2"><a href="/edit-asset-assignment/{{$assigns->id}}">
                                                         <input type="button"
                                                             class="btn btn-bordered btn-success btn-block"
                                                             value="Reset"></a></div>
@@ -314,39 +314,45 @@
 
 </div>
 @endsection
-@push('scripts')
-<script src="/assets/js/pages/forms-widgets.js"></script>
-<script src="/assets/js/custom.js"></script>
-@endpush
+
 
 <!-- -------------- Scripts -------------- -->
 
 <!-- -------------- jQuery -------------- -->
+
 {!! Html::script('/assets/js/jquery/jquery-1.11.3.min.js') !!}
 {!! Html::script('/assets/js/jquery/jquery_ui/jquery-ui.min.js') !!}
-<script>
-$(document).ready(function() {
-    $("div.desc").hide();
-    var device = $('input[name="owner"]:checked').val();
-    $("#" + device).show();
-    $("input[name$='owner']").click(function() {
-        var testing = $(this).val();
-        if (testing == 1) {
-            $('#owner_id').val(testing);
-        }
-        $('#set_device').val(testing);
-        var test = $(this).val();
-        $("div.desc").hide();
-        $("#" + test).show();
+
+        <!-- -------------- HighCharts Plugin -------------- -->
+{!! Html::script('/assets/js/plugins/highcharts/highcharts.js') !!}
+
+        <!-- -------------- MonthPicker JS -------------- -->
+{!! Html::script('/assets/allcp/forms/js/jquery-ui-monthpicker.min.js') !!}
+{!! Html::script('/assets/allcp/forms/js/jquery-ui-datepicker.min.js') !!}
+{!! Html::script('/assets/allcp/forms/js/jquery.spectrum.min.js') !!}
+{!! Html::script('/assets/allcp/forms/js/jquery.stepper.min.js') !!}
 
 
-    });
-});
-$(document).ready(function() {
-    $("#datepicker1,#datepicker2").datepicker({
-        changeMonth: true,
-        changeYear: true,
-        dateFormat: 'dd-mm-yy',
-    });
-});
-</script>
+        <!-- -------------- Plugins -------------- -->
+{!! Html::script('/assets/allcp/forms/js/jquery.validate.min.js') !!}
+{!! Html::script('/assets/allcp/forms/js/jquery.steps.min.js') !!}
+
+        <!-- -------------- Theme Scripts -------------- -->
+{!! Html::script('/assets/js/utility/utility.js') !!}
+{!! Html::script('/assets/js/demo/demo.js') !!}
+{!! Html::script('/assets/js/main.js') !!}
+{!! Html::script('/assets/js/demo/widgets_sidebar.js') !!}
+{!! Html::script('/assets/js/custom_form_wizard.js') !!}
+{!! Html::script('/assets/js/custom.js') !!}
+
+{!!  Html::script ('/assets/js/pages/forms-widgets.js')!!}
+@push('scripts')
+@endpush
+
+        <!-- -------------- Select2 JS -------------- -->
+<script src="/assets/js/plugins/select2/select2.min.js"></script>
+
+<script src="/assets/js/asset/assign_asset.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+<!-- -------------- /Scripts -------------- -->

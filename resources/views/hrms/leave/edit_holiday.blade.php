@@ -95,7 +95,7 @@
                                                     value="Submit">
 
                                             </div>
-                                            <div class="col-md-2"><a href="/add-holiday">
+                                            <div class="col-md-2"><a href="/edit-holiday/{{$holidays->id}}">
                                                     <input type="button" class="btn btn-bordered btn-success btn-block"
                                                         value="Reset"></a>
                                             </div>

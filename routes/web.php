@@ -233,6 +233,7 @@ Route::group(['middleware' => ['auth']], function ()
     Route::get('upload-holidays', 'LeaveController@showHolidays');
     Route::post('upload-holidays', 'LeaveController@processHolidays'); //upload via sheet
 
+
     Route::get('add-holiday', 'LeaveController@addHolidays');
     Route::post('add-holiday', 'LeaveController@addHoliday');  //manually
 

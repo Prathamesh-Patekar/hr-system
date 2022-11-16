@@ -381,7 +381,7 @@ class EmpController extends Controller {
 		$files = Input::file('upload_file');
 
 
-		/* try {*/
+		try {
 		foreach ($files as $file) {
 					// \Log::info($file);
 			Excel::import(new UsersImport, $file
@@ -623,11 +623,11 @@ class EmpController extends Controller {
 		
 
 		}
-		/*catch (\Exception $e) {
-           return $e->getMessage();*/
-
-		// \Session::flash('success', ' Employee details uploaded successfully.');
-
+	}
+		catch (\Exception $e) {
+            $e->getMessage();
+			return redirect()->back()->with('success', $e->getMessage());
+		}
 		return back()->with('success', 'Excel Data Imported successfully.');
 	}
 

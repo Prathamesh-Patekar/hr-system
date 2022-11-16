@@ -23,7 +23,6 @@ class AssetController extends Controller
     public function exportAsset(Request $request) 
     {
         $string = $request->string;
-		return $column = $request->column;
         
         return Excel::download(new AssetsExport, 'assets.xlsx');
     }
@@ -131,10 +130,15 @@ class AssetController extends Controller
         return view('hrms.asset.upload_accessory');
     }
     Public function uploadAsset(Request $request){
+        try {
         Input::hasFile('upload_file');
         $file = Input::file('upload_file');
         $import=new AssetsImport();
         Excel::import($import,$file); 
+        
+        } catch (\Exception $e) {
+            return redirect()->back()->with('message', $e->getMessage());
+        }
         \Session::flash('flash_message', 'Excel Data Imported successfully.');
         return redirect('asset-listing');
 
@@ -172,24 +176,28 @@ class AssetController extends Controller
 		
 			
 			$file->fputcsv($headers);
-			foreach ($assets as $asset) {
-				$file->fputcsv([
-					getDevice($asset->device),
-					$asset->name,
-					$asset->device_sr,
-					(empty($asset->processor)) ? "NA" : $asset->processor,
-					(empty($asset->ram)) ? "NA" : $asset->ram,
-					(empty($asset->storage_type)) ? "NA" : getStorageType($asset->storage_type),
-					(empty($asset->ssd)) ? "NA" : $asset->ssd,
-					(empty($asset->hdd)) ? "NA" : $asset->hdd,
-					(empty($asset->os)) ? "NA" : $asset->os,
-					(empty($asset->imei)) ? "NA" : $asset->imei,
-					(empty($asset->description)) ? "NA" : $asset->description,
-					$asset->created_at,
-					$asset->updated_at,
-				]
-				);
-			}
+            try {
+                foreach ($assets as $asset) {
+                    $file->fputcsv([
+                        getDevice($asset->device),
+                        $asset->name,
+                        $asset->device_sr,
+                        (empty($asset->processor)) ? "NA" : $asset->processor,
+                        (empty($asset->ram)) ? "NA" : $asset->ram,
+                        (empty($asset->storage_type)) ? "NA" : getStorageType($asset->storage_type),
+                        (empty($asset->ssd)) ? "NA" : $asset->ssd,
+                        (empty($asset->hdd)) ? "NA" : $asset->hdd,
+                        (empty($asset->os)) ? "NA" : $asset->os,
+                        (empty($asset->imei)) ? "NA" : $asset->imei,
+                        (empty($asset->description)) ? "NA" : $asset->description,
+                        $asset->created_at,
+                        $asset->updated_at,
+                    ]
+                    );
+                }
+            } catch (\Exception $e) {
+			return redirect()->back()->with('message', $e->getMessage());
+		}
 
 			return response()->download(storage_path('export/') . $fileName);
 		}
