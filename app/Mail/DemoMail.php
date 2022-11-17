@@ -31,8 +31,8 @@ class DemoMail extends Mailable
      */
     public function build()
     {
-        $address  = 'akash.jadhav@techsevin.com';
-        $name  = 'Aakash';
+        $address  = 'prathamesh.patekar@techsevin.com';
+        $name  = 'Hr';
         $users=$this->users->values() ;
         $holidays= $this->holidays;
 		// 			\Log::info(get_class_methods($holidays));

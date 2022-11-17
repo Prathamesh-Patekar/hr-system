@@ -74,12 +74,7 @@
                     <td>{{$emps->employee->mnumber_two}}</td>
                 </tr>
 
-                <tr>
-                    <td style="width: 10px" class="text-center">
-                    </td>
-                    <td><strong>Employee Status</strong></td>
-                    <td>{{getSatus($emps->employee->status)}}</td>
-                </tr>
+               
                 <tr>
                     <td style="width: 10px" class="text-center">
                     </td>
@@ -178,8 +173,8 @@
                 <tr>
                     <td style="width: 10px" class="text-center">
                     </td>
-                    <td><strong>Employee status</strong></td>
-                    <td>{{getSatus($emps->employee->status)}}</td>
+                    <td><strong>Employee Status</strong></td>
+                    <td>{{convertStatusBack($emps->employee->status)}}</td>
                 </tr>
                 <tr>
                     <td class="text-center"></td>

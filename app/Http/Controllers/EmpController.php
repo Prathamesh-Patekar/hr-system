@@ -1,6 +1,8 @@
 <?php
 namespace App\Http\Controllers;
 
+use Illuminate\Database\QueryException;
+
 use App\Models\Employee;
 use App\Models\Role;
 use App\Models\UserRole;
@@ -624,7 +626,7 @@ class EmpController extends Controller {
 
 		}
 	}
-		catch (\Exception $e) {
+		catch (QueryException $e) {
             $e->getMessage();
 			return redirect()->back()->with('success', $e->getMessage());
 		}

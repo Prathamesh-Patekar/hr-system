@@ -60,7 +60,12 @@ function convertStatus($emp_status)
 
 function convertStatusBack($emp_status)
 {
-    if($emp_status){}else{$emp_status=1;}
+    if($emp_status == 0 || $emp_status == 1)
+    {
+        $emp_status; 
+    }else{
+            $emp_status=1;
+    }
 
     $data = [
         '1' => 'Present',
@@ -239,7 +244,6 @@ function qualification()
             '2' => 'Others',
 
         ];
-
         return $data[$gender];
     }
     function getSatus($status)

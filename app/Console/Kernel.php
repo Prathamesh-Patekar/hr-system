@@ -39,10 +39,10 @@ class Kernel extends ConsoleKernel
                 foreach ($dateInDatabases as $dateInDatabase) {
 					// \Log::info($dateInDatabase['date_from']);
 
-                $beforeTwoDay = Carbon::parse($dateInDatabase['date_from'])->subDays(2)->toDateString();
-                $schedule->command('command:AutoHolidayNotification')->dailyAt('12:00')->when(function () use ($beforeTwoDay) {
+                $beforeThreeDay = Carbon::parse($dateInDatabase['date_from'])->subDays()->toDateString();
+                $schedule->command('command:AutoHolidayNotification')->dailyAt('12:00')->when(function () use ($beforeThreeDay) {
                     return(
-                        $beforeTwoDay == Carbon::now()->toDateString()
+                        $beforeThreeDay == Carbon::now()->toDateString()
                     );
                 });
             }
